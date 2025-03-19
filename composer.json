@@ -1,0 +1,45 @@
+{
+    "name": "ababilitworld/flex-wordpress",
+    "description": "A flexible, Composer-managed package to handle Wordpress by following modern SOLID OOP best practices by Ababil IT Hub.",
+    "keywords": ["php", "wordpress"],
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "license_uri": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "authors": [
+        {
+            "name": "Ababil It Hub",
+            "email": "ababilithub@gmail.com",
+            "homepage": "https://ababilithub.com/"
+        },
+        {
+            "name": "Md Shafiul Alam",
+            "email": "cse.shafiul@gmail.com",
+            "homepage": "https://ababilithub.com/"
+        },
+        {
+            "name": "Premium Addons",
+            "email": "premiumaddons@gmail.com",
+            "homepage": "https://ababilithub.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ababilithub\\FlexWordpress\\": "src/"
+        },
+        "files": [
+            "includes.php"
+        ]
+    },
+    "require-dev": {},
+    "autoload-dev": {
+        "psr-4": {
+            "Ababilithub\\FlexWordpress\\": "Test/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ababilitworld/flex-wordpress"
+        }
+    ]
+}
