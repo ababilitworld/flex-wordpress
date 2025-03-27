@@ -1,9 +1,11 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Test\Posttype\V1\Concrete;
+namespace Ababilithub\FlexWordpress\Package\Test\Posttype\V1\Concrete;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 
-use Ababilitworld\FlexWordpress\Package\Posttype\V1\Base\Posttype as BasePosttype;
+use Ababilithub\{
+    FlexWordpress\Package\Posttype\V1\Base\Posttype as BasePosttype
+};
 
 if (!class_exists(__NAMESPACE__ . '\\Posttype')) 
 {

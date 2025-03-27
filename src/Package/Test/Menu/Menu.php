@@ -1,5 +1,5 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Test\Menu;
+namespace Ababilithub\FlexWordpress\Package\Test\Menu;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,

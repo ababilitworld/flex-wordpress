@@ -1,6 +1,6 @@
 <?php
 
-namespace Ababilitworld\FlexWordpress\Package\Pagination\Concrete;
+namespace Ababilithub\FlexWordpress\Package\Pagination\Concrete;
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || die();
 

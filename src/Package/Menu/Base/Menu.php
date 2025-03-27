@@ -1,5 +1,5 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Menu\Base;
+namespace Ababilithub\FlexWordpress\Package\Menu\Base;
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
@@ -7,7 +7,7 @@ use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
 };
 
-use const Ababilitworld\FlexWordpress\{
+use const Ababilithub\FlexWordpress\{
     PLUGIN_NAME,
     PLUGIN_DIR,
     PLUGIN_URL,

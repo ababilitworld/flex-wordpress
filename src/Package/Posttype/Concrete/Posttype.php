@@ -1,5 +1,5 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Posttype\Concrete;
+namespace Ababilithub\FlexWordpress\Package\Posttype\Concrete;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,

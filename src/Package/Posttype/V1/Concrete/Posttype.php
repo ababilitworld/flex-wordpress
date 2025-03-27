@@ -1,5 +1,5 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Posttype\V1\Concrete;
+namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Concrete;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 

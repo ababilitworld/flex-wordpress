@@ -1,5 +1,5 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Pagination\Presentation\Template;
+namespace Ababilithub\FlexWordpress\Package\Pagination\Presentation\Template;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 

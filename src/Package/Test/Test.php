@@ -1,7 +1,7 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Test;
+namespace Ababilithub\FlexWordpress\Package\Test;
 
-use Ababilitworld\FlexWordpress\Package\Test\Template\Template;
+use Ababilithub\FlexWordpress\Package\Test\Template\Template;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,

@@ -1,5 +1,5 @@
 <?php
-namespace Ababilitworld\FlexWordpress\Package\Pagination\Contract;
+namespace Ababilithub\FlexWordpress\Package\Pagination\Contract;
 
 interface Pagination 
 {

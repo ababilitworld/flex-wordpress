@@ -1,5 +1,5 @@
 <?php 
-namespace Ababilitworld\FlexWordpress\Package\Posttype\Contract;
+namespace Ababilithub\FlexWordpress\Package\Posttype\Contract;
 
 interface Posttype 
 {

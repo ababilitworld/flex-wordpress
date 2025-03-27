@@ -1,12 +1,15 @@
 <?php
 
-namespace Ababilitworld\FlexWordpress\Package\Posttype\Base;
+namespace Ababilithub\FlexWordpress\Package\Posttype\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
     FlexTraitByAbabilitworld\Wordpress\Security\Sanitization\Sanitization,
+};
+
+use AbabilIthub\{
     FlexWordpress\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
     FlexWordpress\Package\Posttype\Mixin\Posttype as WpPosttypeMixin
 };
