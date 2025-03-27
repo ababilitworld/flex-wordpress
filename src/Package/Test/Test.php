@@ -6,6 +6,7 @@ use Ababilitworld\FlexWordpress\Package\Test\Template\Template;
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
     FlexWordpress\Package\Test\Menu\Menu as TestMenu,
+    FlexWordpress\Package\Test\Posttype\V1\Concrete\Posttype as ConcretePosttype,
     FlexWordpress\Package\Test\Setting\Setting as Setting,
     FlexWordpress\Package\Test\Service\Service as TestService,
     FlexWordpress\Package\Test\Presentation\Template\Template as TestTemplate
@@ -29,6 +30,7 @@ if (!class_exists(__NAMESPACE__.'\Test'))
     {
         use Standard;
         private $menu;
+        private $posttype;
 
         public function __construct($data = []) 
         {
@@ -38,7 +40,8 @@ if (!class_exists(__NAMESPACE__.'\Test'))
 
         public function init($data) 
         {
-            $this->menu = TestMenu::instance();       
+            $this->menu = TestMenu::instance(); 
+            $this->posttype = ConcretePosttype::getInstance();      
         }
     }
 }
