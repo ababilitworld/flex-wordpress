@@ -3,10 +3,16 @@ namespace Ababilithub\FlexWordpress\Package\Test\Menu;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
-    FlexWordpress\Package\Menu\Base\Menu as BaseMenu,
     FlexWordpress\Package\Test\Setting\Setting as Setting,
     FlexWordpress\Package\Test\Service\Service as TestService,
     FlexWordpress\Package\Test\Presentation\Template\Template as TestTemplate
+};
+
+use AbabilIthub\{
+    FlexWordpress\Package\Menu\Base\Menu as BaseMenu,
+    FlexWordpress\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
+    FlexWordpress\Package\Posttype\Mixin\Posttype as WpPosttypeMixin,
+    FlexWordpress\Package\Test\Posttype\V1\Concrete\Posttype as ConcretePosttype,
 };
 
 use const Ababilitworld\{

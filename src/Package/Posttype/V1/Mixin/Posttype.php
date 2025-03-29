@@ -1,5 +1,5 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Posttype\Mixin;
+namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Mixin;
 
 if ( ! trait_exists(__NAMESPACE__.'\Posttype' ) ) :
 

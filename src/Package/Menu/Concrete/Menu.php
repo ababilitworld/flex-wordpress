@@ -1,20 +1,11 @@
 <?php
 namespace Ababilithub\FlexWordpress\Package\Menu\Concrete;
 
-use Ababilitworld\{
-    FlexTraitByAbabilitworld\Standard\Standard,
+use AbabilIthub\{
+    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
     FlexWordpress\Package\Menu\Base\Menu as BaseMenu,
 };
 
-use const Ababilitworld\{
-    FlexTestByAbabilitworld\PLUGIN_NAME,
-    FlexTestByAbabilitworld\PLUGIN_DIR,
-    FlexTestByAbabilitworld\PLUGIN_URL,
-    FlexTestByAbabilitworld\PLUGIN_FILE,
-    FlexTestByAbabilitworld\PLUGIN_PRE_UNDS,
-    FlexTestByAbabilitworld\PLUGIN_PRE_HYPH,
-    FlexTestByAbabilitworld\PLUGIN_VERSION
-};
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
@@ -26,6 +17,8 @@ if (!class_exists(__NAMESPACE__.'\Menu'))
      */
     class Menu extends BaseMenu
     {
+        use StandardMixin;
+
         /**
          * Constructor to define menu properties and submenus
          */

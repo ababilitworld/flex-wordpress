@@ -3,16 +3,8 @@ namespace Ababilithub\FlexWordpress\Package\Menu\Base;
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
-use Ababilitworld\{
-    FlexTraitByAbabilitworld\Standard\Standard,
-};
-
-use const Ababilithub\FlexWordpress\{
-    PLUGIN_NAME,
-    PLUGIN_DIR,
-    PLUGIN_URL,
-    PLUGIN_FILE,
-    PLUGIN_VERSION
+use AbabilIthub\{
+    FlexPhp\Package\Mixin\Standard\V1\V1 as Standard,
 };
 
 if ( ! class_exists( __NAMESPACE__.'\Menu' ) ) 

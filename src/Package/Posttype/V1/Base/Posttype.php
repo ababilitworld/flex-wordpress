@@ -3,11 +3,10 @@ namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 
-use Ababilitworld\{
-    FlexTraitByAbabilitworld\Standard\Standard,
-    FlexTraitByAbabilitworld\Wordpress\Security\Sanitization\Sanitization,
-    FlexWordpress\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
-    FlexWordpress\Package\Posttype\Mixin\Posttype as WpPosttypeMixin
+use AbabilIthub\{
+    FlexWordpress\Package\Posttype\V1\Contract\Posttype as WpPosttypeInterface,
+    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
+    FlexWordpress\Package\Posttype\V1\Mixin\Posttype as WpPosttypeMixin,
 };
 
 /**
@@ -18,6 +17,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
 {    
     abstract class Posttype implements WpPosttypeInterface
     {
+        use StandardMixin, WpPosttypeMixin;
         public static array $instances = [];
         public static ?self $instance = null;
 
@@ -41,20 +41,13 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
             $this->init($config);
         }
 
-        public function init(array $config = []): static 
+        public function init(array $config = []): void 
         {
             $this->config = array_merge($this->getDefaultConfig(), $config);
             $this->labels = array_merge($this->getDefaultLabels(), $this->config['labels'] ?? []);
             $this->args = array_merge($this->getDefaultArgs(), $this->config['args'] ?? []);
 
             add_action('init', [$this, 'register']);
-
-            if (is_null(self::$instance) || self::$instance->needsUpdate( $config)) 
-            {
-                self::$instance = new static($config);
-            }
-
-            return self::$instance;
         }
 
         protected function needsUpdate(array $config = []): bool 

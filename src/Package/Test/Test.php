@@ -5,7 +5,12 @@ use Ababilithub\FlexWordpress\Package\Test\Template\Template;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
+};
+
+use AbabilIthub\{
     FlexWordpress\Package\Test\Menu\Menu as TestMenu,
+    FlexWordpress\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
+    FlexWordpress\Package\Posttype\Mixin\Posttype as WpPosttypeMixin,
     FlexWordpress\Package\Test\Posttype\V1\Concrete\Posttype as ConcretePosttype,
 };
 
