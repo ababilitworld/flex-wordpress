@@ -7,7 +7,7 @@ use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
 };
 
-use AbabilIthub\{
+use Ababilithub\{
     FlexWordpress\Package\Test\Menu\Menu as TestMenu,
     FlexWordpress\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
     FlexWordpress\Package\Posttype\Mixin\Posttype as WpPosttypeMixin,

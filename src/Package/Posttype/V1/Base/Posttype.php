@@ -3,7 +3,7 @@ namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 
-use AbabilIthub\{
+use Ababilithub\{
     FlexWordpress\Package\Posttype\V1\Contract\Posttype as WpPosttypeInterface,
     FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
     FlexWordpress\Package\Posttype\V1\Mixin\Posttype as WpPosttypeMixin,

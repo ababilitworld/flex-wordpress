@@ -3,7 +3,7 @@ namespace Ababilithub\FlexWordpress\Package\Menu\Base;
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
-use AbabilIthub\{
+use Ababilithub\{
     FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
 };
 

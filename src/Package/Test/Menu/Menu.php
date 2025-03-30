@@ -8,7 +8,7 @@ use Ababilitworld\{
     FlexWordpress\Package\Test\Presentation\Template\Template as TestTemplate
 };
 
-use AbabilIthub\{
+use Ababilithub\{
     FlexWordpress\Package\Menu\Base\Menu as BaseMenu,
     FlexWordpress\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
     FlexWordpress\Package\Posttype\Mixin\Posttype as WpPosttypeMixin,

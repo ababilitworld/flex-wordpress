@@ -1,7 +1,7 @@
 <?php
 namespace Ababilithub\FlexWordpress\Package\Menu\Concrete;
 
-use AbabilIthub\{
+use Ababilithub\{
     FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
     FlexWordpress\Package\Menu\Base\Menu as BaseMenu,
 };
