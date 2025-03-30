@@ -4,7 +4,7 @@ namespace Ababilithub\FlexWordpress\Package\Menu\Base;
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
 use AbabilIthub\{
-    FlexPhp\Package\Mixin\Standard\V1\V1 as Standard,
+    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
 };
 
 if ( ! class_exists( __NAMESPACE__.'\Menu' ) ) 
@@ -15,7 +15,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
      */
     abstract class Menu
     {
-        use Standard;
+        use StandardMixin;
 
         /**
          * Holds the page title
