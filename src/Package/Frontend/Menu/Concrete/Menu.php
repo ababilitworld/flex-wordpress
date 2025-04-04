@@ -42,7 +42,7 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
 
         protected function get_menu_url(): string
         {
-            return home_url($this->$menu_slug);
+            return home_url($this->menu_slug);
         }
 
         protected function get_menu_label(): string
@@ -68,17 +68,17 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
 
         public function load_template($template) 
         {
-            if (get_query_var('billing') == 1) 
-            {
-                $billing_template = get_template_directory() . '/Asset/Appearence/Template/Invoice/Invoice.php';
-                if (file_exists($billing_template)) 
-                {
-                    return $billing_template;
-                }
-            }
-            else
+            if (get_query_var($this->menu_slug) == 1) 
             {
                 return '<div style="color:red;">Bismillah<div>';
+                // $billing_template = get_template_directory() . '/Asset/Appearence/Template/Invoice/Invoice.php';
+                // if (file_exists($billing_template)) 
+                // {
+                //     return $billing_template;
+                // }
             }
+
+            return $template;
         }
+    }
 }
