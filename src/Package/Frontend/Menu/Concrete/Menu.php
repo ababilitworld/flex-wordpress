@@ -21,6 +21,9 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
         protected string $menu_label = 'Custom Dashboard';
         protected string $capability = 'read';
 
+        protected string $template_type = 'html';
+        protected mixed $template_part = '<div style="color:red;">Bismillah</div>';
+
         public function __construct()
         {
             
@@ -53,32 +56,6 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
         protected function get_menu_capability(): string
         {
             return $this->capability;
-        }
-
-        public function add_rewrite_rule(): void
-        {
-            add_rewrite_rule($this->menu_slug.'/?$', 'index.php?'.$this->menu_slug.'=1', 'top');
-        }
-
-        public function add_query_vars($query_vars) 
-        {
-            $query_vars[] = $this->menu_slug;
-            return $query_vars;
-        }
-
-        public function load_template($template) 
-        {
-            if (get_query_var($this->menu_slug) == 1) 
-            {
-                echo '<div style="color:red;">Bismillah<div>';exit;
-                // $billing_template = get_template_directory() . '/Asset/Appearence/Template/Invoice/Invoice.php';
-                // if (file_exists($billing_template)) 
-                // {
-                //     return $billing_template;
-                // }
-            }
-
-            return $template;
         }
     }
 }

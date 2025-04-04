@@ -5,6 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Frontend\Menu\Base;
 
 use Ababilithub\{
     FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
+    FlexWordpress\Package\Frontend\Menu\Registrar\Registrar as MenuRegistrar, 
 };
 
 if (!class_exists(__NAMESPACE__ . '\Menu')) 
@@ -37,20 +38,34 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
         protected string $capability;
 
         /**
+         * Holds the template type
+         * @var string
+         */
+        protected string $template_type;
+
+        /**
+         * Holds the template part
+         * @var mixed
+         */
+        protected mixed $template_part;
+
+        /**
          * Holds the submenu items
          * @var array
          */
         protected array $submenus = [];
+
+        private $registrar;
 
         /**
          * Constructor to hook menu initialization
          */
         public function __construct()
         {
-            add_action('init', [$this, 'add_rewrite_rule']);
-            add_filter('query_vars', [$this, 'add_query_vars']);
-            add_filter('template_include', [$this, 'load_template']);
-            add_filter('wp_nav_menu_items', [$this, 'add_to_menu'], 10, 2);
+            $this->registrar = new MenuRegistrar($this);
+            $this->registrar->register_hooks();
+
+            //add_filter('wp_nav_menu_items', [$this, 'add_to_menu'], 10, 2);
         }
 
         /**
@@ -116,28 +131,19 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
             return true;//current_user_can($this->get_menu_capability());
         }
 
-        /**
-         * Add custom rewrite rules
-         */
-        public function add_rewrite_rule(): void
+        public function get_menu_slug(): string
         {
-            //
+            return $this->menu_slug;
         }
 
-        /**
-         * Add custom query vars
-         */
-        public function add_query_vars($query_vars) 
+        public function get_template_type(): string
         {
-            return $query_vars;
+            return $this->template_type;
         }
 
-        /**
-         * Load a custom template
-         */
-        public function load_template($template) 
+        public function get_template_part(): mixed
         {
-            return $template;
+            return $this->template_part;
         }
 
         /**
