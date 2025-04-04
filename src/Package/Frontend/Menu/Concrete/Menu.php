@@ -18,12 +18,13 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
     class Menu extends BaseMenu
     {
         protected string $menu_slug = 'custom-dashboard';
-        protected string $menu_label = 'Dashboard';
+        protected string $menu_label = 'Custom Dashboard';
         protected string $capability = 'read';
 
         public function __construct()
         {
-            parent::__construct();
+            
+            //parent::__construct();
 
             // Add Submenus
             $this->add_submenu([
@@ -41,7 +42,7 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
 
         protected function get_menu_url(): string
         {
-            return home_url('/dashboard');
+            return home_url($this->$menu_slug);
         }
 
         protected function get_menu_label(): string
@@ -56,22 +57,28 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
 
         public function add_rewrite_rule(): void
         {
-            add_rewrite_rule('^custom-dashboard/?$', 'index.php?custom_dashboard=1', 'top');
+            add_rewrite_rule('^custom-dashboard/?$', 'index.php?custom-dashboard=1', 'top');
         }
 
         public function add_query_vars($query_vars) 
         {
-            $query_vars[] = 'custom_dashboard';
+            $query_vars[] = 'custom-dashboard';
             return $query_vars;
         }
 
         public function load_template($template) 
         {
-            if (get_query_var('custom_dashboard') == 1) 
+            if (get_query_var('billing') == 1) 
             {
-                return plugin_dir_path(__FILE__) . 'templates/custom-dashboard-template.php';
+                $billing_template = get_template_directory() . '/Asset/Appearence/Template/Invoice/Invoice.php';
+                if (file_exists($billing_template)) 
+                {
+                    return $billing_template;
+                }
             }
-            return $template;
+            else
+            {
+                return '<div style="color:red;">Bismillah<div>';
+            }
         }
-    }
 }
