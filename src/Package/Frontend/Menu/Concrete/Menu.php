@@ -24,7 +24,7 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
         public function __construct()
         {
             
-            //parent::__construct();
+            parent::__construct();
 
             // Add Submenus
             $this->add_submenu([
@@ -57,12 +57,12 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
 
         public function add_rewrite_rule(): void
         {
-            add_rewrite_rule('^custom-dashboard/?$', 'index.php?custom-dashboard=1', 'top');
+            add_rewrite_rule($this->menu_slug.'/?$', 'index.php?'.$this->menu_slug.'=1', 'top');
         }
 
         public function add_query_vars($query_vars) 
         {
-            $query_vars[] = 'custom-dashboard';
+            $query_vars[] = $this->menu_slug;
             return $query_vars;
         }
 
@@ -70,7 +70,7 @@ if (!class_exists(__NAMESPACE__ . '\Menu'))
         {
             if (get_query_var($this->menu_slug) == 1) 
             {
-                return '<div style="color:red;">Bismillah<div>';
+                echo '<div style="color:red;">Bismillah<div>';exit;
                 // $billing_template = get_template_directory() . '/Asset/Appearence/Template/Invoice/Invoice.php';
                 // if (file_exists($billing_template)) 
                 // {
