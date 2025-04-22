@@ -1,0 +1,12 @@
+<?php
+namespace Ababilithub\FlexWordpress\Package\Route\V3\EService\Contract;
+
+use Ababilithub\FlexWordpress\Package\Route\V3\JContract\Route as RouteInterface;
+
+interface Route 
+{
+    public function registerRoutes(): void;
+    public function getRegisteredRoutes(): array;
+    public function dispatch(string $path): void;
+    public function register(RouteInterface $route): void;
+}
