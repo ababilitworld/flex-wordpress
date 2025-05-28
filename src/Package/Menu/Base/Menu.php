@@ -4,7 +4,7 @@ namespace Ababilithub\FlexWordpress\Package\Menu\Base;
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
 use Ababilithub\{
-    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
+    FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
 };
 
 if ( ! class_exists( __NAMESPACE__.'\Menu' ) ) 

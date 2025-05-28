@@ -4,7 +4,7 @@ namespace Ababilithub\FlexWordpress\Package\Notification\V1;
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || die();
 
 use Ababilithub\{
-    FlexPhp\Package\Mixin\Standard\V1\V1 as PhpStandardMixin
+    FlexPhp\Package\Mixin\V1\Standard\Mixin as PhpStandardMixin
 };
 
 if ( ! class_exists( __NAMESPACE__.'\Notification' ) ) 

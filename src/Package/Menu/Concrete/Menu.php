@@ -2,7 +2,7 @@
 namespace Ababilithub\FlexWordpress\Package\Menu\Concrete;
 
 use Ababilithub\{
-    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
+    FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
     FlexWordpress\Package\Menu\Base\Menu as BaseMenu,
 };
 

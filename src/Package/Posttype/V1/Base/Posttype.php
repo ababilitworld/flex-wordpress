@@ -5,7 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
 use Ababilithub\{
     FlexWordpress\Package\Posttype\V1\Contract\Posttype as WpPosttypeInterface,
-    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
+    FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
     FlexWordpress\Package\Posttype\V1\Mixin\Posttype as WpPosttypeMixin,
 };
 

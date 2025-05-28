@@ -4,7 +4,7 @@ namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Concrete;
 (defined('ABSPATH') && defined('WPINC')) || die();
 
 use Ababilithub\{
-    FlexPhp\Package\Mixin\Standard\V1\V1 as StandardMixin,
+    FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
     FlexWordpress\Package\Posttype\V1\Base\Posttype as BasePosttype,
 };
 
