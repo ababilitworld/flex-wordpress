@@ -16,7 +16,7 @@ class Taxonomy
         if (!isset(self::$instances[$taxonomyClass])) 
         {
             self::$instances[$taxonomyClass] = new $taxonomyClass();
-            self::$instances[$taxonomyClass]->init();
+            //self::$instances[$taxonomyClass]->init();
         }
 
         return self::$instances[$taxonomyClass];

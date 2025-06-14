@@ -2,8 +2,11 @@
 
 namespace Ababilithub\FlexWordpress\Package\Taxonomy\Test;
 
-use Ababilithub\{
-    FlexWordpress\Package\Taxonomy\Factory\Taxonomy as TaxonomyFactory,
-}
+(defined('ABSPATH') && defined('WPINC')) || exit();
 
-TaxonomyFactory::get(MediaType\Taxonomy::class);
+use Ababilithub\{
+    FlexWordpress\Package\Taxonomy\Concrete\Multimedia\MediaType\Taxonomy as MediaTypeTaxonomy,
+    FlexWordpress\Package\Taxonomy\Factory\Taxonomy as TaxonomyFactory,
+};
+
+TaxonomyFactory::get(MediaTypeTaxonomy::class);
