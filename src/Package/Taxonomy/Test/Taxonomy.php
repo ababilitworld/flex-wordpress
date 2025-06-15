@@ -9,4 +9,4 @@ use Ababilithub\{
     FlexWordpress\Package\Taxonomy\Factory\Taxonomy as TaxonomyFactory,
 };
 
-TaxonomyFactory::get(MediaTypeTaxonomy::class);
+//TaxonomyFactory::get(MediaTypeTaxonomy::class);
