@@ -24,7 +24,7 @@ abstract class Taxonomy implements TaxonomyContract
     
     protected function init_hook(): void
     {
-        add_action('init', [$this, 'register_taxonomy'], 99);
+        add_action('init', [$this, 'register_taxonomy'], 98);
     }
 
     protected function init_service(): void
