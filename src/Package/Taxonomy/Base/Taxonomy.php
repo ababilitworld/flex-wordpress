@@ -94,9 +94,8 @@ abstract class Taxonomy implements TaxonomyContract
         
         if (!$term) 
         {
-            $term = wp_insert_term($data['slug'], $this->slug, [
+            $term = wp_insert_term($data['name'], $this->slug, [
                 'slug' => $data['slug'],
-                'name' => $data['name'],
                 'description' => $data['description'] ?? ''
             ]);
         }

@@ -16,7 +16,7 @@ if (!class_exists(__NAMESPACE__.'\Taxonomy'))
         protected function init(): void
         {
             $this->taxonomy = 'media-type';
-            $this->taxonomy_slug = 'media-type';
+            $this->slug = 'media-type';
 
             $this->init_hook();
             $this->init_service();
@@ -42,7 +42,7 @@ if (!class_exists(__NAMESPACE__.'\Taxonomy'))
                 'page_title' => __('Media Type', 'flex-aahub-by-ababilitworld'),
                 'menu_title' => __('Media Type', 'flex-aahub-by-ababilitworld'),
                 'capability' => 'manage_options',
-                'menu_slug' => 'edit-tags.php?taxonomy='.$this->taxonomy_slug,
+                'menu_slug' => 'edit-tags.php?taxonomy='.$this->slug,
                 'callback' => null,
                 'position' => 9,
             ];
@@ -74,7 +74,7 @@ if (!class_exists(__NAMESPACE__.'\Taxonomy'))
                 'show_ui' => true,
                 'show_admin_column' => true,
                 'query_var' => true,
-                'rewrite' => ['slug' => $this->taxonomy_slug],
+                'rewrite' => ['slug' => $this->slug],
                 'show_in_quick_edit' => true,
                 'show_in_rest' => true,
                 'meta_box_cb' => 'post_categories_meta_box',
