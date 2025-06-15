@@ -108,4 +108,19 @@ abstract class Taxonomy implements TaxonomyContract
             }
         }
     }
+
+    protected function generate_term_data(
+        string $slug,
+        string $name,
+        string $description = '',
+        array $meta = []
+    ): array 
+    {
+        return [
+            'slug' => $slug,
+            'name' => $name,
+            'description' => $description,
+            'meta' => $meta
+        ];
+    }
 }
