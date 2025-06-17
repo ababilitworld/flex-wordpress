@@ -17,8 +17,8 @@ class Posttype extends BasePosttype
     use StandardMixin;
     protected function init(): void
     {
-        $this->posttype = 'flexdoc';
-        $this->slug = 'flexdoc';
+        $this->posttype = 'fldocc';
+        $this->slug = 'fldocc';
         
         $this->init_hook();
         $this->init_service();
