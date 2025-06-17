@@ -1,6 +1,8 @@
 <?php
 namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
+use finfo;
+
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
@@ -8,14 +10,17 @@ use Ababilithub\{
     FlexWordpress\Package\Posttype\V1\Contract\Posttype as PosttypeContract,
 };
 
+use WP_Error;
 abstract class Posttype implements PosttypeContract
 {    
     protected $posttype;
     protected $slug;
     protected $taxonomies = [];
+    protected $available_supports = [];
+    protected $supports = [];
     protected $labels = [];
     protected $args = [];
-    protected array $metas = [];
+    protected $metas = [];
     
     public function __construct()
     {
@@ -27,12 +32,57 @@ abstract class Posttype implements PosttypeContract
     protected function init_hook(): void
     {
         add_action('init', [$this, 'register_post_type'], 31);
-        add_action('init', [$this, 'process_metas'], 32);
+        add_action('init', [$this, 'register_supports'], 32);
+        add_action('init', [$this, 'process_metas'], 33);
     }
 
     protected function init_service(): void
     {
         // Can be overridden by child classes
+    }
+
+    protected function get_available_supports():array
+    {
+        return $this->available_supports = array(
+            
+            // Basic content
+            'title',
+            'editor',
+            'excerpt',
+            'thumbnail',
+            
+            // Post functionality
+            'comments',
+            'trackbacks',
+            'revisions',
+            'custom-fields',
+            
+            // Layout
+            'page-attributes',
+            'post-formats',
+            
+            // Editor enhancements
+            'author',
+            'wp-block-styles',
+            'align-wide',
+            'responsive-embeds',
+
+            //Template Features
+            'template',
+            'template-lock',
+
+            //Experimental Features
+            'custom-line-height',
+            'experimental-border',
+            'experimental-duotone',
+            'experimental-font-size',
+            'experimental-link-color'    
+        );
+    }
+
+    protected function set_supports(array $supports): void
+    {
+        $this->supports = $supports;
     }
 
     protected function set_labels(array $labels): void
@@ -55,7 +105,23 @@ abstract class Posttype implements PosttypeContract
         return $this->slug;
     }
 
-    public function add_taxonomy(string $taxonomy_slug): self
+    public function register_post_type(): void
+    {
+        register_post_type($this->slug, $this->args);
+    }
+
+    public function register_supports(): void 
+    {
+        foreach($this->supports as $support)
+        {
+            if (!post_type_supports($this->slug, $support)) 
+            {
+                add_post_type_support($this->slug,$support);      
+            }
+        }
+    }
+
+    public function add_taxonomy(string $taxonomy_slug): void
     {
         if (!in_array($taxonomy_slug, $this->taxonomies, true)) 
         {
@@ -70,13 +136,6 @@ abstract class Posttype implements PosttypeContract
                 }
             }
         }
-
-        return $this;
-    }
-
-    public function register_post_type(): void
-    {
-        register_post_type($this->slug, $this->args);
     }
 
     public function process_metas(): void
@@ -89,21 +148,16 @@ abstract class Posttype implements PosttypeContract
         }
     }
 
-    protected function generate_meta_definition(
-        string $key,
-        string $type = 'string',
-        string $description = '',
-        bool $single = true,
-        bool $show_in_rest = true,
-        array $args = []
-    ): array {
+    protected function generate_meta_definition(array $meta): array 
+    {
         return [
-            'key' => $key,
-            'type' => $type,
-            'description' => $description,
-            'single' => $single,
-            'show_in_rest' => $show_in_rest,
-            'args' => $args
+            'key' => $meta['key'],
+            'type' => $meta['type'] ?? 'string',
+            'description' => $meta['description'] ?? '',
+            'single' => $meta['single'] ?? true,
+            'show_in_rest' => $meta['show_in_rest'] ?? true,
+            'sanitize_callback' => $meta['sanitize_callback'] ?? null,
+            'auth_callback' => $meta['auth_callback'] ?? null,
         ];
     }
 
@@ -157,5 +211,98 @@ abstract class Posttype implements PosttypeContract
             return false;
         }
         return $current_status;
+    }
+
+    /**
+     * Creates a new post of this post type
+     * 
+     * @param array $post_data Array of post data (must include 'title')
+     * @param array $taxonomies Array of taxonomy terms to assign (['taxonomy' => ['term1', 'term2']])
+     * @param array $meta_data Array of meta data to add
+     * @return int|WP_Error The post ID on success, WP_Error on failure
+     */
+    public function add_post(array $post_data, array $taxonomies = [], array $meta_data = []): int|WP_Error
+    {
+        $defaults = [
+            'post_title' => '',
+            'post_content' => '',
+            'post_status' => 'publish',
+            'post_type' => $this->slug,
+        ];
+        
+        $post_args = wp_parse_args($post_data, $defaults);
+        
+        // Validate required fields
+        if (empty($post_args['post_title'])) 
+        {
+            return new WP_Error('missing_title', __('Post title is required', 'flex-eland'));
+        }
+        
+        $post_id = wp_insert_post($post_args, true);
+        
+        if (is_wp_error($post_id)) 
+        {
+            return $post_id;
+        }
+        
+        // Assign taxonomies if provided
+        foreach ($taxonomies as $taxonomy => $terms) 
+        {
+            if (taxonomy_exists($taxonomy)) 
+            {
+                wp_set_object_terms($post_id, $terms, $taxonomy);
+            }
+        }
+        
+        // Add meta data if provided
+        if (!empty($meta_data)) 
+        {
+            $this->add_post_meta($post_id, $meta_data);
+        }
+        
+        return $post_id;
+    }
+
+    /**
+     * Adds meta data to a post
+     * 
+     * @param int $post_id Post ID
+     * @param array $meta_data Array of meta data (key => value pairs)
+     * @param bool $update_existing Whether to update existing meta keys
+     * @return array Array of results for each meta operation
+     */
+    public function add_post_meta(int $post_id, array $meta_data, bool $update_existing = true): array
+    {
+        $results = [];
+        
+        foreach ($meta_data as $key => $value) 
+        {
+            if ($update_existing || !metadata_exists('post', $post_id, $key)) 
+            {
+                $results[$key] = update_post_meta($post_id, $key, $value);
+            } 
+            else
+            {
+                $results[$key] = false; // Skip existing
+            }
+        }
+        
+        return $results;
+    }
+
+    /**
+     * Helper method to generate meta data array
+     */
+    protected function generate_meta_data( array $meta ): array 
+    {
+        return [
+            'key' => $meta['key'],
+            'type' => $meta['type'] ?? 'string',
+            'description' => $meta['description'] ?? '',
+            'single' => $meta['single'] ?? true,
+            'show_in_rest' => $meta['show_in_rest'] ?? true,
+            'sanitize_callback' => $meta['sanitize_callback'] ?? null,
+            'auth_callback' => $meta['auth_callback'] ?? null,
+        ];
     }
 }

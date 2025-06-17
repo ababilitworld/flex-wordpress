@@ -87,6 +87,10 @@ class Posttype extends BasePosttype
             'filter_items_list' => esc_html__('Filter Land Deed List', 'flex-eland')
         ]);
 
+        $this->set_supports(
+            array('title', 'thumbnail', 'editor', 'custom-fields')
+        );
+
         $this->set_args([
             'public' => true, // Changed to true
             'show_ui' => true,
@@ -94,7 +98,7 @@ class Posttype extends BasePosttype
             'labels' => $this->labels,
             'menu_icon' => "dashicons-admin-post",
             'rewrite' => array('slug' => $this->slug),
-            'supports' => array('title', 'thumbnail', 'editor', 'custom-fields'),
+            'supports' => $this->supports,
             'taxonomies' => array('media-type','extension-type'),
         ]);
 
