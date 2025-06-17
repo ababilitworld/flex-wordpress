@@ -118,6 +118,7 @@ abstract class Posttype implements PosttypeContract
     public function register_post_type(): void
     {
         register_post_type($this->slug, $this->args);
+        $this->register_metas();
     }
 
     public function add_taxonomy(string $taxonomy_slug): void
@@ -184,22 +185,31 @@ abstract class Posttype implements PosttypeContract
         );
     }
 
+    // Change from protected to public
+    // Change from protected to public
     public function register_metas(): void
     {
+        if (!post_type_exists($this->slug)) 
+        {
+            error_log("Post type {$this->slug} not registered yet");
+            return;
+        }
+
+        if (empty($this->metas)) 
+        {
+            return;
+        }
+
         foreach ($this->metas as $meta) 
         {
-            register_post_meta(
-                $this->slug,
-                $meta['key'],
-                [
-                    'type' => $meta['type'] ?? 'string',
-                    'description' => $meta['description'] ?? '',
-                    'single' => $meta['single'] ?? true,
-                    'show_in_rest' => $meta['show_in_rest'] ?? true,
-                    'sanitize_callback' => $meta['sanitize_callback'] ?? null,
-                    'auth_callback' => $meta['auth_callback'] ?? null,
-                ]
-            );
+            if (!registered_meta_key_exists('post', $meta['key'], $this->slug)) {
+                register_post_meta(
+                    $this->slug,
+                    $meta['key'],
+                    $this->generate_meta_definition($meta)
+                );
+                error_log("Registered meta {$meta['key']} for {$this->slug}");
+            }
         }
     }
 
