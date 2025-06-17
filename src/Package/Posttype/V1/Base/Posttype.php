@@ -85,6 +85,11 @@ abstract class Posttype implements PosttypeContract
         $this->supports = $supports;
     }
 
+    protected function set_taxonomies(array $taxonomies): void
+    {
+        $this->taxonomies = $taxonomies;
+    }
+
     protected function set_labels(array $labels): void
     {
         $this->labels = $labels;
