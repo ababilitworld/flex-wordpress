@@ -32,12 +32,10 @@ abstract class Posttype implements PosttypeContract
     
     protected function init_hook(): void
     {
-        add_action('init', [$this, 'init_posttype'], 30);
+        
         add_action('init', [$this, 'register_taxonomies'], 31);
         add_action('init', [$this, 'register_supports'], 32);
-        add_action('init', [$this, 'register_post_type'], 33);
         add_action('init', [$this, 'register_metas'], 34);
-        add_filter('use_block_editor_for_post_type', [$this, 'use_block_editor_for_posttye'], 10, 2);
         
     }
 
@@ -118,6 +116,9 @@ abstract class Posttype implements PosttypeContract
     public function register_post_type(): void
     {
         register_post_type($this->slug, $this->args);
+        $this->register_taxonomies();
+        $this->register_supports();
+        $this->register_metas();
     }
 
     public function register_supports(): void 
@@ -233,7 +234,7 @@ abstract class Posttype implements PosttypeContract
     {
         if ($post_type === $this->posttype) 
         {
-            return $this->use_block_editor;
+            return false;
         }
         return $current_status;
     }
