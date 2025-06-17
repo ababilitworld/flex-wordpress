@@ -205,6 +205,9 @@ abstract class Posttype implements PosttypeContract
 
     protected function use_block_editor_for_posttype($current_status, $post_type)
     {
+        // Debug output (check your error log)
+    error_log("Checking block editor for {$post_type}, should be {$this->use_block_editor}");
+    
         if ($post_type === $this->posttype) 
         {
             return $this->use_block_editor;
