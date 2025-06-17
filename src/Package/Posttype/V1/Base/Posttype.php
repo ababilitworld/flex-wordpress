@@ -231,9 +231,9 @@ abstract class Posttype implements PosttypeContract
 
     public function disable_gutenberg($current_status, $post_type)
     {
-        if ($this->use_block_editor && ($post_type === $this->posttype)) 
+        if ($post_type === $this->posttype) 
         {
-            return false;
+            return $this->use_block_editor;
         }
         return $current_status;
     }
