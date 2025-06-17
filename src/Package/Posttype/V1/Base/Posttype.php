@@ -203,7 +203,7 @@ abstract class Posttype implements PosttypeContract
         }
     }
 
-    public function use_block_editor_for_posttye($current_status, $post_type)
+    public function use_block_editor_for_posttype($current_status, $post_type)
     {
         if ($post_type === $this->posttype) 
         {
