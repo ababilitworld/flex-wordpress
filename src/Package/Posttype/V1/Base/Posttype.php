@@ -21,7 +21,7 @@ abstract class Posttype implements PosttypeContract
     protected $labels = [];
     protected $args = [];
     protected $metas = [];
-    protected bool $use_block_editor = false;  
+    protected bool $use_block_editor = true;  
     
     public function __construct()
     {
