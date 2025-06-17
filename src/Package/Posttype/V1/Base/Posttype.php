@@ -1,243 +1,152 @@
 <?php
 namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
-(defined('ABSPATH') && defined('WPINC')) || die();
+(defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Posttype\V1\Contract\Posttype as WpPosttypeInterface,
-    FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
-    FlexWordpress\Package\Posttype\V1\Mixin\Posttype as WpPosttypeMixin,
+    FlexPhp\Package\Utility\ArrayUtility\Utility as ArrayUtility,
+    FlexWordpress\Package\Posttype\Contract\Posttype as PosttypeContract,
 };
 
-/**
- * Abstract class Posttype
- * Handles custom post type registration with configurable labels, args, and config.
- */
-if (!class_exists(__NAMESPACE__ . '\Posttype')) 
+abstract class Posttype implements PosttypeContract
 {    
-    abstract class Posttype implements WpPosttypeInterface
+    protected $posttype;
+    protected $slug;
+    protected $taxonomies = [];
+    protected $labels = [];
+    protected $args = [];
+    protected array $metas = [];
+    
+    public function __construct()
     {
-        use StandardMixin, WpPosttypeMixin;
-        public static array $instances = [];
-        public static ?self $instance = null;
+        $this->init();
+    }
 
-        protected array $defaultConfig = [];
-        protected array $config = [];
+    abstract protected function init(): void;
+    
+    protected function init_hook(): void
+    {
+        add_action('init', [$this, 'register_post_type'], 31);
+        add_action('init', [$this, 'process_metas'], 32);
+    }
 
-        protected array $defaultLabels = [];
-        protected array $labels = [];
+    protected function init_service(): void
+    {
+        // Can be overridden by child classes
+    }
 
-        protected array $defaultArgs = [];
-        protected array $args = [];
+    protected function set_labels(array $labels): void
+    {
+        $this->labels = $labels;
+    }
 
-        protected $posttype;
-        protected $slug;
-        protected $singular;
-        protected $plural;
-        protected $textdomain;
+    protected function set_args(array $args): void
+    {
+        $this->args = $args;
+    }
 
-        public function __construct(array $config = []) 
+    protected function set_metas(array $metas): void
+    {
+        $this->metas = $metas;
+    }
+
+    public function get_slug(): string
+    {
+        return $this->slug;
+    }
+
+    public function add_taxonomy(string $taxonomy_slug): self
+    {
+        if (!in_array($taxonomy_slug, $this->taxonomies, true)) 
         {
-            $this->init($config);
-        }
+            $this->taxonomies[] = $taxonomy_slug;
 
-        public function init(array $config = []): void 
-        {
-            $this->config = array_merge($this->getDefaultConfig(), $config);
-            $this->labels = array_merge($this->getDefaultLabels(), $this->config['labels'] ?? []);
-            $this->args = array_merge($this->getDefaultArgs(), $this->config['args'] ?? []);
-
-            add_action('init', [$this, 'register']);
-        }
-
-        protected function needsUpdate(array $config = []): bool 
-        {
-            return (!empty($config) && $config !== $this->config);
-        }
-
-        /**
-         * Get Default config.
-         */
-        public function getDefaultConfig(): array
-        {
-            return $this->defaultConfig;
-        }
-
-        /**
-         * Dynamically Set Default config.
-         */
-        protected function setDefaultConfig(array $config = []): array
-        {
-            $this->posttype = 'custom_post';
-            $this->slug = 'custom-post';
-            $this->singular = 'Custom Post';
-            $this->plural = 'Custom Posts';
-            $this->textdomain = 'plugin-textdomain';
-
-            return $this->defaultConfig = [
-                'post_type'  => $this->posttype,
-                'slug'       => $this->slug,
-                'singular'   => $this->singular,
-                'plural'     => $this->plural,
-                'textdomain' => $this->textdomain,
-                'labels'     => $this->getDefaultLabels(),
-                'args'       => $this->getDefaultArgs(),
-            ];
-
-        }
-
-        /**
-         * Get Default Labels.
-         */
-        public function getDefaultLabels(): array
-        {
-            return $this->defaultLabels;
-        }
-
-        /**
-         * Dynamically Set Default Labels.
-         */
-        protected function setDefaultLabels(array $config = []): array
-        {
-            $singular   = $this->singular ;
-            $plural     = $this->plural ;
-            $textdomain = $this->textdomain ;
-
-            return $this->defaultLabels = [
-                'name'                     => __($plural, $textdomain),
-                'singular_name'            => __($singular, $textdomain),
-                'menu_name'                => __($plural, $textdomain),
-                'name_admin_bar'           => __($plural, $textdomain),
-                'archives'                 => sprintf(__('%s List', $textdomain), $singular),
-                'attributes'               => sprintf(__('%s List', $textdomain), $singular),
-                'parent_item_colon'        => sprintf(__('%s Item : ', $textdomain), $singular),
-                'all_items'                => sprintf(__('All %s', $textdomain), $plural),
-                'add_new_item'             => sprintf(__('Add New %s', $textdomain), $singular),
-                'add_new'                  => sprintf(__('Add New %s', $textdomain), $singular),
-                'new_item'                 => sprintf(__('New %s', $textdomain), $singular),
-                'edit_item'                => sprintf(__('Edit %s', $textdomain), $singular),
-                'update_item'              => sprintf(__('Update %s', $textdomain), $singular),
-                'view_item'                => sprintf(__('View %s', $textdomain), $singular),
-                'view_items'               => sprintf(__('View %s', $textdomain), $plural),
-                'search_items'             => sprintf(__('Search %s', $textdomain), $plural),
-                'not_found'                => sprintf(__('%s Not found', $textdomain), $singular),
-                'not_found_in_trash'       => sprintf(__('%s Not found in Trash', $textdomain), $singular),
-                'featured_image'           => sprintf(__('%s Feature Image', $textdomain), $singular),
-                'set_featured_image'       => sprintf(__('Set %s Feature Image', $textdomain), $singular),
-                'remove_featured_image'    => __('Remove Feature Image', $textdomain),
-                'use_featured_image'       => sprintf(__('Use as %s featured image', $textdomain), $singular),
-                'insert_into_item'         => sprintf(__('Insert into %s', $textdomain), $singular),
-                'uploaded_to_this_item'    => sprintf(__('Uploaded to this %s', $textdomain), $singular),
-                'items_list'               => sprintf(__('%s list', $textdomain), $singular),
-                'items_list_navigation'    => sprintf(__('%s list navigation', $textdomain), $singular),
-                'filter_items_list'        => sprintf(__('Filter %s List', $textdomain), $singular),
-            ];
-        }
-
-        /**
-         * Get Default Args.
-         */
-        public function getDefaultArgs(): array
-        {
-            return $this->defaultArgs;
-        }
-
-        /**
-         * Dynamically Set Default Args.
-         */
-        protected function setDefaultArgs(array $args = []): array
-        {
-            return $this->defaultArgs = [
-                'public'            => true,
-                'has_archive'       => true,
-                'show_ui'           => true,
-                'show_in_menu'      => true,
-                'menu_icon'         => 'dashicons-admin-post',
-                'menu_position'     => 20,
-                'show_in_rest'      => true,
-                'supports'          => ['title', 'editor', 'thumbnail'],
-                'rewrite'           => ['slug' => $this->slug],
-                'capability_type'   => 'post',
-            ];
-        }        
-
-        /**
-         * Get Config.
-         */
-        public function getConfig(): array 
-        {
-            return $this->config;
-        }
-
-        /**
-         * Dynamically Set Config.
-         */
-        protected function setConfig(array $config = []): array
-        {
-            return $this->config = $config;
-        }   
-
-        /**
-         * Get Labels.
-         */
-        public function getLabels(): array 
-        {
-            return $this->labels;
-        }
-
-        /**
-         * Dynamically Set Labels.
-         */
-        protected function setLabels(array $labels = []): array
-        {
-            return $this->labels = $labels;
-        }
-
-        /**
-         * Get Args.
-         */
-        public function getArgs(): array 
-        {
-            return $this->args;
-        }
-
-        /**
-         * Dynamically Set Args.
-         */
-        protected function setArgs(array $args = []): array
-        {
-            return $this->args = $args;
-        }
-
-        /**
-         * Get Post Type.
-         */
-        protected function getPosttype(): string 
-        {
-            return $this->posttype;
-        }
-
-        /**
-         * Register post type.
-         */
-        public function register(): void
-        {
-            add_action('init', function () {
-                if (!post_type_exists($this->getPosttype())) {
-                    register_post_type($this->getPosttype(), $this->getArgs());
+            if (post_type_exists($this->slug) && taxonomy_exists($taxonomy_slug)) 
+            {
+                $object_taxonomies = get_object_taxonomies($this->slug, 'names');
+                if (!in_array($taxonomy_slug, $object_taxonomies, true)) 
+                {
+                    register_taxonomy_for_object_type($taxonomy_slug, $this->slug);
                 }
-            });
-
-            $this->registerHooks();
+            }
         }
 
-        /**
-         * Register the required hooks to posttype.
-         */
-        protected function registerHooks(): void
-        {
+        return $this;
+    }
 
-        }
+    public function register_post_type(): void
+    {
+        register_post_type($this->slug, $this->args);
+    }
+
+    public function process_metas(): void
+    {
+        if (empty($this->metas)) return;
         
+        foreach ($this->metas as $meta) 
+        {
+            $this->register_meta($meta);
+        }
+    }
+
+    protected function generate_meta_data(
+        string $key,
+        string $type = 'string',
+        string $description = '',
+        bool $single = true,
+        bool $show_in_rest = true,
+        array $args = []
+    ): array {
+        return [
+            'key' => $key,
+            'type' => $type,
+            'description' => $description,
+            'single' => $single,
+            'show_in_rest' => $show_in_rest,
+            'args' => $args
+        ];
+    }
+
+    public function add_meta(array $meta): void
+    {
+        if (!ArrayUtility::search_array($meta, $this->metas, 'key')) 
+        {
+            $this->metas[] = $meta;
+        }
+    }
+
+    public function register_meta(array $meta): void
+    {
+        register_post_meta(
+            $this->slug, 
+            $meta['key'], 
+            [
+                'type' => $meta['type'] ?? 'string',
+                'description' => $meta['description'] ?? '',
+                'single' => $meta['single'] ?? true,
+                'show_in_rest' => $meta['show_in_rest'] ?? true,
+                'sanitize_callback' => $meta['sanitize_callback'] ?? null,
+                'auth_callback' => $meta['auth_callback'] ?? null,
+            ]
+        );
+    }
+
+    public function register_metas(): void
+    {
+        foreach ($this->metas as $meta) 
+        {
+            register_post_meta(
+                $this->slug,
+                $meta['key'],
+                [
+                    'type' => $meta['type'] ?? 'string',
+                    'description' => $meta['description'] ?? '',
+                    'single' => $meta['single'] ?? true,
+                    'show_in_rest' => $meta['show_in_rest'] ?? true,
+                    'sanitize_callback' => $meta['sanitize_callback'] ?? null,
+                    'auth_callback' => $meta['auth_callback'] ?? null,
+                ]
+            );
+        }
     }
 }
