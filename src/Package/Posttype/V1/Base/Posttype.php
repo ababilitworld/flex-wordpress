@@ -118,7 +118,6 @@ abstract class Posttype implements PosttypeContract
     public function register_post_type(): void
     {
         register_post_type($this->slug, $this->args);
-        $this->register_metas();
     }
 
     public function add_taxonomy(string $taxonomy_slug): void
@@ -138,81 +137,7 @@ abstract class Posttype implements PosttypeContract
         }
     }
 
-    public function process_metas(): void
-    {
-        if (empty($this->metas)) return;
-        
-        foreach ($this->metas as $meta) 
-        {
-            $this->register_meta($meta);
-        }
-    }
-
-    protected function generate_meta_definition(array $meta): array 
-    {
-        return [
-            'key' => $meta['key'],
-            'type' => $meta['type'] ?? 'string',
-            'description' => $meta['description'] ?? '',
-            'single' => $meta['single'] ?? true,
-            'show_in_rest' => $meta['show_in_rest'] ?? true,
-            'sanitize_callback' => $meta['sanitize_callback'] ?? null,
-            'auth_callback' => $meta['auth_callback'] ?? null,
-        ];
-    }
-
-    public function add_meta(array $meta): void
-    {
-        if (!ArrayUtility::search_array($meta, $this->metas, 'key')) 
-        {
-            $this->metas[] = $meta;
-        }
-    }
-
-    public function register_meta(array $meta): void
-    {
-        register_post_meta(
-            $this->slug, 
-            $meta['key'], 
-            [
-                'type' => $meta['type'] ?? 'string',
-                'description' => $meta['description'] ?? '',
-                'single' => $meta['single'] ?? true,
-                'show_in_rest' => $meta['show_in_rest'] ?? true,
-                'sanitize_callback' => $meta['sanitize_callback'] ?? null,
-                'auth_callback' => $meta['auth_callback'] ?? null,
-            ]
-        );
-    }
-
-    // Change from protected to public
-    // Change from protected to public
-    public function register_metas(): void
-    {
-        if (!post_type_exists($this->slug)) 
-        {
-            error_log("Post type {$this->slug} not registered yet");
-            return;
-        }
-
-        if (empty($this->metas)) 
-        {
-            return;
-        }
-
-        foreach ($this->metas as $meta) 
-        {
-            if (!registered_meta_key_exists('post', $meta['key'], $this->slug)) {
-                register_post_meta(
-                    $this->slug,
-                    $meta['key'],
-                    $this->generate_meta_definition($meta)
-                );
-                error_log("Registered meta {$meta['key']} for {$this->slug}");
-            }
-        }
-    }
-
+    
     /**
      * Creates a new post of this post type
      * 
@@ -288,21 +213,5 @@ abstract class Posttype implements PosttypeContract
         }
         
         return $results;
-    }
-
-    /**
-     * Helper method to generate meta data array
-     */
-    protected function generate_meta_data( array $meta ): array 
-    {
-        return [
-            'key' => $meta['key'],
-            'type' => $meta['type'] ?? 'string',
-            'description' => $meta['description'] ?? '',
-            'single' => $meta['single'] ?? true,
-            'show_in_rest' => $meta['show_in_rest'] ?? true,
-            'sanitize_callback' => $meta['sanitize_callback'] ?? null,
-            'auth_callback' => $meta['auth_callback'] ?? null,
-        ];
     }
 }
