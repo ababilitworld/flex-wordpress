@@ -21,6 +21,7 @@ abstract class Posttype implements PosttypeContract
     protected $labels = [];
     protected $args = [];
     protected $metas = [];
+    protected bool $use_block_editor = false;  
     
     public function __construct()
     {
@@ -33,9 +34,11 @@ abstract class Posttype implements PosttypeContract
     {
         add_action('init', [$this, 'init_posttype'], 30);
         add_action('init', [$this, 'register_taxonomies'], 31);
-        add_action('init', [$this, 'register_post_type'], 32);
-        add_action('init', [$this, 'register_supports'], 33);
+        add_action('init', [$this, 'register_supports'], 32);
+        add_action('init', [$this, 'register_post_type'], 33);
         add_action('init', [$this, 'register_metas'], 34);
+        add_filter('use_block_editor_for_post_type', [$this, 'disable_gutenberg'], 10, 2);
+        
     }
 
     protected function init_service(): void
@@ -228,7 +231,7 @@ abstract class Posttype implements PosttypeContract
 
     public function disable_gutenberg($current_status, $post_type)
     {
-        if ($post_type === $this->posttype) 
+        if ($this->use_block_editor && ($post_type === $this->posttype)) 
         {
             return false;
         }
