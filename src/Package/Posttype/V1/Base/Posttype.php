@@ -23,7 +23,7 @@ abstract class Posttype implements PosttypeContract
     protected $labels = [];
     protected $args = [];
     protected $metas = [];
-    protected bool $use_block_editor = true;  
+    protected $use_block_editor = true;  
     
     public function __construct()
     {
@@ -203,7 +203,7 @@ abstract class Posttype implements PosttypeContract
         }
     }
 
-    public function use_block_editor_for_posttype($current_status, $post_type)
+    protected function use_block_editor_for_posttype($current_status, $post_type)
     {
         if ($post_type === $this->posttype) 
         {
