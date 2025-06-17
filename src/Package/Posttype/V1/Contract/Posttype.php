@@ -6,5 +6,5 @@ interface Posttype
     public function get_slug(): string;
     public function register_post_type(): void;
     public function add_taxonomy(string $taxonomy_slug): void;
-    public function add_meta(string $taxonomy_meta): void;
+    public function add_meta(array $meta): void; 
 }

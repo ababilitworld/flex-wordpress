@@ -5,7 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
 use Ababilithub\{
     FlexPhp\Package\Utility\ArrayUtility\Utility as ArrayUtility,
-    FlexWordpress\Package\Posttype\Contract\Posttype as PosttypeContract,
+    FlexWordpress\Package\Posttype\V1\Contract\Posttype as PosttypeContract,
 };
 
 abstract class Posttype implements PosttypeContract
@@ -89,7 +89,7 @@ abstract class Posttype implements PosttypeContract
         }
     }
 
-    protected function generate_meta_data(
+    protected function generate_meta_definition(
         string $key,
         string $type = 'string',
         string $description = '',
@@ -148,5 +148,14 @@ abstract class Posttype implements PosttypeContract
                 ]
             );
         }
+    }
+
+    public function disable_gutenberg($current_status, $post_type)
+    {
+        if ($post_type === $this->posttype) 
+        {
+            return false;
+        }
+        return $current_status;
     }
 }
