@@ -137,6 +137,38 @@ abstract class Posttype implements PosttypeContract
         }
     }
 
+    public function register_metas(): void
+    {
+        if (empty($this->metas)) {
+            return;
+        }
+
+        foreach ($this->metas as $meta) {
+            $this->register_meta($meta);
+        }
+    }
+
+    // Add these methods to your base class
+    public function register_meta(array $meta): bool
+    {
+        if (!post_type_exists($this->slug)) {
+            return false;
+        }
+
+        return register_post_meta(
+            $this->slug,
+            $meta['key'],
+            [
+                'type' => $meta['type'] ?? 'string',
+                'description' => $meta['description'] ?? '',
+                'single' => $meta['single'] ?? true,
+                'show_in_rest' => $meta['show_in_rest'] ?? true,
+                'sanitize_callback' => $meta['sanitize_callback'] ?? null,
+                'auth_callback' => $meta['auth_callback'] ?? null,
+            ]
+        );
+    }
+
     
     /**
      * Creates a new post of this post type
