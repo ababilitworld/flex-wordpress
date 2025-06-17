@@ -31,9 +31,11 @@ abstract class Posttype implements PosttypeContract
     
     protected function init_hook(): void
     {
-        add_action('init', [$this, 'register_post_type'], 31);
-        add_action('init', [$this, 'register_supports'], 32);
-        add_action('init', [$this, 'process_metas'], 33);
+        add_action('init', [$this, 'init_posttype'], 30);
+        add_action('init', [$this, 'register_taxonomies'], 31);
+        add_action('init', [$this, 'register_post_type'], 32);
+        add_action('init', [$this, 'register_supports'], 33);
+        add_action('init', [$this, 'register_metas'], 34);
     }
 
     protected function init_service(): void
@@ -122,6 +124,21 @@ abstract class Posttype implements PosttypeContract
             if (!post_type_supports($this->slug, $support)) 
             {
                 add_post_type_support($this->slug,$support);      
+            }
+        }
+    }
+
+    public function register_taxonomies(): void 
+    {
+        foreach($this->taxonomies as $taxonomy_slug)
+        {
+            if (post_type_exists($this->slug) && taxonomy_exists($taxonomy_slug)) 
+            {
+                $object_taxonomies = get_object_taxonomies($this->slug, 'names');
+                if (!in_array($taxonomy_slug, $object_taxonomies, true)) 
+                {
+                    register_taxonomy_for_object_type($taxonomy_slug, $this->slug);
+                }
             }
         }
     }
