@@ -16,8 +16,10 @@ abstract class Posttype implements PosttypeContract
     protected $posttype;
     protected $slug;
     protected $taxonomies = [];
-    protected $available_supports = [];
-    protected $supports = [];
+    protected $available_theme_supports = [];
+    protected $theme_supports = [];
+    protected $available_posttype_supports = [];
+    protected $posttype_supports = [];
     protected $labels = [];
     protected $args = [];
     protected $metas = [];
@@ -33,9 +35,9 @@ abstract class Posttype implements PosttypeContract
     protected function init_hook(): void
     {
         
-        add_action('init', [$this, 'register_taxonomies'], 31);
-        add_action('init', [$this, 'register_supports'], 32);
-        add_action('init', [$this, 'register_metas'], 34);
+        // add_action('init', [$this, 'register_taxonomies'], 31);
+        // add_action('init', [$this, 'register_supports'], 32);
+        // add_action('init', [$this, 'register_metas'], 34);
         
     }
 
@@ -44,9 +46,9 @@ abstract class Posttype implements PosttypeContract
         // Can be overridden by child classes
     }
 
-    protected function get_available_supports():array
+    protected function available_posttype_supports():array
     {
-        return $this->available_supports = array(
+        return $this->available_posttype_supports = array(
             
             // Basic content
             'title',
@@ -83,9 +85,9 @@ abstract class Posttype implements PosttypeContract
         );
     }
 
-    protected function set_supports(array $supports): void
+    protected function set_posttype_supports(array $posttype_supports): void
     {
-        $this->supports = $supports;
+        $this->posttype_supports = $posttype_supports;
     }
 
     protected function set_taxonomies(array $taxonomies): void
@@ -116,35 +118,6 @@ abstract class Posttype implements PosttypeContract
     public function register_post_type(): void
     {
         register_post_type($this->slug, $this->args);
-        $this->register_taxonomies();
-        $this->register_supports();
-        $this->register_metas();
-    }
-
-    public function register_supports(): void 
-    {
-        foreach($this->supports as $support)
-        {
-            if (!post_type_supports($this->slug, $support)) 
-            {
-                add_post_type_support($this->slug,$support);      
-            }
-        }
-    }
-
-    public function register_taxonomies(): void 
-    {
-        foreach($this->taxonomies as $taxonomy_slug)
-        {
-            if (post_type_exists($this->slug) && taxonomy_exists($taxonomy_slug)) 
-            {
-                $object_taxonomies = get_object_taxonomies($this->slug, 'names');
-                if (!in_array($taxonomy_slug, $object_taxonomies, true)) 
-                {
-                    register_taxonomy_for_object_type($taxonomy_slug, $this->slug);
-                }
-            }
-        }
     }
 
     public function add_taxonomy(string $taxonomy_slug): void
@@ -234,7 +207,7 @@ abstract class Posttype implements PosttypeContract
     {
         if ($post_type === $this->posttype) 
         {
-            return false;
+            return $this->use_block_editor;
         }
         return $current_status;
     }
