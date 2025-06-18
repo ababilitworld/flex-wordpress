@@ -95,7 +95,7 @@ trait Posttype
      * 
      * @return void
      */
-    public function disableGutenberg(array $post_types): void
+    public function disable_gutenberg(array $post_types): void
     {
         add_filter('use_block_editor_for_post_type', function ($use_block_editor, $post_type) use ($post_types) {
             if (in_array($post_type, $post_types, true)) {
