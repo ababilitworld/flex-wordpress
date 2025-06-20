@@ -20,7 +20,7 @@ class  Shortcode extends BaseManager
     {
         $this->set_items(
                 [
-                StaticFilterShortcode::class,
+                //StaticFilterShortcode::class,
             ]
         );
     }
