@@ -9,15 +9,15 @@ use Ababilithub\{
 
 class Posttype
 {
-    private static $instances = [];
+private static $instances = [];
     
-    public static function get(string $taxonomyClass): PosttypeContract
+    public static function get(string $targetClass): PosttypeContract
     {
-        if (!isset(self::$instances[$taxonomyClass])) 
+        if (!isset(self::$instances[$targetClass])) 
         {
-            self::$instances[$taxonomyClass] = new $taxonomyClass();
+            self::$instances[$targetClass] = new $targetClass();
         }
 
-        return self::$instances[$taxonomyClass];
+        return self::$instances[$targetClass];
     }
 }

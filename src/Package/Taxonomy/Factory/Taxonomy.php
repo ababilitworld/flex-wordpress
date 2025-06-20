@@ -11,13 +11,13 @@ class Taxonomy
 {
     private static $instances = [];
     
-    public static function get(string $taxonomyClass): TaxonomyContract
+    public static function get(string $targetClass): TaxonomyContract
     {
-        if (!isset(self::$instances[$taxonomyClass])) 
+        if (!isset(self::$instances[$targetClass])) 
         {
-            self::$instances[$taxonomyClass] = new $taxonomyClass();
+            self::$instances[$targetClass] = new $targetClass();
         }
 
-        return self::$instances[$taxonomyClass];
+        return self::$instances[$targetClass];
     }
 }
