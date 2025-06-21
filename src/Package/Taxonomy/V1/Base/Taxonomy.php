@@ -21,18 +21,15 @@ abstract class Taxonomy implements TaxonomyContract
         $this->init();
     }
 
-    abstract protected function init(): void;
-    
-    protected function init_hook(): void
+    abstract public function init(): void;
+    public function register(): void
     {
-        add_action('init', [$this, 'init_taxonomy'], 20);
-        add_action('init', [$this, 'register_taxonomy'], 21);
-        add_action('init', [$this, 'process_terms'], 22);
+        register_taxonomy($this->slug, $this->post_types, $this->args);
     }
 
-    protected function init_service(): void
+    protected function set_post_types(array $post_types): void
     {
-        // Can be overridden by child classes
+        $this->post_types = $post_types;
     }
 
     protected function set_labels(array $labels): void
@@ -55,57 +52,28 @@ abstract class Taxonomy implements TaxonomyContract
         return $this->slug;
     }
 
-    public function add_post_type(string $post_type): self
-    {
-        if (!in_array($post_type, $this->post_types, true)) 
-        {
-            $this->post_types[] = $post_type;
-
-            if (taxonomy_exists($this->taxonomy)) 
-            {
-                $object_taxonomies = get_object_taxonomies($post_type, 'names');
-                if (!in_array($this->taxonomy, $object_taxonomies, true)) 
-                {
-                    register_taxonomy_for_object_type($this->taxonomy, $post_type);
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    public function register_taxonomy(): void
-    {
-        register_taxonomy($this->slug, $this->post_types, $this->args);
-    }
-
     public function process_terms(): void
     {
         if (empty($this->terms)) return;
         
-        foreach ($this->terms as $term) 
+        foreach ($this->terms as $data) 
         {
-            $this->upsert_term($term);
-        }
-    }
-
-    protected function upsert_term(array $data): void
-    {
-        $term = term_exists($data['slug'], $this->slug);
+            $term = term_exists($data['slug'], $this->slug);
         
-        if (!$term) 
-        {
-            $term = wp_insert_term($data['name'], $this->slug, [
-                'slug' => $data['slug'],
-                'description' => $data['description'] ?? ''
-            ]);
-        }
-
-        if (!is_wp_error($term) && isset($data['meta'])) 
-        {
-            foreach ($data['meta'] as $key => $value) 
+            if (!$term) 
             {
-                update_term_meta($term['term_id'], $key, $value);
+                $term = wp_insert_term($data['name'], $this->slug, [
+                    'slug' => $data['slug'],
+                    'description' => $data['description'] ?? ''
+                ]);
+            }
+
+            if (!is_wp_error($term) && isset($data['meta'])) 
+            {
+                foreach ($data['meta'] as $key => $value) 
+                {
+                    update_term_meta($term['term_id'], $key, $value);
+                }
             }
         }
     }
