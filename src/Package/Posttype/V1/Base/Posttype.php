@@ -1,87 +1,56 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
-use finfo;
+namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Posttype\V1\Mixin\Posttype as WpPosttypeMixin,
-    FlexPhp\Package\Utility\ArrayUtility\Utility as ArrayUtility,
-    FlexWordpress\Package\Posttype\V1\Contract\Posttype as PosttypeContract,
+    FlexWordpress\Package\Posttype\V1\Contract\Posttype as PosttypeContract
 };
-
-use WP_Error;
 
 abstract class Posttype implements PosttypeContract
 {
-    use WpPosttypeMixin;    
-    protected $posttype;
-    protected $slug;
-    protected $taxonomies = [];
-    protected $available_theme_supports = [];
-    protected $theme_supports = [];
-    protected $available_posttype_supports = [];
-    protected $posttype_supports = [];
-    protected $labels = [];
-    protected $args = [];
-    protected $metas = [];
-    protected $use_block_editor = true;  
-    
+    protected string $posttype;
+    protected string $slug;
+    protected array $taxonomies = [];
+    protected array $available_theme_supports = [];
+    protected array $theme_supports = [];
+    protected array $available_posttype_supports = [];
+    protected array $posttype_supports = [];
+    protected array $labels = [];
+    protected array $args = [];
+    protected array $metas = [];
+    protected bool $use_block_editor = true;
+
     public function __construct()
     {
         $this->init();
     }
 
-    abstract protected function init(): void;
-    
-    protected function init_hook(): void
+    abstract public function init(): void;
+    public function register(): void
     {
-        // parent init hook   
+        register_post_type($this->slug, $this->args);
     }
 
-    protected function init_service(): void
+    public function get_posttype(): string
     {
-        // parent init services
+        return $this->posttype;
     }
 
-    protected function available_posttype_supports():array
+    protected function set_posttype(string $posttype): void
     {
-        return $this->available_posttype_supports = array(
-            
-            // Basic content
-            'title',
-            'editor',
-            'excerpt',
-            'thumbnail',
-            
-            // Post functionality
-            'comments',
-            'trackbacks',
-            'revisions',
-            'custom-fields',
-            
-            // Layout
-            'page-attributes',
-            'post-formats',
-            
-            // Editor enhancements
-            'author',
-            'wp-block-styles',
-            'align-wide',
-            'responsive-embeds',
+        $this->posttype = $posttype;
+    }
 
-            //Template Features
-            'template',
-            'template-lock',
+    public function get_slug(): string
+    {
+        return $this->slug;
+    }
 
-            //Experimental Features
-            'custom-line-height',
-            'experimental-border',
-            'experimental-duotone',
-            'experimental-font-size',
-            'experimental-link-color'    
-        );
+    protected function set_slug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 
     protected function set_posttype_supports(array $posttype_supports): void
@@ -109,62 +78,44 @@ abstract class Posttype implements PosttypeContract
         $this->metas = $metas;
     }
 
-    public function get_slug(): string
+    public function get_default_args()
     {
-        return $this->slug;
-    }
-
-    public function register_post_type(): void
-    {
-        register_post_type($this->slug, $this->args);
-    }
-
-    public function register_taxonomy(string $taxonomy_slug): void
-    {
-        if (!in_array($taxonomy_slug, $this->taxonomies, true)) 
-        {
-            $this->taxonomies[] = $taxonomy_slug;
-
-            if (post_type_exists($this->slug) && taxonomy_exists($taxonomy_slug)) 
-            {
-                $object_taxonomies = get_object_taxonomies($this->slug, 'names');
-                if (!in_array($taxonomy_slug, $object_taxonomies, true)) 
-                {
-                    register_taxonomy_for_object_type($taxonomy_slug, $this->slug);
-                }
-            }
-        }
-    }
-
-    public function register_metas(): void
-    {
-        if (empty($this->metas)) {
-            return;
-        }
-
-        foreach ($this->metas as $meta) {
-            $this->register_meta($meta);
-        }
-    }
-
-    // Add these methods to your base class
-    public function register_meta(array $meta): bool
-    {
-        if (!post_type_exists($this->slug)) {
-            return false;
-        }
-
-        return register_post_meta(
-            $this->slug,
-            $meta['key'],
-            [
-                'type' => $meta['type'] ?? 'string',
-                'description' => $meta['description'] ?? '',
-                'single' => $meta['single'] ?? true,
-                'show_in_rest' => $meta['show_in_rest'] ?? true,
-                'sanitize_callback' => $meta['sanitize_callback'] ?? null,
-                'auth_callback' => $meta['auth_callback'] ?? null,
-            ]
+        return array(
+            '_builtin' =>  bool,
+            '_edit_link' =>   string,
+            'autosave_rest_controller_class' =>   bool|string,
+            'can_export' =>   bool,
+            'capabilities' =>   string[],
+            'capability_type' =>   array|string,
+            'delete_with_user' =>   bool,
+            'description' =>   string,
+            'exclude_from_search' =>   bool,
+            'has_archive' =>   bool|string,
+            'hierarchical' =>   bool,
+            'label' =>   string,
+            'labels' =>   string[],
+            'late_route_registration' =>   bool,
+            'map_meta_cap' =>   bool,
+            'menu_icon' =>   string,
+            'menu_position' =>   int,
+            'public' =>   bool,
+            'publicly_queryable' =>   bool,
+            'query_var' =>   bool|string,
+            'register_meta_box_cb' =>   callable,
+            'rest_base' =>   string,
+            'rest_controller_class' =>   string,
+            'rest_namespace' =>   string,
+            'revisions_rest_controller_class' =>   bool|string,
+            'rewrite' =>   array{'ep_mask' =>   int, 'feeds' =>   bool, 'pages' =>   bool, 'slug' =>   string, 'with_front' =>   bool}|bool,
+            'show_in_admin_bar' =>   bool,
+            'show_in_menu' =>   bool|string,
+            'show_in_nav_menus' =>   bool,
+            'show_in_rest' =>   bool,
+            'show_ui' =>   bool,
+            'supports' =>   array|bool,
+            'taxonomies' =>   string[],
+            'template' =>   array,
+            'template_lock' =>   bool|string
         );
     }
 }
