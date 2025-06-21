@@ -15,7 +15,7 @@ use const Ababilithub\{
 };
 
 class Posttype extends BasePosttype
-{
+{ 
     use WpPosttypeMixin;
     
     public function init() : void
