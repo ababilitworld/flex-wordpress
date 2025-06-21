@@ -1,15 +1,15 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Taxonomy\Concrete\Address\District;
+namespace Ababilithub\FlexWordpress\Package\Taxonomy\V1\Concrete\Address\Upazila;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
     FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
-    FlexWordpress\Package\Taxonomy\Base\Taxonomy as BaseTaxonomy
+    FlexWordpress\Package\Taxonomy\V1\Base\Taxonomy as BaseTaxonomy
 };
 
 use const Ababilithub\{
-    FlexWordpress\PLUGIN_PRE_UNDS
+    Ababilithub\FlexWordpress\Package\Taxonomy\V1\PLUGIN_PRE_UNDS
 };
 
 if (!class_exists(__NAMESPACE__.'\Taxonomy')) 
@@ -19,9 +19,9 @@ if (!class_exists(__NAMESPACE__.'\Taxonomy'))
         use StandardMixin;
         protected function init(): void
         {
-            $this->taxonomy = 'district';
-            $this->slug = 'district';
-            
+            $this->taxonomy = 'upazila';
+            $this->slug = 'upazila';
+
             $this->init_hook();
             $this->init_service();
         }
@@ -43,8 +43,8 @@ if (!class_exists(__NAMESPACE__.'\Taxonomy'))
             $menu_items[] = [
                 'type' => 'submenu',
                 'parent_slug' => 'parent-slug',
-                'page_title' => __('District', 'flex-aahub-by-ababilitworld'),
-                'menu_title' => __('District', 'flex-aahub-by-ababilitworld'),
+                'page_title' => __('Upazila', 'flex-aahub-by-ababilitworld'),
+                'menu_title' => __('Upazila', 'flex-aahub-by-ababilitworld'),
                 'capability' => 'manage_options',
                 'menu_slug' => 'edit-tags.php?taxonomy='.$this->slug,
                 'callback' => null,
@@ -57,18 +57,18 @@ if (!class_exists(__NAMESPACE__.'\Taxonomy'))
         public function init_taxonomy()
         {
             
-           $this->set_labels([
-                'name'              => _x('Districts', 'taxonomy general name', 'flex-aahub-by-ababilitworld'),
-                'singular_name'     => _x('District', 'taxonomy singular name', 'flex-aahub-by-ababilitworld'),
-                'search_items'      => __('Search Districts', 'flex-aahub-by-ababilitworld'),
-                'all_items'         => __('All Districts', 'flex-aahub-by-ababilitworld'),
-                'parent_item'       => __('Parent District', 'flex-aahub-by-ababilitworld'),
-                'parent_item_colon' => __('Parent District:', 'flex-aahub-by-ababilitworld'),
-                'edit_item'         => __('Edit District', 'flex-aahub-by-ababilitworld'),
-                'update_item'       => __('Update District', 'flex-aahub-by-ababilitworld'),
-                'add_new_item'      => __('Add New District', 'flex-aahub-by-ababilitworld'),
-                'new_item_name'     => __('New District Name', 'flex-aahub-by-ababilitworld'),
-                'menu_name'         => __('Districts', 'flex-aahub-by-ababilitworld'),
+            $this->set_labels([
+                'name'              => _x('Upazilas', 'taxonomy general name', 'flex-aahub-by-ababilitworld'),
+                'singular_name'     => _x('Upazila', 'taxonomy singular name', 'flex-aahub-by-ababilitworld'),
+                'search_items'      => __('Search Upazilas', 'flex-aahub-by-ababilitworld'),
+                'all_items'         => __('All Upazilas', 'flex-aahub-by-ababilitworld'),
+                'parent_item'       => __('Parent Upazila', 'flex-aahub-by-ababilitworld'),
+                'parent_item_colon' => __('Parent Upazila:', 'flex-aahub-by-ababilitworld'),
+                'edit_item'         => __('Edit Upazila', 'flex-aahub-by-ababilitworld'),
+                'update_item'       => __('Update Upazila', 'flex-aahub-by-ababilitworld'),
+                'add_new_item'      => __('Add New Upazila', 'flex-aahub-by-ababilitworld'),
+                'new_item_name'     => __('New Upazila Name', 'flex-aahub-by-ababilitworld'),
+                'menu_name'         => __('Upazilas', 'flex-aahub-by-ababilitworld'),
             ]);
 
             $this->set_args([

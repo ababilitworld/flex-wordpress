@@ -1,15 +1,15 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Taxonomy\Concrete\Multimedia\ExtensionType;
+namespace Ababilithub\FlexWordpress\Package\Taxonomy\V1\Concrete\Multimedia\ExtensionType;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
     FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
-    FlexWordpress\Package\Taxonomy\Base\Taxonomy as BaseTaxonomy
+    FlexWordpress\Package\Taxonomy\V1\Base\Taxonomy as BaseTaxonomy
 };
 
 use const Ababilithub\{
-    FlexWordpress\PLUGIN_PRE_UNDS
+    Ababilithub\FlexWordpress\Package\Taxonomy\V1\PLUGIN_PRE_UNDS
 };
 
 if (!class_exists(__NAMESPACE__.'\Taxonomy')) 

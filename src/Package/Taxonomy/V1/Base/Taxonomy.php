@@ -1,10 +1,10 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Taxonomy\Base;
+namespace Ababilithub\FlexWordpress\Package\Taxonomy\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Taxonomy\Contract\Taxonomy as TaxonomyContract,
+    FlexWordpress\Package\Taxonomy\V1\Contract\Taxonomy as TaxonomyContract,
 };
 
 abstract class Taxonomy implements TaxonomyContract
