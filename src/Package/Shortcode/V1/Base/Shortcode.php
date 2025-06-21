@@ -31,9 +31,19 @@ abstract class Shortcode implements ShortcodeContract
         return $this->tag;
     }
 
+    protected function set_tag(string $tag):void
+    {
+        $this->tag = $tag;
+    }
+
     public function get_default_attributes(): array
     {
         return $this->defaultAttributes;
+    }
+
+    protected function set_default_attributes(array $defaultAttributes):void
+    {
+        $this->defaultAttributes = $defaultAttributes;
     }
 
     public function set_attributes(array $attributes): void
