@@ -5,6 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Shortcode\V1\Contract;
 
 interface Shortcode
 {
+    public function init(): void;
     public function register(): void;
     public function render(array $attributes): string;
      

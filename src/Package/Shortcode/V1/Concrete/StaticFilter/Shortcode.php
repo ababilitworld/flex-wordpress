@@ -14,13 +14,10 @@ use const Ababilithub\{
 
 class Shortcode extends BaseShortcode
 {
-    protected function set_tag(): void
+    public function init(): void
     {
-        $this->tag = PLUGIN_PRE_UNDS.'_top_filter';
-    }
+        $this->tag = PLUGIN_PRE_UNDS.'_top_filter'; 
 
-    protected function init(): void
-    {
         $this->defaultAttributes = [
             'style' => 'grid',
             'column' => '3',

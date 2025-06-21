@@ -14,11 +14,10 @@ abstract class Shortcode implements ShortcodeContract
 
     public function __construct()
     {
-        $this->set_tag();
         $this->init();
     }
 
-    abstract protected function set_tag(): void;
+    abstract public function init(): void;
 
     abstract public function render(array $attributes): string;
 
@@ -45,10 +44,5 @@ abstract class Shortcode implements ShortcodeContract
     public function get_attributes(): array
     {
         return $this->attributes;
-    }
-
-    protected function init(): void
-    {
-        // Optional for concrete to override
     }
 }
