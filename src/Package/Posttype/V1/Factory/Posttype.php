@@ -27,4 +27,4 @@ class Posttype extends BaseFactory
 
         return $instance;
     }
-}
+} 
