@@ -6,7 +6,7 @@ namespace Ababilithub\FlexWordpress\Package\Route\V1\Manager;
 use Ababilithub\{
     FlexPhp\Package\Manager\V1\Base\Manager as BaseManager,
     FlexWordpress\Package\Route\V1\Factory\Route as RouteFactory,
-    FlexWordpress\Package\Route\V1\Concrete\StaticFilter\Route as StaticFilterRoute,
+    FlexWordpress\Package\Route\V1\Concrete\Billing\Route as BillingRoute,
 };
 
 class Route extends BaseManager
@@ -20,7 +20,7 @@ class Route extends BaseManager
     {
         $this->set_items(
                 [
-                //StaticFilterRoute::class,
+                BillingRoute::class,
             ]
         );
     }
