@@ -5,6 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Shortcode\V1\Manager;
 
 use Ababilithub\{
     FlexPhp\Package\Manager\V1\Base\Manager as BaseManager,
+    FlexWordpress\Package\Shortcode\V1\Contract\Shortcode as ShortcodeContract, 
     FlexWordpress\Package\Shortcode\V1\Factory\Shortcode as ShortcodeFactory,
     FlexWordpress\Package\Shortcode\V1\Concrete\StaticFilter\Shortcode as StaticFilterShortcode,
 };
@@ -29,11 +30,11 @@ class  Shortcode extends BaseManager
     {
         foreach ($this->get_items() as $item) 
         {
-            $shortcode = ShortcodeFactory::get($item);
+            $item_instance = ShortcodeFactory::get($item);
 
-            if ($shortcode instanceof ShortcodeContract) 
+            if ($item_instance instanceof ShortcodeContract) 
             {
-                $shortcode->register();
+                $item_instance->register();
             }
         }
     }

@@ -29,11 +29,11 @@ class Route extends BaseManager
     {
         foreach ($this->get_items() as $item) 
         {
-            $route = RouteFactory::get($item);
+            $item_instance = RouteFactory::get($item);
 
-            if ($route instanceof RouteContract) 
+            if ($item_instance instanceof RouteContract) 
             {
-                $route->register();
+                $item_instance->register();
             }
         }
     }

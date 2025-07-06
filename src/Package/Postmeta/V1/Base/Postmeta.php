@@ -1,26 +1,20 @@
 <?php
 
-namespace Ababilithub\FlexWordpress\Package\Posttype\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\Postmeta\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Posttype\V1\Contract\Posttype as PosttypeContract
+    FlexWordpress\Package\Postmeta\V1\Contract\Postmeta as PostmetaContract
 };
 
-abstract class Posttype implements PosttypeContract
+abstract class Postmeta implements PostmetaContract
 {
-    protected string $posttype;
-    protected string $slug;
-    protected array $taxonomies = [];
-    protected array $available_theme_supports = [];
-    protected array $theme_supports = [];
-    protected array $available_posttype_supports = [];
-    protected array $posttype_supports = [];
-    protected array $labels = [];
+    protected string $post_type;
+    protected string $post_slug;
+    protected string $meta_key;
+    protected string $label;
     protected array $args = [];
-    protected array $metas = [];
-    protected bool $use_block_editor = true;
 
     public function __construct()
     {
@@ -30,7 +24,7 @@ abstract class Posttype implements PosttypeContract
     abstract public function init(): void;
     public function register(): void
     {
-        register_post_type($this->slug, $this->args);
+        register_post_meta($this->post_slug, $this->meta_key);
     }
 
     public function get_posttype(): string
