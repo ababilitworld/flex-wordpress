@@ -3,7 +3,11 @@ namespace Ababilithub\FlexWordpress\Package\PostMetaBoxContent\V1\Concrete\Land\
 
 use Ababilithub\{
     FlexWordpress\Package\PostMeta\V1\Mixin\PostMeta as PostMetaMixin,
-    FlexWordpress\Package\PostMetaBoxContent\V1\Base\PostMetaBoxContent as BasePostMetaBoxContent
+    FlexWordpress\Package\PostMetaBoxContent\V1\Base\PostMetaBoxContent as BasePostMetaBoxContent,
+    FlexPhp\Package\Form\Field\V1\Factory\Field as FieldFactory,
+    FlexPhp\Package\Form\Field\V1\Concrete\Text\Field as TextField,
+    FlexPhp\Package\Form\Field\V1\Concrete\File\Document\Field as DocField,
+    FlexPhp\Package\Form\Field\V1\Concrete\File\Image\Field as ImageField
 };
 
 use const Ababilithub\{
@@ -42,6 +46,184 @@ class PostMetaBoxContent extends BasePostMetaBoxContent
 
     public function render() : void
     {
+        $meta_values = $this->get_meta_values(get_the_ID());
+        ?>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Deed Details</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-row">
+                        <?php
+                            $deedDateField = FieldFactory::get(TextField::class);
+                            $deedDateField->init([
+                                'name' => 'deed-date',
+                                'id' => 'deed-date',
+                                'label' => 'Deed Date',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'help_text' => 'Enter Deed Date used in the Deed',
+                                'value' => $meta_values['deed_date'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                    </div>
+                    <div class="panel-row two-columns">
+                        <?php
+                            $deedNumberField = FieldFactory::get(TextField::class);
+                            $deedNumberField->init([
+                                'name' => 'deed-number',
+                                'id' => 'deed-number',
+                                'label' => 'Deed Number',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'help_text' => 'Enter Deed number of the deed',
+                                'value' => $meta_values['deed_number'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                        <?php
+                            $plotNumberField = FieldFactory::get(TextField::class);
+                            $plotNumberField->init([
+                                'name' => 'plot-number',
+                                'id' => 'plot-number',
+                                'label' => 'Plot Number',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'help_text' => 'Enter Plot number according to the Respective Survey',
+                                'value' => $meta_values['plot_number'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                        
+                    </div>
+                    <div class="panel-row">
+                        <?php
+                            $landQuantityField = FieldFactory::get(TextField::class);
+                            $landQuantityField->init([
+                                'name' => 'land-quantity',
+                                'id' => 'land-quantity',
+                                'label' => 'Land Quantity (Decimal)',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'help_text' => 'Enter Land Quantity in decimal used in the Deed',
+                                'value' => $meta_values['land_quantity'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Deed Images</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-row">
+                        <?php
+                            $imageField = FieldFactory::get(ImageField::class);
+                            $imageField->init([
+                                'name' => 'deed-thumbnail-image',
+                                'id' => 'deed-thumbnail-image',
+                                'label' => 'Deed Thumbnail',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'multiple' => false,
+                                'allowed_types' => ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+                                'max_size' => 2097152, // 2MB
+                                'enable_media_library' => true,
+                                'upload_action_text' => 'Select Images',
+                                'help_text' => 'Only jpg, png, gif, webp files are allowed',
+                                'preview_items' => $$meta_values['deed_thumbnail_image'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                        <?php
+                            $imageField = FieldFactory::get(ImageField::class);
+                            $imageField->init([
+                                'name' => 'deed-images',
+                                'id' => 'deed-images',
+                                'label' => 'Deed Images',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'multiple' => true,
+                                'allowed_types' => ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+                                'max_size' => 2097152, // 2MB
+                                'enable_media_library' => true,
+                                'upload_action_text' => 'Select Images',
+                                'help_text' => 'Only jpg, png, gif, webp files are allowed',
+                                'preview_items' => $meta_values['images'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Deed Documents</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-row">
+                        <?php
+                            $deedPdfField = FieldFactory::get(DocField::class);
+                            $deedPdfField->init([
+                                'name' => 'deed-docs',
+                                'id' => 'deed-docs',
+                                'label' => 'Deed Documents',
+                                'class' => 'custom-file-input',
+                                'required' => true,
+                                'multiple' => true,
+                                'allowed_types' => ['.pdf', '.doc', '.docx', '.xls', '.xlsx'],
+                                'upload_action_text' => 'Select Documents',
+                                'help_text' => 'Only PDF, Word, and Excel files are allowed',
+                                'max_size' => 5242880, // 5MB
+                                'enable_media_library' => true,
+                                'preview_items' => $meta_values['docs'],
+                                'data' => [
+                                    'custom' => 'value'
+                                ],
+                                'attributes' => [
+                                    'data-preview-size' => '150'
+                                ]
+                            ])->render();
+                        ?>
+                    </div>
+                </div>
+            </div>
+        <?php
 
     }
 
