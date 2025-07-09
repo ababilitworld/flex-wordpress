@@ -25,14 +25,12 @@ abstract class PostMetaBox implements PostMetaBoxContract
 
     public function register() : void 
     {
-        if (get_post_type(get_the_ID()) === $this->posttype) 
-        {
-            add_meta_box(
-                $this->id, 
-                $this->title,
-                [$this, 'render']
-            );
-        }
+        add_meta_box(
+            $this->id, 
+            $this->title,
+            [$this, 'render'],
+            $this->posttype // Specify the post type
+        );
     }
     abstract public function render() : void;
 
