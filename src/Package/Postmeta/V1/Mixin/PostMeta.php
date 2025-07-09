@@ -12,12 +12,14 @@ trait PostMeta
         // }
 
         // Check autosave
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) 
+        {
             return false;
         }
 
         // Check user permissions
-        if (!current_user_can('edit_post', $post_id)) {
+        if (!current_user_can('edit_post', $post_id)) 
+        {
             return false;
         }
 
@@ -121,15 +123,15 @@ trait PostMeta
     {
         if (isset($_POST[$meta_key]) && is_array($_POST[$meta_key]) && is_array($meta_value)) 
         {
-            $docs = array_map('absint', $_POST[$meta_key]);
-            $valid_docs = array_filter($docs, function($doc_id) {
-                $attachment = get_post($doc_id);
+            $attachments = array_map('absint', $_POST[$meta_key]);
+            $valid_attachments = array_filter($attachments, function($attachment_id) {
+                $attachment = get_post($attachment_id);
                 return $attachment && $attachment->post_type === 'attachment';
             });
 
-            if(is_array($valid_docs) && count($valid_docs))
+            if(is_array($valid_attachments) && count($valid_attachments))
             {
-                update_post_meta($post_id, $meta_key, $valid_docs);
+                update_post_meta($post_id, $meta_key, $valid_attachments);
             }
             else 
             {
@@ -142,4 +144,7 @@ trait PostMeta
             delete_post_meta($post_id, $meta_key);
         }
     }
+
+    ////
+    
 }
