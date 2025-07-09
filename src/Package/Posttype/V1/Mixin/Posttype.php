@@ -138,4 +138,84 @@ trait Posttype
             return $default_messages;
         });
     }
+
+    /**
+     * Display all post meta for a specific post in a table
+     * 
+     * @param int $post_id The ID of the post to show meta for
+     */
+    public function render_post_meta_table($post_id) 
+    {
+        // Verify the post exists
+        if (!get_post($post_id)) {
+            echo '<div class="notice notice-error"><p>Invalid post ID specified.</p></div>';
+            return;
+        }
+
+        // Get all post meta
+        $all_meta = get_post_meta($post_id);
+        
+        echo '<div class="wrap">';
+        echo '<h1>Post Meta Data for #' . esc_html($post_id) . '</h1>';
+        echo '<p><a href="' . get_edit_post_link($post_id) . '">&larr; Back to post editor</a></p>';
+        
+        if (empty($all_meta)) {
+            echo '<div class="notice notice-info"><p>No meta data found for this post.</p></div>';
+            echo '</div>';
+            return;
+        }
+
+        echo '<table class="widefat fixed striped">';
+        echo '<thead>
+            <tr>
+                <th width="25%">Meta Key</th>
+                <th width="75%">Meta Value</th>
+            </tr>
+        </thead>
+        <tbody>';
+
+        foreach ($all_meta as $meta_key => $meta_values) {
+            echo '<tr>';
+            echo '<td><strong>' . esc_html($meta_key) . '</strong></td>';
+            echo '<td>';
+            
+            foreach ($meta_values as $value) {
+                $unserialized = maybe_unserialize($value);
+                
+                if (is_array($unserialized) || is_object($unserialized)) {
+                    echo '<pre>' . esc_html(print_r($unserialized, true)) . '</pre>';
+                } else {
+                    echo esc_html($value);
+                }
+                
+                echo '<hr style="margin: 5px 0; border: 0; border-top: 1px dashed #ccc;">';
+            }
+            
+            echo '</td>';
+            echo '</tr>';
+        }
+
+        echo '</tbody></table>';
+        
+        // Add styling
+        echo '<style>
+            .wrap { margin: 20px; }
+            table.widefat { border-collapse: collapse; margin-top: 20px; }
+            table.widefat th, 
+            table.widefat td { padding: 10px; border: 1px solid #e5e5e5; vertical-align: top; }
+            table.widefat th { background-color: #f7f7f7; font-weight: 600; }
+            table.widefat pre { 
+                margin: 0; 
+                white-space: pre-wrap; 
+                max-width: 100%; 
+                overflow-x: auto;
+                background: #f5f5f5;
+                padding: 5px;
+                border-radius: 3px;
+            }
+            .notice { margin: 20px 0 !important; }
+        </style>';
+        
+        echo '</div>';
+    }
 }
