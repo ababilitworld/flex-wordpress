@@ -29,7 +29,9 @@ abstract class PostMetaBox implements PostMetaBoxContract
             $this->id, 
             $this->title,
             [$this, 'render'],
-            $this->posttype // Specify the post type
+            $this->posttype, // Post type
+            'normal',       // Context
+            'high'          // Priority
         );
     }
     abstract public function render() : void;
