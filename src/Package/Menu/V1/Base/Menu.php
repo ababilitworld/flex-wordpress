@@ -28,20 +28,11 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
             $this->init_hook();
         }
 
-        public function init(array $data = []) : static
-        {
-            return $this;
-        }
+        abstract public function init(array $data = []): static;
 
-        protected function init_service() : void
-        {
+        abstract public function init_service(): void;
 
-        }
-
-        protected function init_hook() : void
-        {
-
-        }
+        abstract public function init_hook(): void;
 
         public function register(): void
         {
