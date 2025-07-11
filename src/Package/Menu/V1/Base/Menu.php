@@ -5,6 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Menu\V1\Base;
 
 use Ababilithub\{
     FlexPhp\Package\Mixin\V1\Standard\Mixin as StandardMixin,
+    FlexWordpress\Package\Menu\V1\Contract\Menu as MenuContract
 };
 
 if ( ! class_exists( __NAMESPACE__.'\Menu' ) ) 
@@ -13,7 +14,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
      * Abstract Class BaseMenu
      * Defines the structure for WordPress menu classes
      */
-    abstract class Menu
+    abstract class Menu implements MenuContract
     {
         protected $menu_items = [];
 
