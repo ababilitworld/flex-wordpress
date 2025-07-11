@@ -29,7 +29,6 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
 
         public function init(array $data = []) : static
         {
-
             return $this;
         }
 
@@ -37,6 +36,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
         {
 
         }
+
         protected function init_hook() : void
         {
 
@@ -47,10 +47,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
             add_action('admin_menu', [$this, 'register_menus']);
         }
 
-        /**
-         * Register all admin menus and submenus
-         */
-        public function register_menus()
+        public function register_menus(): void
         {
             foreach ($this->menu_items as $item) 
             {
