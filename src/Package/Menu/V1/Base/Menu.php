@@ -17,6 +17,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
     abstract class Menu implements MenuContract
     {
         protected $menu_items = [];
+        protected $menu_filter_name = '';
 
         /**
          * BaseMenu constructor
@@ -36,38 +37,44 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
 
         public function register(): void
         {
-            add_action('admin_menu', [$this, 'register_menus']);
+            $this->menu_items = apply_filters($this->menu_filter_name, []);
+            add_action('admin_menu', [$this, 'register_menus'],20);
         }
 
         public function register_menus(): void
         {
-            foreach ($this->menu_items as $item) 
+            if(count($this->menu_items))
             {
-                if ($item['type'] === 'menu') 
+                foreach ($this->menu_items as $item) 
                 {
-                    add_menu_page(
-                        $item['page_title'],
-                        $item['menu_title'],
-                        $item['capability'],
-                        $item['menu_slug'],
-                        $item['callback'],
-                        $item['icon'],
-                        $item['position']
-                    );
-                } 
-                elseif ($item['type'] === 'submenu') 
-                {
-                    add_submenu_page(
-                        $item['parent_slug'],
-                        $item['page_title'],
-                        $item['menu_title'],
-                        $item['capability'],
-                        $item['menu_slug'],
-                        $item['callback'],
-                        $item['position']
-                    );
+                    if ($item['type'] === 'menu') 
+                    {
+                        add_menu_page(
+                            $item['page_title'],
+                            $item['menu_title'],
+                            $item['capability'],
+                            $item['menu_slug'],
+                            $item['callback'],
+                            $item['icon'],
+                            $item['position']
+                        );
+                    } 
+                    elseif ($item['type'] === 'submenu') 
+                    {
+                        add_submenu_page(
+                            $item['parent_slug'],
+                            $item['page_title'],
+                            $item['menu_title'],
+                            $item['capability'],
+                            $item['menu_slug'],
+                            $item['callback'],
+                            $item['position']
+                        );
+                    }
                 }
+
             }
+            
         }
     }
 
