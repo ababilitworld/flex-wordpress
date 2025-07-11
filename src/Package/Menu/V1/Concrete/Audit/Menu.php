@@ -25,6 +25,8 @@ if (!class_exists(__NAMESPACE__.'\Menu'))
                 'callback' => [$this, 'render'],
                 'position' => 1,
             ];
+            $this->init_service();
+            $this->init_hook();
             return $this;
         }
 

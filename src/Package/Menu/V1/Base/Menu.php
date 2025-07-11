@@ -25,15 +25,9 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
         public function __construct()
         {
             $this->init();
-            $this->init_service();
-            $this->init_hook();
         }
 
         abstract public function init(array $data = []): static;
-
-        abstract public function init_service(): void;
-
-        abstract public function init_hook(): void;
 
         public function register(): void
         {
