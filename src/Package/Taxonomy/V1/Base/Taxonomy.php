@@ -92,4 +92,28 @@ abstract class Taxonomy implements TaxonomyContract
             'meta' => $meta
         ];
     }
+
+    /**
+     * Add "View Metas" action link to term list rows
+     */
+    public function view_details(array $actions, \WP_Term $term): array
+    {
+        // Check if this is our taxonomy
+        if ($term->taxonomy !== $this->taxonomy) {
+            return $actions;
+        }
+
+        // Always show the link (remove meta check for now)
+        $actions['view_meta'] = sprintf(
+            '<a href="%s" aria-label="%s">%s</a>',
+            esc_url(admin_url(sprintf(
+                'admin.php?page=flex-supervisor-audit-term&object_id=%d&action_id=view_details',
+                $term->term_id
+            ))),
+            esc_attr(sprintf(__('View meta for "%s"', 'flex-eland'), $term->name)),
+            esc_html__('View Details', 'flex-eland')
+        );
+
+        return $actions;
+    }
 }
