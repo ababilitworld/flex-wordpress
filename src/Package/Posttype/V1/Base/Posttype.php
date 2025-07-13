@@ -78,6 +78,25 @@ abstract class Posttype implements PosttypeContract
         $this->metas = $metas;
     }
 
+    public function add_action_view_details($actions, \WP_Post $post) 
+    {
+        // Check if this is our taxonomy
+        if ($post->post_type !== $this->posttype) 
+        {
+            return $actions;
+        }
+
+        $actions['view_details'] = sprintf(
+            '<a href="%s">%s</a>',
+            esc_url(admin_url(
+                'admin.php?page=flex-supervisor-audit-post&object_id=' . $post->ID . '&action_id=view_details'
+            )),
+            esc_html__('View Details', 'flex-eland')
+        );
+        
+        return $actions;
+    }
+
     public function get_default_args()
     {
         return array(
