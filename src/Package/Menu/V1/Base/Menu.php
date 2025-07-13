@@ -37,10 +37,20 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
 
         public function register_menus(): void
         {
+            if (empty($this->menu_items)) 
+            {
+                return;
+            }
+
             if(count($this->menu_items))
             {
                 foreach ($this->menu_items as $item) 
                 {
+                    if ($this->menu_exists($item['menu_slug'])) 
+                    {
+                        continue;
+                    }
+
                     if ($item['type'] === 'menu') 
                     {
                         add_menu_page(
@@ -78,23 +88,32 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
         {
             global $menu, $submenu;
 
-            // Check parent menus
-            foreach ($menu as $item) 
+            // Check parent menus (only if $menu is set)
+            if (is_array($menu)) 
             {
-                if ($item[2] === $menu_slug) 
+                foreach ($menu as $item) 
                 {
-                    return true;
+                    if (isset($item[2]) && $item[2] === $menu_slug) 
+                    {
+                        return true;
+                    }
                 }
             }
 
-            // Check submenus
-            foreach ($submenu as $parent_slug => $items) 
+            // Check submenus (only if $submenu is set)
+            if (is_array($submenu)) 
             {
-                foreach ($items as $item) 
+                foreach ($submenu as $parent_slug => $items) 
                 {
-                    if ($item[2] === $menu_slug) 
+                    if (is_array($items)) 
                     {
-                        return true;
+                        foreach ($items as $item) 
+                        {
+                            if (isset($item[2]) && $item[2] === $menu_slug) 
+                            {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
