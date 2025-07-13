@@ -70,6 +70,37 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
             }
             
         }
+
+        /**
+         * Check if a WordPress admin menu exists by slug.
+         */
+        protected function menu_exists(string $menu_slug): bool
+        {
+            global $menu, $submenu;
+
+            // Check parent menus
+            foreach ($menu as $item) 
+            {
+                if ($item[2] === $menu_slug) 
+                {
+                    return true;
+                }
+            }
+
+            // Check submenus
+            foreach ($submenu as $parent_slug => $items) 
+            {
+                foreach ($items as $item) 
+                {
+                    if ($item[2] === $menu_slug) 
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 
 }
