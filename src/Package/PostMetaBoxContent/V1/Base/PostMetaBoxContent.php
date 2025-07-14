@@ -19,7 +19,7 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
         $this->init();
     }
 
-    abstract public function init() : void;
+    abstract public function init(array $data = []) : static;
 
 
     public function register() : void
@@ -28,7 +28,7 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
     }
 
     abstract public function render():void;
-    abstract public function save($post_id, $post):void;
+    abstract public function save($post_id, $post, $update):void;
 
     public function tab_item() : void
     {
