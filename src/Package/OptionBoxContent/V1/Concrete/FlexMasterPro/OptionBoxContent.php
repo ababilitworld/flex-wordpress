@@ -1,9 +1,10 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\OptionContent\V1\Concrete\FlexMasterPro;
+namespace Ababilithub\FlexWordpress\Package\OptionBoxContent\V1\Concrete\FlexMasterPro;
 
 use Ababilithub\{
     FlexWordpress\Package\Option\V1\Mixin\Option as OptionMixin,
-    FlexWordpress\Package\OptionContent\V1\Base\OptionContent as BaseOptionContent,
+    FlexWordpress\Package\OptionBox\V1\Concrete\VerticalTabBox\OptionBox as OptionBox,
+    FlexWordpress\Package\OptionBoxContent\V1\Base\OptionBoxContent as BaseOptionBoxContent,
     FlexPhp\Package\Form\Field\V1\Factory\Field as FieldFactory,
     FlexPhp\Package\Form\Field\V1\Concrete\Text\Field as TextField,
     FlexPhp\Package\Form\Field\V1\Concrete\File\Document\Field as DocField,
@@ -15,12 +16,12 @@ use const Ababilithub\{
     FlexMasterPro\PLUGIN_PRE_UNDS,
 };
 
-class OptionContent extends BaseOptionContent
+class OptionBoxContent extends BaseOptionBoxContent
 {
     use OptionMixin;
     public function init(array $data =[]) : static
     {
-        $this->tab_id = PLUGIN_PRE_UNDS;
+        $this->tab_id = OptionBox::id;
         $this->tab_item_id = $this->tab_id.'-'.'general-settings';
         $this->tab_item_label = esc_html__('General Settings');
         $this->tab_item_icon = 'fas fa-home';
@@ -45,7 +46,7 @@ class OptionContent extends BaseOptionContent
 
     public function render() : void
     {
-        $option_values = $this->getOptionContentValues();
+        $option_values = $this->getOptionBoxContentValues();
         ?>
             <div class="panel">
                 <div class="panel-header">
@@ -229,7 +230,7 @@ class OptionContent extends BaseOptionContent
     /**
      * Get all option values in a structured array
      */
-    private function getOptionContentValues(): array
+    private function getOptionBoxContentValues(): array
     {
         return [
             'deed_date' => get_option('deed_date') ?: '',
@@ -247,29 +248,29 @@ class OptionContent extends BaseOptionContent
      */
     public function save(array $attributes = []): void 
     {
-        if (!$this->isValidOptionContentSave()) 
+        if (!$this->isValidOptionBoxContentSave()) 
         {
             return;
         }
 
         // Save text fields
-        $this->saveTextOptionContent('deed_date', sanitize_text_field($_POST['deed_date'] ?? ''));
-        $this->saveTextOptionContent('deed_number', sanitize_text_field($_POST['deed_number'] ?? ''));
-        $this->saveTextOptionContent('plot_number', sanitize_text_field($_POST['plot_number'] ?? ''));
-        $this->saveTextOptionContent('land_quantity', sanitize_text_field($_POST['land_quantity'] ?? ''));
+        $this->saveTextOptionBoxContent('deed_date', sanitize_text_field($_POST['deed_date'] ?? ''));
+        $this->saveTextOptionBoxContent('deed_number', sanitize_text_field($_POST['deed_number'] ?? ''));
+        $this->saveTextOptionBoxContent('plot_number', sanitize_text_field($_POST['plot_number'] ?? ''));
+        $this->saveTextOptionBoxContent('land_quantity', sanitize_text_field($_POST['land_quantity'] ?? ''));
 
         // Save media fields
-        $this->saveImageOptionContent(
+        $this->saveImageOptionBoxContent(
             'deed_thumbnail_image', 
             absint($_POST['deed_thumbnail_image'] ?? 0)
         );
 
-        $this->saveMultipleImagesOptionContent(
+        $this->saveMultipleImagesOptionBoxContent(
             'deed_images',
             array_map('absint', $_POST['deed_images'] ?? [])
         );
 
-        $this->saveMultipleAttachmentsOptionContent(
+        $this->saveMultipleAttachmentsOptionBoxContent(
             'deed_attachments',
             array_map('absint', $_POST['deed_attachments'] ?? [])
         );

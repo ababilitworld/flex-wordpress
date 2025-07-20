@@ -1,14 +1,14 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Option\V1\Mixin;
+namespace Ababilithub\FlexWordpress\Package\OptionBox\V1\Mixin;
 
-trait Option
+trait OptionBox
 {
     /**
      * Validate if the current option save request should be processed
      * 
      * @return bool Whether the save should proceed
      */
-    private function isValidOptionSave(): bool
+    private function isValidOptionBoxSave(): bool
     {
         // Skip autosaves (if this is tied to a post somehow)
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
@@ -22,7 +22,7 @@ trait Option
     /**
      * Save a simple text option
      */
-    private function saveTextOption(string $option_name, string $option_value): void
+    private function saveTextOptionBox(string $option_name, string $option_value): void
     {
         if (isset($_POST[$option_name])) {
             update_option($option_name, sanitize_text_field($option_value));
@@ -34,7 +34,7 @@ trait Option
     /**
      * Save an array option with sanitization
      */
-    private function saveArrayOption(string $option_name, array $option_value): void
+    private function saveArrayOptionBox(string $option_name, array $option_value): void
     {
         if (isset($_POST[$option_name]) && is_array($_POST[$option_name])) {
             // Sanitize each array element
@@ -48,7 +48,7 @@ trait Option
     /**
      * Save an associative array option with key-value sanitization
      */
-    private function saveAssocArrayOption(string $option_name, array $option_value): void
+    private function saveAssocArrayOptionBox(string $option_name, array $option_value): void
     {
         if (isset($_POST[$option_name]))
         {
@@ -71,7 +71,7 @@ trait Option
     /**
      * Save a serialized array option (for complex data structures)
      */
-    private function saveSerializedArrayOption(string $option_name, array $option_value): void
+    private function saveSerializedArrayOptionBox(string $option_name, array $option_value): void
     {
         if (isset($_POST[$option_name])) 
         {
@@ -88,7 +88,7 @@ trait Option
     /**
      * Save a single image attachment option
      */
-    private function saveImageOption(string $option_name, int $image_id): void
+    private function saveImageOptionBox(string $option_name, int $image_id): void
     {
         if ($this->isValidImageAttachment($image_id)) {
             update_option($option_name, $image_id);
@@ -100,7 +100,7 @@ trait Option
     /**
      * Save multiple image attachments option
      */
-    private function saveMultipleImagesOption(string $option_name, array $image_ids): void
+    private function saveMultipleImagesOptionBox(string $option_name, array $image_ids): void
     {
         $valid_images = array_filter(array_map('absint', $image_ids), [$this, 'isValidImageAttachment']);
         
@@ -114,7 +114,7 @@ trait Option
     /**
      * Save a single file attachment option (non-image)
      */
-    private function saveAttachmentOption(string $option_name, int $attachment_id): void
+    private function saveAttachmentOptionBox(string $option_name, int $attachment_id): void
     {
         if ($this->isValidAttachment($attachment_id)) {
             update_option($option_name, $attachment_id);
@@ -126,7 +126,7 @@ trait Option
     /**
      * Save multiple file attachments option
      */
-    private function saveMultipleAttachmentsOption(string $option_name, array $attachment_ids): void
+    private function saveMultipleAttachmentsOptionBox(string $option_name, array $attachment_ids): void
     {
         $valid_attachments = array_filter(array_map('absint', $attachment_ids), [$this, 'isValidAttachment']);
         

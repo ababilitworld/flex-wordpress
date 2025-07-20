@@ -1,26 +1,42 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Option\V1\Concrete\VerticalTab;
+namespace Ababilithub\FlexWordpress\Package\OptionBox\V1\Base;
 
 use Ababilithub\{
-    FlexWordpress\Package\Option\V1\Base\Option as BaseOption
+    FlexWordpress\Package\OptionBox\V1\Contract\OptionBox as OptionBoxContract
 };
 
 use const Ababilithub\{
-    VerticalTab\PLUGIN_PRE_HYPH,
-    VerticalTab\PLUGIN_PRE_UNDS,
+    FlexMasterPro\PLUGIN_PRE_HYPH,
+    FlexMasterPro\PLUGIN_PRE_UNDS,
 };
 
-class Option extends BaseOption 
+abstract class OptionBox implements OptionBoxContract
 {
-    public function init(array $data = []) : static
-    {
-        $this->id = $data['tab_id']??'-'.'vertical-tab-options';
-        $this->title = $data['title']??'Attributes';
+    protected $id;
+    protected $title;
 
-        return $this;
+    public function __construct()
+    {
+        $this->init();
     }
 
-    public function render(): void
+    abstract public function init(array $data = []) : static;
+
+    public function register() : void 
+    {
+        
+    }
+    abstract public function render() : void;
+
+    /**
+     * Generate consistent hook names
+     */
+    protected function getTabHookName(string $suffix = ''): string
+    {
+        return PLUGIN_PRE_UNDS . '_options_' . $this->id . '_' . $suffix;
+    }
+
+    public function renderDefault(): void
     {
         ?>
         <div class="fpba">

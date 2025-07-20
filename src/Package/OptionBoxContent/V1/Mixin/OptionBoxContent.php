@@ -1,7 +1,7 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Option\V1\Mixin;
+namespace Ababilithub\FlexWordpress\Package\OptionBoxContent\V1\Mixin;
 
-trait Option
+trait OptionBoxContent
 {
     /**
      * Validate if the current option save request should be processed

@@ -1,9 +1,9 @@
 <?php 
-namespace Ababilithub\FlexWordpress\Package\Option\V1\Contract;
+namespace Ababilithub\FlexWordpress\Package\OptionBox\V1\Contract;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
-interface Option
+interface OptionBox
 {
     public function init(array $data = []): static;
     public function register(): void;

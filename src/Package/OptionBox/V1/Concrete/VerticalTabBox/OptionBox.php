@@ -1,43 +1,26 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Option\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\OptionBox\V1\Concrete\VerticalTabBox;
 
 use Ababilithub\{
-    FlexWordpress\Package\Option\V1\Contract\Option as OptionContract
+    FlexWordpress\Package\OptionBox\V1\Base\OptionBox as BaseOptionBox
 };
 
 use const Ababilithub\{
-    FlexMasterPro\PLUGIN_PRE_HYPH,
-    FlexMasterPro\PLUGIN_PRE_UNDS,
+    VerticalTab\PLUGIN_PRE_HYPH,
+    VerticalTab\PLUGIN_PRE_UNDS,
 };
 
-abstract class Option implements OptionContract
+class OptionBox extends BaseOptionBox 
 {
-    public const TAB_ID = PLUGIN_PRE_UNDS.'';
-    protected $id;
-    protected $title;
-
-    public function __construct()
+    public function init(array $data = []) : static
     {
-        $this->init();
+        $this->id = $data['tab_id']??'-'.'vertical-tab-options';
+        $this->title = $data['title']??'Attributes';
+
+        return $this;
     }
 
-    abstract public function init(array $data = []) : static;
-
-    public function register() : void 
-    {
-        
-    }
-    abstract public function render() : void;
-
-    /**
-     * Generate consistent hook names
-     */
-    protected function getTabHookName(string $suffix = ''): string
-    {
-        return PLUGIN_PRE_UNDS . '_options_' . $this->id . '_' . $suffix;
-    }
-
-    public function renderDefault(): void
+    public function render(): void
     {
         ?>
         <div class="fpba">
@@ -48,7 +31,7 @@ abstract class Option implements OptionContract
                             <button class="toggle-tabs" id="toggleTabs">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <span class="tabs-title">Attributes</span>
+                            <span class="tabs-title"><?php echo $this->title;?></span>
                         </div>
                         <ul class="tab-items">
                             <?php do_action($this->id.'_'.'tab_item'); ?>

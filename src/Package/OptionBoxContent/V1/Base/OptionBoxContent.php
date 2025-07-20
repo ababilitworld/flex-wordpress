@@ -1,11 +1,11 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\OptionContent\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\OptionBoxContent\V1\Base;
 
 use Ababilithub\{
-    FlexWordpress\Package\OptionContent\V1\Contract\OptionContent as OptionContentContract
+    FlexWordpress\Package\OptionBoxContent\V1\Contract\OptionBoxContent as OptionBoxContentContract
 };
 
-abstract class OptionContent implements OptionContentContract
+abstract class OptionBoxContent implements OptionBoxContentContract
 {
     protected $tab_id;
     protected $tab_item_id;
