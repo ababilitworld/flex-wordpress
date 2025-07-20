@@ -1,16 +1,16 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Option\V1\Concrete\FlexMasterPro;
+namespace Ababilithub\FlexWordpress\Package\Option\V1\Concrete\VerticalTab;
 
 use Ababilithub\{
     FlexWordpress\Package\Option\V1\Base\Option as BaseOption
 };
 
 use const Ababilithub\{
-    FlexMasterPro\PLUGIN_PRE_HYPH,
-    FlexMasterPro\PLUGIN_PRE_UNDS,
+    VerticalTab\PLUGIN_PRE_HYPH,
+    VerticalTab\PLUGIN_PRE_UNDS,
 };
 
-class Option extends BaseOption
+class Option extends BaseOption 
 {
     public function init(array $data = []) : static
     {
