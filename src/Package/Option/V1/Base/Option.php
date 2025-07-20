@@ -25,14 +25,7 @@ abstract class Option implements OptionContract
 
     public function register() : void 
     {
-        add_meta_box(
-            $this->id, 
-            $this->title,
-            [$this, 'render'],
-            $this->posttype, // Post type
-            'normal',       // Context
-            'high'         // Priority
-        );
+        
     }
     abstract public function render() : void;
 

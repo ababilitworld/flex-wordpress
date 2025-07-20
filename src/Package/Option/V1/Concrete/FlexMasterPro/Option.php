@@ -14,15 +14,14 @@ class Option extends BaseOption
 {
     public function init(array $data = []) : static
     {
-        $this->id = PLUGIN_PRE_HYPH.'-'.$this->posttype.'-'.'meta-box';
-        $this->title = esc_html__(' Attributes : ', 'flex-eland') . get_the_title(get_the_ID());
+        $this->id = $data['tab_id']??'-'.'vertical-tab-options';
+        $this->title = $data['title']??'Attributes';
 
         return $this;
     }
 
     public function render(): void
     {
-        $post_id = get_the_ID();
         ?>
         <div class="fpba">
             <div class="meta-box">
@@ -32,14 +31,14 @@ class Option extends BaseOption
                             <button class="toggle-tabs" id="toggleTabs">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <span class="tabs-title">Attributes</span>
+                            <span class="tabs-title"><?php echo $this->title;?></span>
                         </div>
                         <ul class="tab-items">
-                            <?php do_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_item'); ?>
+                            <?php do_action($this->id.'_'.'tab_item'); ?>
                         </ul>
                     </div>
                     <main class="content-area">
-                        <?php do_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_content', $post_id); ?>
+                        <?php do_action($this->id.'_'.'tab_content'); ?>
                     </main>
                 </div>
             </div>
