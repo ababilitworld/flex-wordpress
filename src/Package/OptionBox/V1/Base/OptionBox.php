@@ -12,7 +12,7 @@ use const Ababilithub\{
 
 abstract class OptionBox implements OptionBoxContract
 {
-    protected $id;
+    public $id;
     protected $title;
 
     public function __construct()
