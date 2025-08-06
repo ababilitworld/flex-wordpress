@@ -49,15 +49,18 @@ trait PostMeta
             if ($image_id && wp_attachment_is_image($image_id)) 
             {
                 set_post_thumbnail($post_id, $image_id);
+                update_post_meta($post_id, $meta_key, $image_id);
             } 
             else 
             {
                 delete_post_thumbnail($post_id);
+                delete_post_meta($post_id, $meta_key);
             }
         } 
         else 
         {
             delete_post_thumbnail($post_id);
+            delete_post_meta($post_id, $meta_key);
         }
     }
 
