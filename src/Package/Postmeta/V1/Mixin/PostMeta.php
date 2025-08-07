@@ -149,5 +149,26 @@ trait PostMeta
     }
 
     ////
+
+    public function prepare_map_location(string $map_location = null): string|null
+    {
+        //$map_location = $_POST['google-map-location'] ?? '';
+        if (!empty($map_location)) {
+            // Only encode if it's not already encoded
+            if (base64_decode($map_location, true) === false) {
+                return $map_location = base64_encode($map_location);
+            }
+        }
+        return null;
+    }
+
+    public function get_map_location($map_value): string|null
+    {
+        if (!empty($map_value)) {
+            $decoded = wp_unslash(base64_decode($map_value, true));
+            return $map_value = ($decoded !== false) ? $decoded : $map_value;
+        }
+        return null;
+    }
     
 }
