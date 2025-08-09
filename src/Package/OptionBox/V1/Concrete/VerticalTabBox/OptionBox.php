@@ -14,7 +14,7 @@ class OptionBox extends BaseOptionBox
 {
     public function init(array $data = []) : static
     {
-        $this->id = $data['tab_id']??'-'.'vertical-tab-options';
+        $this->id = PLUGIN_PRE_HYPH.'-'.'vertical-tab-options';
         $this->title = $data['title']??'Attributes';
 
         return $this;
