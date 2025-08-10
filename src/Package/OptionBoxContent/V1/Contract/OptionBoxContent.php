@@ -7,7 +7,5 @@ interface OptionBoxContent
 {
     public function init(array $data = []): static;
     public function register(): void;
-    public function render(): void;
-    public function save(array $data = []): void;
-     
+    public function render(): void;     
 }
