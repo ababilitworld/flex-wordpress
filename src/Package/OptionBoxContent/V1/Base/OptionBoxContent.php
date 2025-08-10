@@ -27,7 +27,6 @@ abstract class OptionBoxContent implements OptionBoxContentContract
     }
 
     abstract public function render():void;
-    abstract public function save(array $data = []):void;
 
     public function tab_item() : void
     {
