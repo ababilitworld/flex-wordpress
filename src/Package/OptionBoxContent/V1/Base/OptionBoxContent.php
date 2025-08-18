@@ -7,6 +7,8 @@ use Ababilithub\{
 
 abstract class OptionBoxContent implements OptionBoxContentContract
 {
+    public $option_name;
+    public array $option_value = [];
     protected $tab_id;
     protected $tab_item_id;
     protected $tab_item_label;
