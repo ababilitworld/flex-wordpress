@@ -30,25 +30,27 @@ class Debug extends BaseDebug
         add_action('admin_notices',[$this,'render']);
     }
     
-    public function render() : void
+    public function render(): void
     {
-        if($this->debugger->has_errors())
+        if ($this->debugger->has_errors()) 
         {
-            foreach($this->debugger->get_error_messages() as $error)
+            foreach ($this->debugger->get_error_codes() as $code) 
             {
-                if(isset($error['data']['class']))
-                {
-                    $class = $error['data']['class'];              
-                }
-                else
-                {
-                    $class = 'notice notice-error is-dismissable';
-                }
+                $messages = $this->debugger->get_error_messages($code);
 
-                printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), wp_kses_post( $error ) );
+                $error_data = $this->debugger->get_error_data($code);
+
+                $class = $error_data['class'] ?? 'notice notice-error is-dismissible';
                 
+                foreach ($messages as $message) 
+                {
+                    printf(
+                        '<div class="%1$s"><p>%2$s</p></div>',
+                        esc_attr($class),
+                        wp_kses_post($message)
+                    );
+                }
             }
-            
         }
     }
 
