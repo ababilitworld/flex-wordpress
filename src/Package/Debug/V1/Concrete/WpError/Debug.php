@@ -36,8 +36,17 @@ class Debug extends BaseDebug
         {
             foreach($this->debugger->get_error_messages() as $error)
             {
-                $class = 'notice notice-error is-dismissable';
+                if(isset($error['data']['class']))
+                {
+                    $class = $error['data']['class'];              
+                }
+                else
+                {
+                    $class = 'notice notice-error is-dismissable';
+                }
+
                 printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), wp_kses_post( $error ) );
+                
             }
             
         }
