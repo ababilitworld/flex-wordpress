@@ -1,16 +1,16 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Debug\V1\Manager;
+namespace Ababilithub\FlexWordpress\Package\Notice\V1\Manager;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
     FlexPhp\Package\Manager\V1\Base\Manager as BaseManager,
-    FlexWordpress\Package\Debug\V1\Contract\Debug as DebugContract, 
-    FlexWordpress\Package\Debug\V1\Factory\Debug as DebugFactory,
-    FlexWordpress\Package\Debug\V1\Concrete\WpError\Debug as WpErrorDebug, 
+    FlexWordpress\Package\Notice\V1\Contract\Notice as NoticeContract, 
+    FlexWordpress\Package\Notice\V1\Factory\Notice as NoticeFactory,
+    FlexWordpress\Package\Notice\V1\Concrete\WpError\Notice as WpErrorNotice, 
 };
 
-class  Debug extends BaseManager
+class  Notice extends BaseManager
 {
     public function __construct()
     {
@@ -21,7 +21,7 @@ class  Debug extends BaseManager
     {
         $this->set_items(
                 [
-                WpErrorDebug::class,
+                WpErrorNotice::class,
             ]
         );
     }
@@ -30,9 +30,9 @@ class  Debug extends BaseManager
     {
         foreach ($this->get_items() as $item) 
         {
-            $item_instance = DebugFactory::get($item);
+            $item_instance = NoticeFactory::get($item);
 
-            if ($item_instance instanceof DebugContract) 
+            if ($item_instance instanceof NoticeContract) 
             {
                 $item_instance->init();
             }

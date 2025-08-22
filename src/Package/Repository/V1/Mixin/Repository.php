@@ -1,7 +1,7 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Debug\V1\Mixin;
+namespace Ababilithub\FlexWordpress\Package\Repository\V1\Mixin;
 
-trait Debug
+trait Repository
 {
     private function is_valid_save($post_id, $post) 
     {

@@ -1,8 +1,8 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Debug\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\Notice\V1\Base;
 
 use Ababilithub\{
-    FlexWordpress\Package\Debug\V1\Contract\Debug as DebugContract
+    FlexWordpress\Package\Notice\V1\Contract\Notice as NoticeContract
 };
 
 use const Ababilithub\{
@@ -10,9 +10,9 @@ use const Ababilithub\{
     FlexMasterPro\PLUGIN_PRE_UNDS,
 };
 
-abstract class Debug implements DebugContract
+abstract class Notice implements NoticeContract
 {
-    public $debugger;
+    public $notice_board;
     
     public function __construct(array $data = [])
     {

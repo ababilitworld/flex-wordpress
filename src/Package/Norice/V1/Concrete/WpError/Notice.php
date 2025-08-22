@@ -1,20 +1,15 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Debug\V1\Concrete\WpError;
+namespace Ababilithub\FlexWordpress\Package\Notice\V1\Concrete\WpError;
 
 use Ababilithub\{
-    FlexWordpress\Package\Debug\V1\Base\Debug as BaseDebug
+    FlexWordpress\Package\Notice\V1\Base\Notice as BaseNotice
 };
 
-use const Ababilithub\{
-    FlexMasterPro\PLUGIN_PRE_HYPH,
-    FlexMasterPro\PLUGIN_PRE_UNDS,
-};
-
-class Debug extends BaseDebug
+class Notice extends BaseNotice
 {
     public function init(array $data = []): static
     {
-        $this->debugger = new \WP_Error();
+        $this->notice_board = new \WP_Error();
         $this->init_service();
         $this->init_hook();
         return $this;
@@ -32,13 +27,13 @@ class Debug extends BaseDebug
     
     public function render(): void
     {
-        if ($this->debugger->has_errors()) 
+        if ($this->notice_board->has_errors()) 
         {
-            foreach ($this->debugger->get_error_codes() as $code) 
+            foreach ($this->notice_board->get_error_codes() as $code) 
             {
-                $messages = $this->debugger->get_error_messages($code);
+                $messages = $this->notice_board->get_error_messages($code);
 
-                $error_data = $this->debugger->get_error_data($code);
+                $error_data = $this->notice_board->get_error_data($code);
 
                 $class = $error_data['class'] ?? 'notice notice-error is-dismissible';
                 
@@ -54,9 +49,9 @@ class Debug extends BaseDebug
         }
     }
 
-    public function add_error(array $error = []) : static
+    public function add(array $error = []) : static
     {
-        $this->debugger->add($error['code'], $error['message'],$error['data']);
+        $this->notice_board->add($error['code'], $error['message'],$error['data']);
         return $this;
     }
     

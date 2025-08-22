@@ -1,9 +1,9 @@
 <?php 
-namespace Ababilithub\FlexWordpress\Package\Debug\V1\Contract;
+namespace Ababilithub\FlexWordpress\Package\Repository\V1\Contract;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
-interface Debug
+interface Repository
 {
     public function init(array $data = []): static;     
 }
