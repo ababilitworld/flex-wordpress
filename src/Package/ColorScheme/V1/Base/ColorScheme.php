@@ -4,6 +4,8 @@ namespace Ababilithub\FlexWordpress\Package\ColorScheme\V1\Base;
 use Ababilithub\{
     FlexWordpress\Package\ColorScheme\V1\Contract\ColorScheme as ColorSchemeContract,
     FlexWordpress\Package\ColorScheme\V1\Mixin\ColorScheme as ColorSchemeMixin,
+    FlexWordpress\Package\ColorScheme\V1\Utility\ColorScheme as ColorSchemeUtility,
+    
 };
 
 abstract class ColorScheme implements ColorSchemeContract
@@ -26,11 +28,6 @@ abstract class ColorScheme implements ColorSchemeContract
 
     abstract public function init(array $data = []):static;
 
-    public function register(): void
-    {
-
-    }
-
     public function validate(): void
     {
         if (empty($this->name)) 
@@ -45,13 +42,11 @@ abstract class ColorScheme implements ColorSchemeContract
             $this->validate_color_array($this->additional_colors);
         }
 
-        if (!($this->has_sufficient_contrast_ratio())) 
+        if (!($this->has_sufficient_contrast_ratio($this->text_color, $this->background_color))) 
         {
             throw new \RuntimeException('Color Scheme is not Accessible! Please change text and background colors to make the scheme accessible!!!');
         }
     }
-
-    
 
     public function get_colors(): array
     {
@@ -83,16 +78,16 @@ abstract class ColorScheme implements ColorSchemeContract
             'id' => $this->getId(),
             'name' => $this->getName(),
             'type' => $this->getType(),
-            'primary_color' => $this->primary_color,
-            'primary_dark_color' => $this->primary_dark_color,
-            'secondary_color' => $this->secondary_color,
-            'background_color' => $this->background_color,
-            'text_color' => $this->text_color,
-            'is_dark_mode' => $this->is_dark_mode,
-            'additional_colors' => $this->additional_colors,
-            'is_accessible' => $this->is_accessible(),
-            'contrast_ratio' => $this->calculate_contrast_ratio(),
-            'css' => $this->generate_css()
+            'primary-color' => $this->primary_color,
+            'primary-dark-color' => $this->primary_dark_color,
+            'secondary-color' => $this->secondary_color,
+            'background-color' => $this->background_color,
+            'text-color' => $this->text_color,
+            'is-dark-mode' => $this->is_dark_mode,
+            'additional-colors' => $this->additional_colors,
+            'is-accessible' => $this->has_sufficient_contrast_ratio(),
+            'contrast-ratio' => ColorSchemeUtility::get_contrast_ratio(),
+            'generated-css' => $this->generate_css()
         ];
     }
 }
