@@ -15,7 +15,7 @@ trait ColorScheme
         $validated = [];
         foreach ($colors as $key => $value) 
         {
-            if ($this->is_valid_hex_color($value)) 
+            if ($this->is_valid_hex_color($key,$value)) 
             {
                 $validated[sanitize_key($key)] = sanitize_hex_color($value);
             }
@@ -26,13 +26,13 @@ trait ColorScheme
     /**
      * Checks if a string is a valid HEX color.
      */
-    protected function is_valid_hex_color(string $color): bool 
+    protected function is_valid_hex_color(string $key, string $color): bool 
     {
         $state = (bool) preg_match('/^#([a-f0-9]{6}|[a-f0-9]{3})$/i', $color);
         if (!$state)
         {
             throw new \InvalidArgumentException(
-                sprintf('%s must be a valid hex color, "%s" given', $property, $color)
+                sprintf('%s must be a valid hex color, "%s" given', $key, $color)
             );
         }
         return $state;
