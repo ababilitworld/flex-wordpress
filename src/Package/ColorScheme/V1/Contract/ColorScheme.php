@@ -1,5 +1,5 @@
 <?php
-namespace Ababilithub\FlexPhp\Package\ColorScheme\V1\Contract;
+namespace Ababilithub\FlexWordpress\Package\ColorScheme\V1\Contract;
 
 interface ColorScheme
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\ColorScheme\V1\Utility;
+namespace Ababilithub\FlexWordpress\Package\ColorScheme\V1\Mixin;
 
 use Ababilithub\{
     FlexWordpress\Package\ColorScheme\V1\Utility\ColorScheme as ColorSchemeUtility

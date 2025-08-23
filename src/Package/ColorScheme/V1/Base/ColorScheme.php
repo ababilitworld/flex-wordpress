@@ -72,12 +72,11 @@ abstract class ColorScheme implements ColorSchemeContract
         return $css;
     }
 
-    public function toArray(): array
+    public function to_array(): array
     {
         return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'type' => $this->getType(),
+            'name' => $this->name,
+            'type' => $this->type,
             'primary-color' => $this->primary_color,
             'primary-dark-color' => $this->primary_dark_color,
             'secondary-color' => $this->secondary_color,
@@ -85,8 +84,8 @@ abstract class ColorScheme implements ColorSchemeContract
             'text-color' => $this->text_color,
             'is-dark-mode' => $this->is_dark_mode,
             'additional-colors' => $this->additional_colors,
-            'is-accessible' => $this->has_sufficient_contrast_ratio(),
-            'contrast-ratio' => ColorSchemeUtility::get_contrast_ratio(),
+            'is-accessible' => $this->has_sufficient_contrast_ratio($this->text_color,$this->background_color),
+            'contrast-ratio' => ColorSchemeUtility::get_contrast_ratio($this->text_color,$this->background_color),
             'generated-css' => $this->generate_css()
         ];
     }
