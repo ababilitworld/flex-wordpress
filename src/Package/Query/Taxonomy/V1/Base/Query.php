@@ -24,7 +24,7 @@ abstract class Query implements QueryContract
     /**
      * Setup default query arguments for taxonomy terms
      */
-    public function setup_default_args(): void
+    protected function setup_default_args(): void
     {
         $this->default_args = [
             'taxonomy' => 'category',
@@ -54,10 +54,18 @@ abstract class Query implements QueryContract
     /**
      * Set custom arguments
      */
-    public function set_custom_args(array $args): static
+    public function set_custom_args(array $args,$option = 'merge'): static
     {
-        $this->custom_args = $args;
-        $this->merge_args();
+        if($option == 'replace')
+        {
+            $this->args = $args;
+        }
+        elseif($option == 'merge')
+        {
+            $this->custom_args = $args;
+            $this->merge_args();
+        }
+        
         return $this;
     }
     
