@@ -1,13 +1,13 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Query\V1\Manager;
+namespace Ababilithub\FlexWordpress\Package\Query\Taxonomy\V1\Manager;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
     FlexPhp\Package\Manager\V1\Base\Manager as BaseManager,
-    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract, 
-    FlexWordpress\Package\Query\V1\Factory\Query as QueryFactory,
-    FlexWordpress\Package\Query\V1\Concrete\Recent\Post\Query as RecentPostQuery,
+    FlexWordpress\Package\Query\Taxonomy\V1\Contract\Query as QueryContract, 
+    FlexWordpress\Package\Query\Taxonomy\V1\Factory\Query as QueryFactory,
+    FlexWordpress\Package\Query\Taxonomy\V1\Concrete\Recent\Post\Query as RecentPostQuery,
 };
 
 class  Query extends BaseManager

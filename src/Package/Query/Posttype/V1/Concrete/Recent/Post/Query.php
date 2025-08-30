@@ -1,10 +1,10 @@
 <?php 
-namespace Ababilithub\FlexWordpress\Package\Query\V1\Concrete\Recent\Post;
+namespace Ababilithub\FlexWordpress\Package\Query\Posttype\V1\Concrete\Recent\Post;
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Query\V1\Base\Query as BaseQuery
+    FlexWordpress\Package\Query\Posttype\V1\Base\Query as BaseQuery
 };
 
 class Query extends BaseQuery 

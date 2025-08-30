@@ -1,10 +1,10 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Query\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\Query\Posttype\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract
+    FlexWordpress\Package\Query\Posttype\V1\Contract\Query as QueryContract
 };
 
 abstract class Query implements QueryContract
@@ -200,36 +200,10 @@ abstract class Query implements QueryContract
     }
 
     /**
-     * Set posts per page
+     * Get page number
      */
-    public function set_posts_per_page($number): static
+    public function get_page_number(): int
     {
-        $this->args['posts_per_page'] = (int) $number;
-        return $this;
-    }
-    
-    /**
-     * Set pagination
-     */
-    public function set_pagination($paged = 1): static
-    {
-        $this->pagination = true;
-        $this->args['paged'] = max(1, (int) $paged);
-        return $this;
-    }
-    
-    /**
-     * Implement pagination
-     */
-    public function implement_pagination(): void
-    {
-        $this->pagination = true;
-        $this->args['nopaging'] = false;
-        if(!isset($this->args['posts_per_page']))
-        {
-            $this->args['posts_per_page'] = -1;
-        }            
-        
         if (get_query_var('paged')) 
         {
             $paged = get_query_var('paged');
@@ -243,9 +217,43 @@ abstract class Query implements QueryContract
             $paged = 1;
         }
 
+        return $paged;
+    }
+
+    /**
+     * Set posts per page
+     */
+    public function set_posts_per_page($number): static
+    {
+        $this->args['posts_per_page'] = (int) $number;
+        return $this;
+    }
+    
+    /**
+     * Set pagination
+     */
+    public function set_pagination($paged = null): static
+    {
+        $this->pagination = true;
+        $this->args['paged'] = max(1, $paged ?? (int) $this->get_page_number());        
+        return $this;
+    }
+    
+    /**
+     * Implement pagination
+     */
+    public function implement_pagination(): void
+    {
+        $this->pagination = true;
+        $this->args['nopaging'] = false;
+        if(!isset($this->args['posts_per_page']))
+        {
+            $this->args['posts_per_page'] = -1;
+        }
+
         if(!isset($this->args['paged']))
         {
-            $this->args['paged'] = max(1, $paged);
+            $this->args['paged'] = 1;
         }
         
     }
