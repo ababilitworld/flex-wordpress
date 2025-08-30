@@ -28,7 +28,7 @@ abstract class Query implements QueryContract
     /**
      * Setup default query arguments
      */
-    protected function setup_default_args(): void
+    public function setup_default_args(): void
     {
         $this->default_args = [
             'post_type' => 'post',

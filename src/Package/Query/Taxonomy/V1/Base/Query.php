@@ -24,7 +24,7 @@ abstract class Query implements QueryContract
     /**
      * Setup default query arguments for taxonomy terms
      */
-    protected function setup_default_args(): void
+    public function setup_default_args(): void
     {
         $this->default_args = [
             'taxonomy' => 'category',
