@@ -61,7 +61,7 @@ class Template extends BaseTemplate
         );
     }
 
-    public function render(array $items = []) : bool|string
+    public function render($items = null) : bool|string
     {        
         if (empty($items)) 
         {
@@ -87,7 +87,7 @@ class Template extends BaseTemplate
                         <?php 
                             foreach ($items as $item) 
                             {
-                               $thumbnail = get_the_post_thumbnail_url($item['thumbnail_id'], 'large') ?: home_url('uploads/flex-image/flex-image-placeholder.png');
+                               $thumbnail = get_the_post_thumbnail_url($item->thumbnail_id, 'large') ?: home_url('uploads/flex-image/flex-image-placeholder.png');
                             ?>
                                 <article class="fa-deed-card">
                                     
@@ -95,12 +95,10 @@ class Template extends BaseTemplate
                                     
                                     <div class="fa-deed-content">
                                         
-                                        <h3><?php echo esc_html($item['name']); ?></h3>
+                                        <h3><?php echo esc_html($item->name); ?></h3>
 
                                         <div class="fa-deed-meta">
-                                            
-                                                <span><i class="fas fa-file-alt"></i> <?php echo esc_html('1'); ?></span>
-                                            
+                                            <span><i class="fas fa-file-alt"></i> <?php echo esc_html('1'); ?></span>
                                         </div>
                                         <div class="fa-deed-footer">
                                             <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
