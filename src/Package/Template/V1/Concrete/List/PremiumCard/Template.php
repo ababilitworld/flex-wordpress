@@ -87,7 +87,7 @@ class Template extends BaseTemplate
                         <?php 
                         // Default Thumbnail Image Url
                         $default_thumbnail_image_url = home_url('/wp-content/uploads/flex-image/flex-image-placeholder.png');
-                            
+                        echo "<pre>";print_r($default_thumbnail_image_url);echo "</pre>";
                         foreach ($items as $item) 
                         {
                             unset($thumbnail_image_url);
