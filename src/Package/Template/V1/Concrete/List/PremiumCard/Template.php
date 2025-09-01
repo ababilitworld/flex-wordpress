@@ -85,26 +85,26 @@ class Template extends BaseTemplate
                 <main class="fa-deed-list-container">
                     <div class="fa-deed-list">
                         <?php 
-                            foreach ($items as $item) 
-                            {
-                               $thumbnail = get_the_post_thumbnail_url($item->thumbnail_id, 'large') ?: home_url('uploads/flex-image/flex-image-placeholder.png');
-                            ?>
-                                <article class="fa-deed-card">
-                                    
-                                    <div class="fa-deed-image" style="background-image: url('<?php echo esc_url($thumbnail); ?>')"></div>
-                                    
-                                    <div class="fa-deed-content">
-                                        
-                                        <h3><?php echo esc_html($item->name); ?></h3>
-
-                                        <div class="fa-deed-meta">
-                                            <span><i class="fas fa-file-alt"></i> <?php echo esc_html('1'); ?></span>
-                                        </div>
-                                        <div class="fa-deed-footer">
-                                            <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
-                                        </div>
+                        // Default Thumbnail Image Url
+                        $default_thumbnail_image_url = home_url('/wp-content/uploads/flex-image/flex-image-placeholder.png');
+                            
+                        foreach ($items as $item) 
+                        {
+                            unset($thumbnail_image_url);
+                            $thumbnail_image_url = $item->thumbnail_id ? get_the_post_thumbnail_url($item->thumbnail_id, 'large') : $default_thumbnail_image_url;
+                        ?>
+                            <article class="fa-deed-card">
+                                <div class="fa-deed-image" style="background-image: url('<?php echo esc_url($thumbnail_image_url); ?>')"></div>
+                                <div class="fa-deed-content">
+                                    <h3><?php echo esc_html($item->name); ?></h3>
+                                    <div class="fa-deed-meta">
+                                        <span><i class="fas fa-file-alt"></i> <?php echo esc_html('1'); ?></span>
                                     </div>
-                                </article>
+                                    <div class="fa-deed-footer">
+                                        <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
+                                    </div>
+                                </div>
+                            </article>
                         <?php } ?>
                     </div>
                 </main>
