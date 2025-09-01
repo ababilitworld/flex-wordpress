@@ -90,8 +90,15 @@ class Template extends BaseTemplate
                         echo "<pre>";print_r($default_thumbnail_image_url);echo "</pre>";
                         foreach ($items as $item) 
                         {
-                            unset($thumbnail_image_url);
-                            $thumbnail_image_url = $item->thumbnail_id ? get_the_post_thumbnail_url($item->thumbnail_id, 'large') : $default_thumbnail_image_url;
+                            $thumbnail_image_url = '';
+                            if (!empty($item->thumbnail_id) && get_the_post_thumbnail_url($item->thumbnail_id, 'large')) 
+                            {
+                                $thumbnail_image_url = get_the_post_thumbnail_url($item->thumbnail_id, 'large');
+                            }
+                            else
+                            {
+                                $thumbnail_image_url = $default_thumbnail_image_url;
+                            }
                         ?>
                             <article class="fa-deed-card">
                                 <div class="fa-deed-image" style="background-image: url('<?php echo esc_url($thumbnail_image_url); ?>')"></div>
