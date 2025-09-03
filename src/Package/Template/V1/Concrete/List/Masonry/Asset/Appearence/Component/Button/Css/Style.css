@@ -1,4 +1,4 @@
-.ababilithub .layout .fa-view-btn {
+.ababilithub .layout .layout-item .fa-view-btn {
     padding: 0.5rem 1rem;
     background: linear-gradient(135deg, var(--fa-primary) 0%, var(--fa-primary-dark) 100%);
     color: var(--fa-white);
@@ -16,7 +16,7 @@
     height: 2.1rem;
 }
 
-.ababilithub .layout .fa-view-btn:hover 
+.ababilithub .layout .layout-item .fa-view-btn:hover 
 {
     background: linear-gradient(135deg, var(--fa-primary-dark) 0%, #254eda 100%);
     color: white;
@@ -25,12 +25,12 @@
     text-decoration: none;
 }
 
-.ababilithub .layout .fa-view-btn:active 
+.ababilithub .layout .layout-item .fa-view-btn:active 
 {
     transform: translateY(1px) scale(0.98);
 }
 
-.ababilithub .layout .fa-view-btn::before 
+.ababilithub .layout .layout-item .fa-view-btn::before 
 {
     content: "";
     position: absolute;
@@ -45,7 +45,7 @@
     transform-origin: 50% 50%;
 }
 
-.ababilithub .layout .fa-view-btn:hover::before 
+.ababilithub .layout .layout-item .fa-view-btn:hover::before 
 {
     animation: fa-ripple 1s ease-out;
 }

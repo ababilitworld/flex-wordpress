@@ -105,8 +105,8 @@ class Template extends BaseTemplate
                 ?>
                     <div class="layout-item">
                         <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
-                        <h3><?php echo esc_html($item->name);?></h3>
-                        <div class="fa-template-premium-card-footer">
+                        <div class="footer">
+                            <h3><?php echo esc_html($item->name);?></h3>
                             <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
                         </div>
                     </div>
