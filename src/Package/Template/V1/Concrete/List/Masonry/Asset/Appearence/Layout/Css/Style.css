@@ -19,8 +19,9 @@
     border-radius: .3rem;
     padding: 1.20rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;    
-    overflow: hidden;    
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    position: relative;
 }
 
 .layout-item:hover 
@@ -42,9 +43,8 @@
     transition: opacity 0.4s ease;
     z-index: 1;
 }
-        
-.layout-item::before:hover 
-{
+
+.layout-item:hover::before {
     opacity: 1;
 }
 
