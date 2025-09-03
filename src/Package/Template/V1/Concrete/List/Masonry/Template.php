@@ -38,21 +38,28 @@ class Template extends BaseTemplate
 
         wp_enqueue_style(
             $this->asset_base_prefix.'-layout-masonry-style', 
-            $this->asset_base_url.'Asset/Appearence/Layout/Css/Style.css',
+            $this->asset_base_url.'Appearence/Layout/Css/Style.css',
             array(), 
             time()
         );
 
         wp_enqueue_style(
             $this->asset_base_prefix.'-component-button-style', 
-            $this->asset_base_url.'Asset/Appearence/Component/Button/Css/Style.css',
+            $this->asset_base_url.'Appearence/Component/Button/Css/Style.css',
             array(), 
             time()
         );
 
         wp_enqueue_style(
             $this->asset_base_prefix.'-component-h3-style', 
-            $this->asset_base_url.'Asset/Appearence/Component/H3/Css/Style.css',
+            $this->asset_base_url.'Appearence/Component/H3/Css/Style.css',
+            array(), 
+            time()
+        );
+
+        wp_enqueue_style(
+            $this->asset_base_prefix.'-component-footer-style', 
+            $this->asset_base_url.'Appearence/Component/Footer/Css/Style.css',
             array(), 
             time()
         );
