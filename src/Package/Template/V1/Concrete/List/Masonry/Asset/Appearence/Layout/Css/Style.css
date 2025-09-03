@@ -24,30 +24,6 @@
     position: relative;
 }
 
-.layout-item:hover 
-{
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-.layout-item::before 
-{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(44, 62, 80, 0.7);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-}
-
-.layout-item:hover::before {
-    opacity: 1;
-}
-
 /* Ensure the image is resized to fit within the layout item */
 .ababilithub .layout.masonry .layout-item img 
 {
@@ -56,6 +32,32 @@
     object-fit: fill; /* Ensure the image covers the space without distortion */
     border-radius: .3rem; /* Optional: make the image corners rounded */
 }
+
+.ababilithub .layout.masonry .layout-item img:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.ababilithub .layout.masonry .layout-item img::before 
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+    height: 90%;
+    background: rgba(44, 62, 80, 0.7);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.ababilithub .layout.masonry .layout-item img:hover::before 
+{
+    opacity: 1;
+}
+
 
 /* Center the title text */
 .ababilithub .layout.masonry .layout-item .title 
