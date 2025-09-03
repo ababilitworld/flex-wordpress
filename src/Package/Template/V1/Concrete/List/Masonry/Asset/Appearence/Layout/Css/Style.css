@@ -23,13 +23,7 @@
     overflow: hidden;    
 }
 
-.layout-item:hover 
-{
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-.layout-item::before 
+.ababilithub .layout.masonry .layout-item::before 
 {
     content: '';
     position: absolute;
