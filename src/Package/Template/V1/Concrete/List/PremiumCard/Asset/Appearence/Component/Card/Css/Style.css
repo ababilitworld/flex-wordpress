@@ -1,0 +1,74 @@
+/* Cards Grid */
+.fa-template-premium-card-list-container 
+{
+    grid-area: cards;
+}
+
+.fa-template-premium-card-list 
+{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.fa-template-premium-card-card 
+{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: var(--fa-white);
+    border-radius: var(--fa-border-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: var(--fa-transition);
+}
+
+.fa-template-premium-card-card:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.fa-template-premium-card-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+
+.fa-template-premium-card-content 
+{
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.fa-template-premium-card-content h3 
+{
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.fa-template-premium-card-meta 
+{
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: start;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--fa-dark-gray);
+}
+
+.fa-template-premium-card-footer 
+{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--fa-medium-gray);
+}
+
+.fa-template-premium-card-price 
+{
+    font-weight: 600;
+    color: var(--fa-primary);
+}

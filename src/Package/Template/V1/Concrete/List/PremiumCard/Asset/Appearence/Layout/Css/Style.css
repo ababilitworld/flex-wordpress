@@ -1,0 +1,47 @@
+/* Mobile-first styles */
+.fa-list-premium-card-layout 
+{
+    max-width: 100vw;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr; /* One column by default */
+    grid-template-rows: auto;
+    justify-content: start;
+    align-items: center;
+    grid-gap: 1.5rem;
+    margin: 0 auto; /* Center the grid on the screen */
+    padding: 1rem;
+}
+
+/* Tablet and iPad styles */
+@media (min-width: 768px) 
+{
+    .fa-list-premium-card-layout 
+    {
+        grid-template-columns: 1fr 1fr; /* Two columns layout for tablet */
+        grid-gap: 1.5rem; /* Add some spacing between items */
+    }
+}
+
+/* Desktop and larger screens */
+@media (min-width: 1024px) 
+{
+    .fa-list-premium-card-layout 
+    {
+        grid-template-columns: repeat(3, 1fr); /* Three columns for desktop */
+        max-width: 100vw; /* Constrain max width to prevent too much stretching on large screens */
+        margin: 0 auto; /* Center the grid on the screen */
+        grid-gap: 1.5rem; /* Increased spacing for desktop view */
+    }
+}
+
+/* Large screens (like TV) */
+@media (min-width: 1440px) 
+{
+    .fa-list-premium-card-layout 
+    {
+        grid-template-columns: repeat(4, 1fr); /* Four columns layout for very large screens */
+        grid-gap: 1.5rem; /* Further increased spacing for large screens */
+        padding: 1rem; /* Add padding to the container */
+    }
+}
