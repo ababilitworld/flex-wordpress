@@ -70,7 +70,7 @@ class Template extends BaseTemplate
         
         ob_start();
         ?>
-        <div class="fa-deed-app">
+        <div class="fa-template-premium-card-app">
             <!-- Search Panel -->
             <div class="fa-search-panel">
                 <input type="text" class="fa-search-input" placeholder="Search deeds by location, type, or ID...">
@@ -79,11 +79,11 @@ class Template extends BaseTemplate
                 </button>
             </div>
 
-            <div class="fa-deed-container">
+            <div class="fa-template-premium-card-container">
 
                 <!-- Main Content -->
-                <main class="fa-deed-list-container">
-                    <div class="fa-deed-list">
+                <main class="fa-template-premium-card-list-container">
+                    <div class="fa-template-premium-card-list">
                         <?php 
                         // Default Thumbnail Image Url
                         $default_thumbnail_image_url = home_url('/wp-content/uploads/flex-image/flex-image-placeholder.png');
@@ -100,14 +100,14 @@ class Template extends BaseTemplate
                                 $thumbnail_image_url = $default_thumbnail_image_url;
                             }
                         ?>
-                            <article class="fa-deed-card">
-                                <div class="fa-deed-image" style="background-image: url('<?php echo esc_url($thumbnail_image_url); ?>')"></div>
-                                <div class="fa-deed-content">
+                            <article class="fa-template-premium-card-card">
+                                <div class="fa-template-premium-card-image" style="background-image: url('<?php echo esc_url($thumbnail_image_url); ?>')"></div>
+                                <div class="fa-template-premium-card-content">
                                     <h3><?php echo esc_html($item->name); ?></h3>
-                                    <div class="fa-deed-meta">
+                                    <div class="fa-template-premium-card-meta">
                                         <span><i class="fas fa-file-alt"></i> <?php echo esc_html('1'); ?></span>
                                     </div>
-                                    <div class="fa-deed-footer">
+                                    <div class="fa-template-premium-card-footer">
                                         <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
                                     </div>
                                 </div>

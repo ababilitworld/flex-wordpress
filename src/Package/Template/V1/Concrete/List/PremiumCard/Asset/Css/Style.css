@@ -12,7 +12,7 @@
     --fa-transition: all 0.3s ease;
 }
 
-.fa-deed-app {
+.fa-template-premium-card-app {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -52,7 +52,7 @@
     background: var(--fa-primary-dark);
 }
 
-.fa-deed-container {
+.fa-template-premium-card-container {
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 1.5rem;
@@ -202,17 +202,17 @@
     cursor: pointer;
 }
 
-.fa-deed-list-container {
+.fa-template-premium-card-list-container {
     flex: 1;
 }
 
-.fa-deed-list {
+.fa-template-premium-card-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
 }
 
-.fa-deed-card {
+.fa-template-premium-card-card {
     background: var(--fa-white);
     border-radius: var(--fa-border-radius);
     overflow: hidden;
@@ -220,27 +220,27 @@
     transition: var(--fa-transition);
 }
 
-.fa-deed-card:hover {
+.fa-template-premium-card-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 }
 
-.fa-deed-image {
+.fa-template-premium-card-image {
     height: 200px;
     background-size: cover;
     background-position: center;
 }
 
-.fa-deed-content {
+.fa-template-premium-card-content {
     padding: 1.5rem;
 }
 
-.fa-deed-content h3 {
+.fa-template-premium-card-content h3 {
     margin: 0 0 0.5rem;
     font-size: 1.25rem;
 }
 
-.fa-deed-meta {
+.fa-template-premium-card-meta {
     display: flex;
     gap: 1rem;
     font-size: 0.875rem;
@@ -248,7 +248,7 @@
     margin-bottom: 1rem;
 }
 
-.fa-deed-footer {
+.fa-template-premium-card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -256,7 +256,7 @@
     border-top: 1px solid var(--fa-medium-gray);
 }
 
-.fa-deed-price {
+.fa-template-premium-card-price {
     font-weight: 600;
     color: var(--fa-primary);
 }
@@ -347,12 +347,15 @@
     }
 }
 
-@media (max-width: 992px) {
-    .fa-deed-container {
+@media (max-width: 787px) 
+{
+    .fa-template-premium-card-container 
+    {
         grid-template-columns: 1fr;
     }
     
-    .fa-filter-sidebar {
+    .fa-filter-sidebar 
+    {
         position: static;
     }
 }
