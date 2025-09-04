@@ -1,5 +1,7 @@
-.ababilithub .layout .layout-item .footer 
+.ababilithub .layout .layout-item .header 
 {
+    position: relative;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
