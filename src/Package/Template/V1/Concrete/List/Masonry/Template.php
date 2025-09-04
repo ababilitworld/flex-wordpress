@@ -111,9 +111,13 @@ class Template extends BaseTemplate
                         }
                 ?>
                     <div class="layout-item">
-                        <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
-                        <div class="footer">
+                        <div class="header">
                             <h3><?php echo esc_html($item->name);?></h3>
+                        </div>
+                        <div class="content">
+                            <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
+                        </div>
+                        <div class="footer">
                             <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
                         </div>
                     </div>

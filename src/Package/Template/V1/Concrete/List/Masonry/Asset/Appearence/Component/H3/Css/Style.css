@@ -1,4 +1,4 @@
-.ababilithub .layout.masonry .layout-item h3 
+.ababilithub .layout.masonry .layout-item .header h3 
 {
     margin: 0 auto;
     font-size: 1.25rem;
@@ -7,16 +7,16 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(50%, 50%);
     opacity: 0;
     transition: opacity 0.3s ease;
-    z-index: 99999;
-    font-weight: 600;
+    z-index: 9999;
+    font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     width: 80%;
 }
 
-.ababilithub .layout.masonry .layout-item image:hover h3 
+.ababilithub .layout.masonry .layout-item .content:hover h3 
 {
     opacity: 1;
 }
