@@ -37,6 +37,13 @@ class Template extends BaseTemplate
         wp_enqueue_script('jquery-ui-slider');
 
         wp_enqueue_style(
+            $this->asset_base_prefix.'-theme-forest-green-style', 
+            $this->asset_base_url.'Appearence/Theme/Css/Style.css',
+            array(), 
+            time()
+        );
+
+        wp_enqueue_style(
             $this->asset_base_prefix.'-layout-masonry-style', 
             $this->asset_base_url.'Appearence/Layout/Css/Style.css',
             array(), 
@@ -44,8 +51,22 @@ class Template extends BaseTemplate
         );
 
         wp_enqueue_style(
-            $this->asset_base_prefix.'-component-button-style', 
-            $this->asset_base_url.'Appearence/Component/Button/Css/Style.css',
+            $this->asset_base_prefix.'-component-header-style', 
+            $this->asset_base_url.'Appearence/Component/Header/Css/Style.css',
+            array(), 
+            time()
+        );
+
+        wp_enqueue_style(
+            $this->asset_base_prefix.'-component-content-style', 
+            $this->asset_base_url.'Appearence/Component/Content/Css/Style.css',
+            array(), 
+            time()
+        );
+
+        wp_enqueue_style(
+            $this->asset_base_prefix.'-component-screen-style', 
+            $this->asset_base_url.'Appearence/Component/Screen/Css/Style.css',
             array(), 
             time()
         );
@@ -63,6 +84,13 @@ class Template extends BaseTemplate
             array(), 
             time()
         );
+
+        wp_enqueue_style(
+            $this->asset_base_prefix.'-component-button-style', 
+            $this->asset_base_url.'Appearence/Component/Button/Css/Style.css',
+            array(), 
+            time()
+        );        
 
         wp_enqueue_script(
             $this->asset_base_prefix.'-script', 
@@ -93,36 +121,39 @@ class Template extends BaseTemplate
         ?>
 
         <div class="ababilithub">
-            <div class="layout masonry">
-                <?php 
-                    // Default Thumbnail Image Url
-                    $default_thumbnail_image_url = home_url('/wp-content/uploads/flex-image/flex-image-placeholder.png');
+            <div class="theme forest-green">
+                <div class="layout masonry">
+                    <?php 
+                        // Default Thumbnail Image Url
+                        $default_thumbnail_image_url = home_url('/wp-content/uploads/flex-image/flex-image-placeholder.png');
+                    
+                        foreach ($items as $item) 
+                        {
+                            $thumbnail_image_url = '';
+                            if (!empty($item->thumbnail_id) && get_the_post_thumbnail_url($item->thumbnail_id, 'large')) 
+                            {
+                                $thumbnail_image_url = get_the_post_thumbnail_url($item->thumbnail_id, 'large');
+                            }
+                            else
+                            {
+                                $thumbnail_image_url = $default_thumbnail_image_url;
+                            }
+                    ?>
+                        <div class="layout-item">
+                            <div class="header">
+                                <h3><?php echo esc_html($item->name);?></h3>
+                            </div>
+                            <div class="content">
+                                <h3><?php echo esc_html($item->name);?></h3>
+                                <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
+                            </div>
+                            <div class="footer">
+                                <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
+                            </div>
+                        </div>
                 
-                    foreach ($items as $item) 
-                    {
-                        $thumbnail_image_url = '';
-                        if (!empty($item->thumbnail_id) && get_the_post_thumbnail_url($item->thumbnail_id, 'large')) 
-                        {
-                            $thumbnail_image_url = get_the_post_thumbnail_url($item->thumbnail_id, 'large');
-                        }
-                        else
-                        {
-                            $thumbnail_image_url = $default_thumbnail_image_url;
-                        }
-                ?>
-                    <div class="layout-item">
-                        <div class="header">
-                            <h3><?php echo esc_html($item->name);?></h3>
-                        </div>
-                        <div class="content">
-                            <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
-                        </div>
-                        <div class="footer">
-                            <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
-                        </div>
-                    </div>
-            
-                <?php } ?>
+                    <?php } ?>
+                </div>
             </div>
         </div>
         <?php

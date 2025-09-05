@@ -1,11 +1,4 @@
 .ababilithub .layout .layout-item .header 
 {
-    position: relative;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--fa-medium-gray);
+    
 }

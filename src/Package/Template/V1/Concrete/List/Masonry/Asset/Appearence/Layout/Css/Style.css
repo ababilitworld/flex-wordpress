@@ -9,37 +9,21 @@
 
 .ababilithub .layout.masonry .layout-item 
 {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    break-inside: avoid;
-    background-color: #fff;
+    position: relative;
     border: 1px solid #ddd;
     border-radius: .3rem;
     padding: 1.20rem;
+    background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    align-items: center;    
+    break-inside: avoid;
     overflow: hidden;
-    position: relative;
-}
-
-/* Ensure the image is resized to fit within the layout item */
-.ababilithub .layout.masonry .layout-item img 
-{
-    width: 100%; /* Make the image responsive */
-    height: 100%; /* Maintain the aspect ratio */
-    object-fit: fill; /* Ensure the image covers the space without distortion */
-    border-radius: .3rem; /* Optional: make the image corners rounded */
-}
-
-/* Center the title text */
-.ababilithub .layout.masonry .layout-item .title 
-{
-    text-align: center;
-    font-size: 1.3rem; /* Adjust font size as needed */
-    font-weight: bold;
-    margin-top: 0 auto; /* Add space between the image and the title */
+    
 }
 
 /* Every 3th item spans 2 rows */

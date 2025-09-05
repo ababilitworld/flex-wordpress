@@ -1,24 +1,35 @@
-.ababilithub .layout.masonry .layout-item .content:hover 
-{
-    transform: translateY(-5px);
+.ababilithub .layout.masonry .layout-item .content {
+    position: relative;
+}
+
+.ababilithub .layout.masonry .layout-item .content img {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.ababilithub .layout.masonry .layout-item .content img:hover {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
-.ababilithub .layout.masonry .layout-item .content::before 
-{
+.ababilithub .layout.masonry .layout-item .content::before {
     content: '';
+    /*/// Make the before element perfectly centered to parent */    
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 90%;
-    height: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /*///*/
+    width: 81%;
+    height: 81%;
+    border: 3px solid var(--fa-primary);
     background: rgba(44, 62, 80, 0.7);
+    color: var(--fa-primary);
     opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 9998;
+    transition: opacity 0.6s ease;
+    z-index: 1;
+    pointer-events: none; /* To allow hovering on the image */
 }
 
-.ababilithub .layout.masonry .layout-item .content:hover::before 
-{
+.ababilithub .layout.masonry .layout-item .content:hover::before {
     opacity: 1;
 }
+
