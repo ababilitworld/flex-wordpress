@@ -37,6 +37,13 @@ class Template extends BaseTemplate
         wp_enqueue_script('jquery-ui-slider');
 
         wp_enqueue_style(
+            $this->asset_base_prefix.'-animation-style', 
+            $this->asset_base_url.'Appearence/Animation/Css/Style.css',
+            array(), 
+            time()
+        );
+
+        wp_enqueue_style(
             $this->asset_base_prefix.'-theme-forest-green-style', 
             $this->asset_base_url.'Appearence/Theme/Css/Style.css',
             array(), 
@@ -141,15 +148,15 @@ class Template extends BaseTemplate
                     ?>
                         <div class="layout-item">
                             <div class="header">
-                                <h3><?php echo esc_html($item->name);?></h3>
+                                <h3><?php //echo esc_html($item->name);?></h3>
                             </div>
                             <div class="content">
                                 <h3><?php echo esc_html($item->name);?></h3>
                                 <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
                             </div>
-                            <div class="footer">
+                            <!-- <div class="footer">
                                 <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
-                            </div>
+                            </div> -->
                         </div>
                 
                     <?php } ?>

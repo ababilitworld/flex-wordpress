@@ -9,9 +9,9 @@
     width: 100%;
     text-align: center;
     /*///*/
-    font-size: 1.29rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    color: var(--fa-primary);
+    color: var(--fa-primary-light);
     opacity: 0;
     transition: opacity 0.3s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);  

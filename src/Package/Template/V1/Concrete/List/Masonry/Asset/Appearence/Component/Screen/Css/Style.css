@@ -7,7 +7,7 @@
 }
 
 .ababilithub .layout.masonry .layout-item .content img:hover {
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    box-shadow: 0;
 }
 
 .ababilithub .layout.masonry .layout-item .content::before {
@@ -16,11 +16,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0);
     /*///*/
     width: 81%;
     height: 81%;
     border: 3px solid var(--fa-primary);
+    border-radius: 100%;
     background: rgba(44, 62, 80, 0.7);
     color: var(--fa-primary);
     opacity: 0;
@@ -30,6 +31,11 @@
 }
 
 .ababilithub .layout.masonry .layout-item .content:hover::before {
-    opacity: 1;
+    border-radius: 0;
+    background: linear-gradient(135deg, var(--fa-primary-dark) 0%, #254eda 100%);
+    box-shadow: 0 6px 16px rgba(51, 102, 255, 0.4);
+    opacity: .60;
+    transform: translate(-50%, -50%) scale(1);
+    animation: ripple .60s ease-out;
 }
 
