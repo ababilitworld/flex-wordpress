@@ -78,7 +78,7 @@ abstract class Posttype implements PosttypeContract
         $this->metas = $metas;
     }
 
-    public function add_action_view_details($actions, \WP_Post $post) 
+    public function row_action_view_details($actions, \WP_Post $post) 
     {
         // Check if this is our taxonomy
         if ($post->post_type !== $this->posttype) 

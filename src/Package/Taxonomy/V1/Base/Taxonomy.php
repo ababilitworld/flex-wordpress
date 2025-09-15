@@ -27,6 +27,7 @@ abstract class Taxonomy implements TaxonomyContract
         register_taxonomy($this->slug, $this->post_types, $this->args);
 
         // Add hooks for term image/icon fields
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
         add_action("{$this->slug}_add_form_fields", [$this, 'add_term_image_field'], 10, 2);
         add_action("{$this->slug}_edit_form_fields", [$this, 'edit_term_image_field'], 10, 2);
         add_action("created_{$this->slug}", [$this, 'save_term_image']);
@@ -36,6 +37,24 @@ abstract class Taxonomy implements TaxonomyContract
         add_filter("manage_edit-{$this->slug}_columns", [$this, 'add_image_column']);
         add_filter("manage_{$this->slug}_custom_column", [$this, 'add_image_column_content'], 10, 3);
     }
+
+    public function enqueue_admin_scripts($hook): void
+    {
+         // Only load on taxonomy pages
+        if ($hook == 'term.php' || $hook == 'edit-tags.php') 
+        {
+            wp_enqueue_media();
+            wp_enqueue_script(
+                "taxonomy-{$this->slug}-media-uploader", 
+                get_template_directory_uri() . '/js/taxonomy-media-uploader.js', 
+                array('jquery'), time(), true);
+            wp_enqueue_style(
+                "taxonomy-{$this->slug}-media-uploader",
+                get_template_directory_uri() . '/css/taxonomy-media-uploader.css'
+            );
+        }
+    }
+    
 
     protected function set_post_types(array $post_types): void
     {
@@ -106,7 +125,7 @@ abstract class Taxonomy implements TaxonomyContract
     /**
      * Add "View Metas" action link to term list rows
      */
-    public function add_action_view_details(array $actions, \WP_Term $term): array
+    public function row_action_view_details(array $actions, \WP_Term $term): array
     {
         // Check if this is our taxonomy
         if ($term->taxonomy !== $this->taxonomy) 
