@@ -25,17 +25,6 @@ abstract class Taxonomy implements TaxonomyContract
     public function register(): void
     {
         register_taxonomy($this->slug, $this->post_types, $this->args);
-
-        // Add hooks for term image/icon fields
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
-        add_action("{$this->slug}_add_form_fields", [$this, 'add_term_image_field'], 10, 2);
-        add_action("{$this->slug}_edit_form_fields", [$this, 'edit_term_image_field'], 10, 2);
-        add_action("created_{$this->slug}", [$this, 'save_term_image']);
-        add_action("edited_{$this->slug}", [$this, 'save_term_image']);
-        
-        // Add column to term list
-        add_filter("manage_edit-{$this->slug}_columns", [$this, 'add_image_column']);
-        add_filter("manage_{$this->slug}_custom_column", [$this, 'add_image_column_content'], 10, 3);
     }
 
     public function enqueue_admin_scripts($hook): void
