@@ -1,0 +1,14 @@
+.forest-green {
+    --fa-primary-light: #00ffa2;
+    --fa-primary: #04aa6d;
+    --fa-primary-dark: #03744a;
+    --fa-text-color: #1f2937;
+    --fa-light-gray: #f3f4f6;
+    --fa-medium-gray: #e5e7eb;
+    --fa-dark-gray: #6b7280;
+    --fa-white: #ffffff;
+    --fa-badge-bg:  #4338ca;
+    --fa-badge-text: #e0e7ff;
+    --fa-border-radius: 0.5rem;
+    --fa-transition: all 0.3s ease;
+}

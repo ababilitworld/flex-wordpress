@@ -27,7 +27,7 @@ abstract class Taxonomy implements TaxonomyContract
         register_taxonomy($this->slug, $this->post_types, $this->args);
     }
 
-    public function enqueue_admin_scripts($hook): void
+    public function enqueue_common_admin_scripts($hook): void
     {
          // Only load on taxonomy pages
         if ($hook == 'term.php' || $hook == 'edit-tags.php') 
@@ -36,7 +36,10 @@ abstract class Taxonomy implements TaxonomyContract
             wp_enqueue_script(
                 "taxonomy-{$this->slug}-media-uploader", 
                 get_template_directory_uri() . '/js/taxonomy-media-uploader.js', 
-                array('jquery'), time(), true);
+                array('jquery'), 
+                time(), 
+                true
+            );
             wp_enqueue_style(
                 "taxonomy-{$this->slug}-media-uploader",
                 get_template_directory_uri() . '/css/taxonomy-media-uploader.css'
