@@ -3,7 +3,7 @@ namespace Ababilithub\FlexWordpress\Package\TermMeta\V1\Mixin;
 
 trait TermMeta
 {
-    private function is_valid_save($term_id, $term_taxonomy_id) 
+    private function is_valid_save($term_id) 
     {
         $term = get_term($term_id);
         if (is_wp_error($term) || !$term) 
@@ -12,7 +12,7 @@ trait TermMeta
         }
             
         $taxonomy = $term->taxonomy;
-        
+
         // // Verify nonce
         // if (!isset($_POST['deed_deeds_nonce']) || 
         //     !wp_verify_nonce($_POST['deed_deeds_nonce'], 'deed_deeds_nonce')) {
