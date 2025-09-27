@@ -117,4 +117,14 @@ abstract class Taxonomy implements TaxonomyContract
 
         return $actions;
     }
+
+    public function add_form_fields($taxonomy): void
+    {
+        $this->render($taxonomy,null);
+    }
+
+    public function edit_form_fields($term, $taxonomy): void
+    {
+        $this->render($taxonomy,$term);
+    }
 }
