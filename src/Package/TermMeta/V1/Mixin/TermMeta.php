@@ -35,6 +35,28 @@ trait TermMeta
         return taxonomy_exists($taxonomy) && $taxonomy === $this->taxonomy;
     }
 
+    private function save_select_field($term_id, $meta_key, $meta_value) 
+    {
+        if (isset($_POST[$meta_key]) && !empty($_POST[$meta_key])) 
+        {
+            if (is_array($_POST[$meta_key])) 
+            {
+                // Multiple values
+                $values = array_map('sanitize_text_field', $_POST[$meta_key]);
+                update_term_meta($term_id, $meta_key, array_filter($values));
+            } 
+            else 
+            {
+                // Single value
+                update_term_meta($term_id, $meta_key, sanitize_text_field($_POST[$meta_key]));
+            }
+        } 
+        else 
+        {
+            delete_term_meta($term_id, $meta_key);
+        }
+    }
+
     private function save_text_field($term_id, $meta_key, $meta_value) 
     {
         if (isset($_POST[$meta_key])) 
