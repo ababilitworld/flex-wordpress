@@ -137,9 +137,9 @@ class Template extends BaseTemplate
                         foreach ($items as $item) 
                         {
                             $thumbnail_image_url = '';
-                            if (!empty($item->thumbnail_id) && get_the_post_thumbnail_url($item->thumbnail_id, 'large')) 
+                            if (!empty($item->thumbnail_id) && wp_attachment_is_image($item->thumbnail_id)) 
                             {
-                                $thumbnail_image_url = get_the_post_thumbnail_url($item->thumbnail_id, 'large');
+                                $thumbnail_image_url = wp_get_attachment_url($item->thumbnail_id);
                             }
                             else
                             {
