@@ -145,9 +145,9 @@ class Template extends BaseTemplate
                             {
                                 $thumbnail_image_url = $default_thumbnail_image_url;
                             }
-                            $item_data = json_encode($item);
+                            
                     ?>
-                        <div class="layout-item" data-item="<?php echo $item_data;?>">
+                        <div class="layout-item" data-layout-item="<?php echo $item->data;?>">
                             <div class="header">
                                 <h3><?php //echo esc_html($item->name);?></h3>
                             </div>
