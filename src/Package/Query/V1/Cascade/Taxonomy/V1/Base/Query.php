@@ -1,5 +1,5 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Query\V1\Cascade\Taxomomy\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\Query\V1\Cascade\Taxonomy\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
