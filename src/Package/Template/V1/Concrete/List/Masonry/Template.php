@@ -155,9 +155,9 @@ class Template extends BaseTemplate
                                 <h3><?php echo esc_html($item->name);?></h3>
                                 <img src="<?php echo esc_url($thumbnail_image_url);?>" alt="<?php echo esc_attr($item->name);?>">
                             </div>
-                            <!-- <div class="footer">
-                                <a href="<?php the_permalink(); ?>" class="fa-view-btn">View Details</a>
-                            </div> -->
+                            <div class="footer">
+                                <a href="<?php echo esc_attr($item->url); ?>" class="fa-view-btn">View Details</a>
+                            </div>
                         </div>
                 
                     <?php } ?>
