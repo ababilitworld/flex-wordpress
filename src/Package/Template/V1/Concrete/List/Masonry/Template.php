@@ -147,7 +147,7 @@ class Template extends BaseTemplate
                             }
                             
                     ?>
-                        <div class="layout-item" data-layout-item="<?php echo $item->data;?>">
+                        <div class="layout-item" data-layout-item="<?php echo esc_attr($item->data);?>">
                             <div class="header">
                                 <h3><?php //echo esc_html($item->name);?></h3>
                             </div>
