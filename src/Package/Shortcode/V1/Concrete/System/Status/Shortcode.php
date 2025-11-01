@@ -7,13 +7,9 @@ use Ababilithub\{
     FlexWordpress\Package\Shortcode\V1\Base\Shortcode as BaseShortcode
 };
 
-use const Ababilithub\FlexELand\{
-    PLUGIN_PRE_UNDS,
-    PLUGIN_PRE_HYPH
-};
-
 class Shortcode extends BaseShortcode
 {
+    private const PLUGIN_PRE_UNDS = 'ababilithub_server';
     private $is_windows;
 
     public function init(): void
@@ -34,8 +30,8 @@ class Shortcode extends BaseShortcode
 
     public function init_hooks(): void
     {
-        add_action(PLUGIN_PRE_UNDS.'_system_status_before_render', [$this, 'before_render']);
-        add_action(PLUGIN_PRE_UNDS.'_system_status_after_render', [$this, 'after_render']);
+        add_action(self::PLUGIN_PRE_UNDS.'_system_status_before_render', [$this, 'before_render']);
+        add_action(self::PLUGIN_PRE_UNDS.'_system_status_after_render', [$this, 'after_render']);
     }
 
     public function render(array $attributes): string
@@ -52,7 +48,7 @@ class Shortcode extends BaseShortcode
 
         ob_start();
         
-        do_action(PLUGIN_PRE_UNDS.'_system_status_before_render', $data);
+        do_action(self::PLUGIN_PRE_UNDS.'_system_status_before_render', $data);
         
         switch($params['style']) {
             case 'simple':
@@ -66,7 +62,7 @@ class Shortcode extends BaseShortcode
                 echo $this->render_card_status($data, $params);
         }
         
-        do_action(PLUGIN_PRE_UNDS.'_system_status_after_render', $data);
+        do_action(self::PLUGIN_PRE_UNDS.'_system_status_after_render', $data);
         
         return ob_get_clean();
     }
