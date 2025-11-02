@@ -1,7 +1,7 @@
 <?php 
-namespace Ababilithub\FlexWordpress\Package\Postmeta\V1\Contract;
+namespace Ababilithub\FlexWordpress\Package\PostMeta\V1\Contract;
 
-interface Postmeta
+interface PostMeta
 {
     public function init(): void;
     public function register(): void;

@@ -1,14 +1,14 @@
 <?php
 
-namespace Ababilithub\FlexWordpress\Package\Postmeta\V1\Base;
+namespace Ababilithub\FlexWordpress\Package\PostMeta\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Postmeta\V1\Contract\Postmeta as PostmetaContract
+    FlexWordpress\Package\PostMeta\V1\Contract\PostMeta as PostMetaContract
 };
 
-abstract class Postmeta implements PostmetaContract
+abstract class PostMeta implements PostMetaContract
 {
     protected string $post_type;
     protected string $post_slug;
