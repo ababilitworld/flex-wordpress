@@ -1,5 +1,5 @@
 <?php
-namespace Ababilithub\FlexWordpress\Package\Postmeta\V1\Mixin;
+namespace Ababilithub\FlexWordpress\Package\PostMeta\V1\Mixin;
 
 trait PostMeta
 {
