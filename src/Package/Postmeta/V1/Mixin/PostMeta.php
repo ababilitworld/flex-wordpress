@@ -2,10 +2,10 @@
 namespace Ababilithub\FlexWordpress\Package\Postmeta\V1\Mixin;
 
 trait PostMeta
-{ 
+{
     private function is_valid_save($post_id, $post) 
-    {
-        // // Verify nonce
+    {   
+        // Verify nonce
         // if (!isset($_POST['deed_deeds_nonce']) || 
         //     !wp_verify_nonce($_POST['deed_deeds_nonce'], 'deed_deeds_nonce')) {
         //     return false;
