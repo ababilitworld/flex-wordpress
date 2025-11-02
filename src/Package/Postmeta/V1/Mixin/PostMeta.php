@@ -2,7 +2,7 @@
 namespace Ababilithub\FlexWordpress\Package\Postmeta\V1\Mixin;
 
 trait PostMeta
-{
+{ 
     private function is_valid_save($post_id, $post) 
     {
         // // Verify nonce
