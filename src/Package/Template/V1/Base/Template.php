@@ -16,7 +16,7 @@ abstract class Template implements TemplateContract
     }
 
     abstract public function init(array $data = []) : static;
-    
+    public function register(): void{}
     abstract public function render() : bool|string;
 
 }
