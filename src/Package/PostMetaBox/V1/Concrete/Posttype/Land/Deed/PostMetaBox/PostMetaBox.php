@@ -39,7 +39,7 @@ class PostMetaBox extends BasePostMetaBox
                         </ul>
                     </div>
                     <main class="content-area">
-                        <?php do_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_content', $post_id); ?>
+                        <?php do_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_item_content', $post_id); ?>
                     </main>
                 </div>
             </div>

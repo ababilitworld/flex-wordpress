@@ -40,7 +40,7 @@ class OptionBoxContent extends BaseOptionBoxContent
     public function init_hook() : void
     {
         add_action($this->unique_id.'_'.'meta_box_tab_item',[$this,'tab_item']);
-        add_action($this->unique_id.'_'.'meta_box_tab_content', [$this,'tab_content']);
+        add_action($this->unique_id.'_'.'meta_box_tab_item_content', [$this,'tab_content']);
         add_action('admin_init', [$this, 'save_options']);
     }
 

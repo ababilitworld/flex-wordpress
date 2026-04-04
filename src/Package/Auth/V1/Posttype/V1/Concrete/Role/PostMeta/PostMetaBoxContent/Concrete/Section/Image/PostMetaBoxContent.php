@@ -42,7 +42,7 @@ class PostMetaBoxContent extends BasePostMetaBoxContent
     public function init_hook() : void
     {
         add_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_item',[$this,'tab_item']);
-        add_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_content', [$this,'tab_content']);
+        add_action(PLUGIN_PRE_UNDS.'_'.$this->posttype.'_'.'meta_box_tab_item_content', [$this,'tab_content']);
         //add_action('save_post', [$this, 'save'], 10, 3);
     }
 
