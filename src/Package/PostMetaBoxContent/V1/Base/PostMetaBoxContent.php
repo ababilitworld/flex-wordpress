@@ -33,17 +33,12 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
     public function tab_item() : void
     {
         ?>
-        <!-- <li class="tab-item <?php echo esc_attr($this->tab_item_status);?>" data-tab="<?php echo esc_attr($this->tab_item_id);?>">
-            <span href="#" class="tab-link">
-                <i class="<?php echo esc_attr($this->tab_item_icon);?>"></i>
-                <span class="tab-text"><?php echo esc_html($this->tab_item_label);?></span>
-            </span>
-        </li> -->
-        <li class="tab__item <?php echo esc_attr($this->tab_item_status);?>" data-tab="<?php echo esc_attr($this->tab_item_id);?>">
-            <span href="#" class="tab-link">
-                <i class="<?php echo esc_attr($this->tab_item_icon);?>"></i>
-                <span class="tab-text"><?php echo esc_html($this->tab_item_label);?></span>
-            </span>
+        <li class="faih-tab__item <?php echo esc_attr($this->tab_item_status);?>" data-tab="<?php echo esc_attr($this->tab_item_id);?>">
+            <a href="#" class="faih-tab__link">
+                <i class="faih-tab__icon <?php echo esc_attr($this->tab_item_icon);?>"></i>
+                <span class="faih-tab__text"><?php echo esc_html($this->tab_item_label);?></span>
+                <span class="faih-tab__badge"><?php echo esc_html($this->tab_item_count ?? '');?></span>
+            </a>
         </li>
         <?php
     }
@@ -51,14 +46,12 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
     public function tab_content() : void
     {
         ?>
-        <!-- <div class="tab-content <?php echo esc_attr($this->tab_item_status);?>" id="<?php echo esc_attr($this->tab_item_id);?>">
-            <h3><?php echo esc_html($this->tab_item_label);?></h3>
-            <?php $this->render(); ?>
-        </div> -->
-        <div class="tab__content <?php echo esc_attr($this->tab_item_status);?>" id="<?php echo esc_attr($this->tab_item_id);?>">
+        
+        <div class="faih-tab__content <?php echo esc_attr($this->tab_item_status);?>" id="<?php echo esc_attr($this->tab_item_id);?>">
             <h3><?php echo esc_html($this->tab_item_label);?></h3>
             <?php $this->render(); ?>
         </div>
+       
         <?php
     }
 }
