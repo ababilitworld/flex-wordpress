@@ -38,7 +38,7 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
             <a href="#" class="faih-tab__link">
                 <i class="faih-tab__icon <?php echo esc_attr($this->tab_item_icon);?>"></i>
                 <span class="faih-tab__text"><?php echo esc_html($this->tab_item_label);?></span>
-                <?php  if($this->tab_item_badge !== '') :?>
+                <?php  if(!empty($this->tab_item_badge)) :?>
                 <span class="faih-tab__badge"><?php echo esc_html($this->tab_item_badge);?></span>
                 <?php  endif ?>
             </a>
