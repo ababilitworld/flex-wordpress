@@ -78,6 +78,23 @@ abstract class Taxonomy implements TaxonomyContract
         }
     }
 
+    protected function generate_terms(array $array_terms = []): array 
+    {
+        $terms = [];
+
+        foreach ( $array_terms as $slug => $term ) 
+        {
+            $terms[] = $this->generate_term_data(
+                sanitize_title( $slug ),
+                sanitize_text_field( $term['name'] ),
+                sanitize_text_field( $term['description'] ),
+                $term['metas']
+            );
+        }
+
+        return $terms;
+    }
+
     protected function generate_term_data(
         string $slug,
         string $name,
