@@ -18,6 +18,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
     {
         protected $menu_items = [];
         protected $menu_filter_name = '';
+        protected $screen_rules = [];
         protected $type;
         protected $parent_slug;
         protected $page_title;
@@ -129,11 +130,40 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
             return false;
         }
 
-        abstract public function is_current_screen(): bool;
-
-        public function set_active_parent_menu( string $parent_file ): string
+        /**
+         * Determine whether the current WordPress screen matches this menu.
+         */
+        public function is_current_screen(): bool
         {
-            if ( $this->is_current_screen() ) 
+            $screen = get_current_screen();
+
+            if ( !$screen instanceof \WP_Screen || empty($this->screen_rules) )
+            {
+                return false;
+            }
+
+            foreach ($this->screen_rules as $property => $expected_values) 
+            {
+                if (!property_exists($screen, $property)) 
+                {
+                    return false;
+                }
+
+                $actual_value = $screen->{$property};
+                $expected_values = (array) $expected_values;
+
+                if (!in_array($actual_value, $expected_values, true)) 
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public function set_active_parent_menu(string $parent_file): string
+        {
+            if ($this->is_current_screen() && !empty($this->parent_slug)) 
             {
                 return $this->parent_slug;
             }
@@ -141,9 +171,9 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
             return $parent_file;
         }
 
-        public function set_active_submenu( ?string $submenu_file ): ?string
+        public function set_active_submenu(?string $submenu_file): ?string
         {
-            if ( $this->is_current_screen() ) 
+            if ($this->is_current_screen() && !empty($this->menu_slug)) 
             {
                 return $this->menu_slug;
             }
