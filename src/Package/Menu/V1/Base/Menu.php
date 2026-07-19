@@ -27,6 +27,7 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
         protected $menu_slug;
         protected $callback;
         protected $position;
+        protected $icon;
 
         /**
          * BaseMenu constructor
