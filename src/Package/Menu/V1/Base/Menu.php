@@ -18,6 +18,14 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
     {
         protected $menu_items = [];
         protected $menu_filter_name = '';
+        protected $type;
+        protected $parent_slug;
+        protected $page_title;
+        protected $menu_title;
+        protected $capability;
+        protected $menu_slug;
+        protected $callback;
+        protected $position;
 
         /**
          * BaseMenu constructor
