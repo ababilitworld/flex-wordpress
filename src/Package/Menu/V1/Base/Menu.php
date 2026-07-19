@@ -128,6 +128,28 @@ if ( ! class_exists( __NAMESPACE__.'\Menu' ) )
 
             return false;
         }
+
+        abstract public function is_current_screen(): bool;
+
+        public function set_active_parent_menu( string $parent_file ): string
+        {
+            if ( $this->is_current_screen() ) 
+            {
+                return $this->parent_slug;
+            }
+
+            return $parent_file;
+        }
+
+        public function set_active_submenu( ?string $submenu_file ): ?string
+        {
+            if ( $this->is_current_screen() ) 
+            {
+                return $this->menu_slug;
+            }
+
+            return $submenu_file;
+        }
     }
 
 }
