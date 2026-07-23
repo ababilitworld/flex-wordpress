@@ -34,14 +34,14 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
     public function tab_item() : void
     {
         ?>
-        <li class="faih-tab__item <?php echo esc_attr($this->tab_item_status);?>" data-tab="<?php echo esc_attr($this->tab_item_id);?>">
-            <a href="#" class="faih-tab__link">
+        <li class="faih-tab__item <?php echo esc_attr($this->tab_item_status);?>" role="presentation">
+            <button type="button" class="faih-tab__link" role="tab" data-tab="<?php echo esc_attr($this->tab_item_id);?>" aria-controls="<?php echo esc_attr($this->tab_item_id);?>" aria-selected="<?php echo $this->tab_item_status === 'active' ? 'true' : 'false'; ?>">
                 <i class="faih-tab__icon <?php echo esc_attr($this->tab_item_icon);?>"></i>
                 <span class="faih-tab__text"><?php echo esc_html($this->tab_item_label);?></span>
                 <?php  if(!empty($this->tab_item_badge)) :?>
                 <span class="faih-tab__badge"><?php echo esc_html($this->tab_item_badge);?></span>
                 <?php  endif ?>
-            </a>
+            </button>
         </li>
         <?php
     }
@@ -50,7 +50,7 @@ abstract class PostMetaBoxContent implements PostMetaBoxContentContract
     {
         ?>
         
-        <div class="faih-tab__content <?php echo esc_attr($this->tab_item_status);?>" id="<?php echo esc_attr($this->tab_item_id);?>">
+        <div class="faih-tab__content <?php echo esc_attr($this->tab_item_status);?>" id="<?php echo esc_attr($this->tab_item_id);?>" role="tabpanel">
             <h3><?php echo esc_html($this->tab_item_label);?></h3>
             <?php $this->render(); ?>
         </div>
