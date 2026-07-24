@@ -6,4 +6,5 @@ namespace Ababilithub\FlexWordpress\Package\Template\V1\Contract;
 interface Template
 {
     public function init(array $data = []): static;
+    public function render() : bool|string;
 }
