@@ -1,13 +1,10 @@
 <?php
 namespace Ababilithub\FlexWordpress\Package\Query\V1\Contract;
 
-(defined('ABSPATH') && defined('WPINC')) || exit();
+use WP_Query;
 
-interface Query 
+interface Query
 {
     public function init(array $data = []): static;
-    public function set_custom_args(array $args, string $option = 'merge'): static;
-    public function get_args(): array;
-    public function reset(): static;
-    
+    public function query() : WP_Query;
 }
