@@ -55,4 +55,49 @@ abstract class Template implements TemplateContract
     {
         return $this->config[$key] ?? $default;
     }
+
+    /**
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    protected function resolve_config(array $data): array
+    {
+        $config = isset($data['config']) && is_array($data['config'])
+            ? $data['config']
+            : $data;
+
+        return array_replace_recursive($this->config, $config);
+    }
+
+    /**
+     * @param mixed $attributes
+     */
+    protected function build_classes(
+        string $type,
+        string $size,
+        string $color,
+        mixed $attributes
+    ): string {
+        $classes = sprintf(
+            'faih-pagination type-%s size-%s color-%s',
+            sanitize_html_class($type),
+            sanitize_html_class($size),
+            sanitize_html_class($color)
+        );
+
+        foreach ((array) $attributes as $attribute) {
+            if (!is_scalar($attribute)) {
+                continue;
+            }
+
+            $attribute = sanitize_html_class((string) $attribute);
+
+            if ($attribute !== '') {
+                $classes .= ' attribute-' . $attribute;
+            }
+        }
+
+        return $classes;
+    }
 }
