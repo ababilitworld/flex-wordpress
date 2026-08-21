@@ -226,4 +226,5 @@ abstract class Pagination implements PaginationContract
 
         return $this;
     }
+
 }

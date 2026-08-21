@@ -67,4 +67,23 @@ interface Pagination
      * @return string
      */
     public function html(): string;
+
+    public function get_config(): array;
+
+    public function set_config(array $config): static;
+
+    public function get_default_config(): array;
+
+    public function set_default_config(array $config): static;
+
+    public function get_config_value(
+        string $key,
+        mixed $default = null
+    ): mixed;
+
+    public function set_config_value(
+        string $key,
+        mixed $value
+    ): static;
 }
+
