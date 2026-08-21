@@ -5,15 +5,18 @@ namespace Ababilithub\FlexWordpress\Package\Pagination\V1\Base;
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Pagination\V1\Contract\Pagination as PaginationContract
+    FlexWordpress\Package\Pagination\V1\Contract\Pagination as PaginationContract,
+    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract
 };
 
 abstract class Pagination implements PaginationContract
 {
     /**
      * Pagination type.
+     *
+     * @var string
      */
-    protected string $type = 'pagination';
+    protected string $type = '';
 
     /**
      * Runtime configuration.
@@ -30,29 +33,34 @@ abstract class Pagination implements PaginationContract
     protected array $default_config = [];
 
     /**
-     * Pagination context.
+     * Query instance.
      *
-     * @var array<string, mixed>
+     * @var QueryContract|null
      */
-    protected array $context = [];
+    protected ?QueryContract $query = null;
 
     /**
-     * Calculated pagination data.
+     * Initialize pagination.
      *
-     * @var array<string, mixed>
+     * @param array $data
+     *
+     * @return static
      */
-    protected array $pagination = [];
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
+    public function init(array $data = []): static
     {
-        $this->config = $this->default_config;
+        if (isset($data['config']) && is_array($data['config'])) {
+            $this->set_config(
+                $data['config']
+            );
+        }
+
+        return $this;
     }
 
     /**
      * Get pagination type.
+     *
+     * @return string
      */
     public function get_type(): string
     {
@@ -60,302 +68,161 @@ abstract class Pagination implements PaginationContract
     }
 
     /**
-     * Initialize.
+     * Get configuration.
      *
-     * @param array<string, mixed> $data
+     * @return array<string, mixed>
      */
-    public function init(array $data = []): static
-    {
-        if (
-            isset($data['config']) &&
-            is_array($data['config'])
-        ) {
-            $this->set_config($data['config']);
-        }
-
-        if (
-            isset($data['context']) &&
-            is_array($data['context'])
-        ) {
-            $this->set_context($data['context']);
-        }
-
-        return $this;
-    }
-
-    /*
-     * ---------------------------------------------------------
-     * Configuration
-     * ---------------------------------------------------------
-     */
-
     public function get_config(): array
     {
         return $this->config;
     }
 
-    public function set_config(array $config = []): static
+    /**
+     * Set configuration.
+     *
+     * Configuration is merged over defaults.
+     *
+     * @param array<string, mixed> $config
+     *
+     * @return static
+     */
+    public function set_config(array $config): static
     {
-        $this->config = array_replace(
-            $this->config,
+        $this->config = array_replace_recursive(
+            $this->get_default_config(),
             $config
         );
 
         return $this;
     }
 
+    /**
+     * Get default configuration.
+     *
+     * @return array<string, mixed>
+     */
     public function get_default_config(): array
     {
         return $this->default_config;
     }
 
-    public function set_default_config(array $config = []): static
+    /**
+     * Set default configuration.
+     *
+     * @param array<string, mixed> $config
+     *
+     * @return static
+     */
+    public function set_default_config(array $config): static
     {
         $this->default_config = $config;
 
         return $this;
     }
 
-    public function get_config_value(
+    /**
+     * Set query.
+     *
+     * This is called by the Query abstraction when pagination
+     * is attached to the query.
+     *
+     * @param QueryContract $query
+     *
+     * @return static
+     */
+    public function set_query(QueryContract $query): static
+    {
+        $this->query = $query;
+
+        return $this;
+    }
+
+    /**
+     * Get query.
+     *
+     * @return QueryContract|null
+     */
+    public function get_query(): ?QueryContract
+    {
+        return $this->query;
+    }
+
+    /**
+     * Generate pagination.
+     *
+     * Concrete pagination classes may override this.
+     *
+     * @return mixed
+     */
+    public function paginate()
+    {
+        return null;
+    }
+
+    /**
+     * Generate pagination links.
+     *
+     * @return string
+     */
+    public function pagination_links(): string
+    {
+        return '';
+    }
+
+    /**
+     * Render pagination.
+     *
+     * @param array $data
+     *
+     * @return void
+     */
+    public function render(array $data = []): void
+    {
+        echo $this->html();
+    }
+
+    /**
+     * Generate pagination HTML.
+     *
+     * @return string
+     */
+    public function html(): string
+    {
+        ob_start();
+
+        $this->render();
+
+        return (string) ob_get_clean();
+    }
+
+    /**
+     * Get a configuration value.
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    protected function get_config_value(
         string $key,
         mixed $default = null
     ): mixed {
         return $this->config[$key] ?? $default;
     }
 
-    public function set_config_value(
+    /**
+     * Set a configuration value.
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return static
+     */
+    protected function set_config_value(
         string $key,
         mixed $value
     ): static {
         $this->config[$key] = $value;
-
-        return $this;
-    }
-
-    /*
-     * ---------------------------------------------------------
-     * Context
-     * ---------------------------------------------------------
-     */
-
-    public function set_context(array $context = []): static
-    {
-        $this->context = array_replace(
-            $this->context,
-            $context
-        );
-
-        return $this;
-    }
-
-    public function get_context(): array
-    {
-        return $this->context;
-    }
-
-    public function get_context_value(
-        string $key,
-        mixed $default = null
-    ): mixed {
-        return $this->context[$key] ?? $default;
-    }
-
-    public function set_context_value(
-        string $key,
-        mixed $value
-    ): static {
-        $this->context[$key] = $value;
-
-        return $this;
-    }
-
-    /*
-     * ---------------------------------------------------------
-     * Pagination Data
-     * ---------------------------------------------------------
-     */
-
-    public function paginate(): static
-    {
-        $total_items = $this->get_total_items();
-        $per_page = $this->get_per_page();
-        $current_page = $this->get_current_page();
-
-        $total_pages = $per_page > 0
-            ? (int) ceil($total_items / $per_page)
-            : 0;
-
-        $current_page = $total_pages > 0
-            ? min($current_page, $total_pages)
-            : 1;
-
-        $this->pagination = [
-            'current_page' => $current_page,
-            'per_page' => $per_page,
-            'total_items' => $total_items,
-            'total_pages' => $total_pages,
-            'has_previous' => $current_page > 1,
-            'has_next' => $current_page < $total_pages,
-        ];
-
-        return $this;
-    }
-
-    public function get_current_page(): int
-    {
-        return max(
-            1,
-            absint(
-                $this->get_context_value(
-                    'current_page',
-                    $this->get_config_value(
-                        'current_page',
-                        1
-                    )
-                )
-            )
-        );
-    }
-
-    public function get_per_page(): int
-    {
-        return max(
-            1,
-            absint(
-                $this->get_context_value(
-                    'per_page',
-                    $this->get_config_value(
-                        'per_page',
-                        get_option('posts_per_page')
-                    )
-                )
-            )
-        );
-    }
-
-    public function get_total_items(): int
-    {
-        return max(
-            0,
-            absint(
-                $this->get_context_value(
-                    'total_items',
-                    0
-                )
-            )
-        );
-    }
-
-    public function get_total_pages(): int
-    {
-        if (isset($this->pagination['total_pages'])) {
-            return absint(
-                $this->pagination['total_pages']
-            );
-        }
-
-        $per_page = $this->get_per_page();
-
-        if ($per_page <= 0) {
-            return 0;
-        }
-
-        return (int) ceil(
-            $this->get_total_items() / $per_page
-        );
-    }
-
-    public function has_next(): bool
-    {
-        return $this->get_current_page()
-            < $this->get_total_pages();
-    }
-
-    public function has_previous(): bool
-    {
-        return $this->get_current_page() > 1;
-    }
-
-    /**
-     * Get calculated pagination data.
-     *
-     * @return array<string, mixed>
-     */
-    public function get_pagination(): array
-    {
-        return $this->pagination;
-    }
-
-    /**
-     * Get pagination data value.
-     */
-    public function get_pagination_value(
-        string $key,
-        mixed $default = null
-    ): mixed {
-        return $this->pagination[$key] ?? $default;
-    }
-
-    /**
-     * Generate a URL for a page.
-     */
-    protected function get_page_url(int $page): string
-    {
-        $page = max(1, $page);
-
-        return esc_url(
-            add_query_arg(
-                'paged',
-                $page,
-                $this->get_current_url()
-            )
-        );
-    }
-
-    /**
-     * Get current URL.
-     */
-    protected function get_current_url(): string
-    {
-        $url = $this->get_context_value(
-            'url',
-            ''
-        );
-
-        if ($url !== '') {
-            return esc_url_raw($url);
-        }
-
-        return esc_url_raw(
-            get_pagenum_link(
-                $this->get_current_page()
-            )
-        );
-    }
-
-    /**
-     * Pagination links.
-     */
-    abstract public function pagination_links(): string;
-
-    /**
-     * Render.
-     *
-     * Concrete implementations provide their own markup.
-     */
-    public function render(array $data = []): void
-    {
-        echo $this->pagination_links();
-    }
-
-    /**
-     * Reset.
-     */
-    public function reset(): static
-    {
-        $this->config = $this->default_config;
-        $this->context = [];
-        $this->pagination = [];
 
         return $this;
     }

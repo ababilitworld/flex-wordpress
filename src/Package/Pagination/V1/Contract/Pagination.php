@@ -2,7 +2,9 @@
 
 namespace Ababilithub\FlexWordpress\Package\Pagination\V1\Contract;
 
-(defined('ABSPATH') && defined('WPINC')) || exit();
+use Ababilithub\{
+    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract,
+};
 
 interface Pagination
 {
@@ -14,136 +16,55 @@ interface Pagination
     /**
      * Initialize pagination.
      *
-     * @param array<string, mixed> $data
+     * @param array $data
+     *
+     * @return static
      */
     public function init(array $data = []): static;
 
     /**
-     * Get runtime configuration.
+     * Set query instance.
      *
-     * @return array<string, mixed>
-     */
-    public function get_config(): array;
-
-    /**
-     * Set runtime configuration.
+     * @param QueryContract $query
      *
-     * @param array<string, mixed> $config
+     * @return static
      */
-    public function set_config(array $config = []): static;
+    public function set_query(QueryContract $query): static;
 
     /**
-     * Get default configuration.
+     * Get query instance.
      *
-     * @return array<string, mixed>
+     * @return QueryContract|null
      */
-    public function get_default_config(): array;
+    public function get_query(): ?QueryContract;
 
     /**
-     * Set default configuration.
+     * Generate pagination data.
      *
-     * @param array<string, mixed> $config
+     * @return mixed
      */
-    public function set_default_config(array $config = []): static;
+    public function paginate();
 
     /**
-     * Get a configuration value.
-     */
-    public function get_config_value(
-        string $key,
-        mixed $default = null
-    ): mixed;
-
-    /**
-     * Set a configuration value.
-     */
-    public function set_config_value(
-        string $key,
-        mixed $value
-    ): static;
-
-    /**
-     * Set pagination context.
-     *
-     * Context may contain:
-     *
-     * query
-     * total_items
-     * total_pages
-     * current_page
-     * per_page
-     */
-    public function set_context(array $context = []): static;
-
-    /**
-     * Get pagination context.
-     *
-     * @return array<string, mixed>
-     */
-    public function get_context(): array;
-
-    /**
-     * Get context value.
-     */
-    public function get_context_value(
-        string $key,
-        mixed $default = null
-    ): mixed;
-
-    /**
-     * Set context value.
-     */
-    public function set_context_value(
-        string $key,
-        mixed $value
-    ): static;
-
-    /**
-     * Calculate/prepare pagination.
-     */
-    public function paginate(): static;
-
-    /**
-     * Get current page.
-     */
-    public function get_current_page(): int;
-
-    /**
-     * Get per-page value.
-     */
-    public function get_per_page(): int;
-
-    /**
-     * Get total items.
-     */
-    public function get_total_items(): int;
-
-    /**
-     * Get total pages.
-     */
-    public function get_total_pages(): int;
-
-    /**
-     * Determine whether another page exists.
-     */
-    public function has_next(): bool;
-
-    /**
-     * Determine whether previous page exists.
-     */
-    public function has_previous(): bool;
-
-    /**
-     * Get pagination links.
+     * Generate pagination links.
      *
      * @return string
      */
-    public function pagination_links(): string;
+    public function pagination_links();
 
     /**
      * Render pagination.
      *
-     * @param array<string, mixed> $data
+     * @param array $data
+     *
+     * @return void
      */
     public function render(array $data = []): void;
+
+    /**
+     * Generate HTML.
+     *
+     * @return string
+     */
+    public function html(): string;
 }
