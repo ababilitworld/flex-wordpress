@@ -4,50 +4,101 @@ namespace Ababilithub\FlexWordpress\Package\Pagination\V1\Contract;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
+use Ababilithub\{
+    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract
+};
+
 interface Pagination
 {
+    /**
+     * Get pagination type.
+     *
+     * @return string
+     */
     public function get_type(): string;
 
+    /**
+     * Initialize pagination.
+     *
+     * @param array $data
+     * @return static
+     */
     public function init(array $data = []): static;
 
     /**
-     * Prepare pagination before WP_Query executes.
+     * Set query.
+     *
+     * @param QueryContract $query
+     * @return static
      */
-    public function prepare(): static;
+    public function set_query(
+        QueryContract $query
+    ): static;
 
     /**
-     * Attach the executed WordPress query.
+     * Get query.
+     *
+     * @return QueryContract|null
      */
-    public function set_query(\WP_Query $query): static;
-
-    public function get_query(): ?\WP_Query;
+    public function get_query(): ?QueryContract;
 
     /**
-     * Calculate/prepare pagination state after WP_Query executes.
+     * Set total records.
+     *
+     * @param int $total
+     * @return static
+     */
+    public function set_total_items(
+        int $total
+    ): static;
+
+    /**
+     * Get total records.
+     *
+     * @return int
+     */
+    public function get_total_items(): int;
+
+    /**
+     * Get current page.
+     *
+     * @return int
+     */
+    public function get_current_page(): int;
+
+    /**
+     * Get records per page.
+     *
+     * @return int
+     */
+    public function get_per_page(): int;
+
+    /**
+     * Get total pages.
+     *
+     * @return int
+     */
+    public function get_total_pages(): int;
+
+    /**
+     * Apply pagination.
+     *
+     * @return static
      */
     public function paginate(): static;
 
+    /**
+     * Render pagination links.
+     *
+     * @return string
+     */
     public function pagination_links(): string;
 
+    /**
+     * Render pagination.
+     *
+     * @param array $data
+     * @return void
+     */
     public function render(array $data = []): void;
-
-    public function html(): string;
-
-    public function get_config(): array;
-
-    public function set_config(array $config): static;
-
-    public function get_default_config(): array;
-
-    public function set_default_config(array $config): static;
-
-    public function get_config_value(
-        string $key,
-        mixed $default = null
-    ): mixed;
-
-    public function set_config_value(
-        string $key,
-        mixed $value
-    ): static;
 }

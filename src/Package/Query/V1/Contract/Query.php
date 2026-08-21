@@ -8,45 +8,95 @@ use Ababilithub\FlexWordpress\Package\Pagination\V1\Contract\Pagination as Pagin
 
 interface Query
 {
+    /**
+     * Initialize query.
+     *
+     * @param array $data
+     * @return static
+     */
     public function init(array $data = []): static;
 
-    public function set_pagination(PaginationContract $pagination): static;
+    /**
+     * Set configuration.
+     *
+     * @param array $config
+     * @return static
+     */
+    public function set_config(array $config = []): static;
 
-    public function paginate(PaginationContract $pagination): static;
-
-    public function get_pagination(): ?PaginationContract;
-
-    public function prepare_args(): array;
-
-    public function execute(): static;
-
-    public function get_query(): ?\WP_Query;
-
-    public function get_results(): array;
-
-    public function get_current_page(): int;
-
-    public function get_per_page(): int;
-
-    public function get_total_items(): int;
-
-    public function get_total_pages(): int;
-
+    /**
+     * Get configuration.
+     *
+     * @return array
+     */
     public function get_config(): array;
 
-    public function set_config(array $config): static;
+    /**
+     * Set a configuration value.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return static
+     */
+    public function set_config_value(
+        string $key,
+        mixed $value
+    ): static;
 
-    public function get_default_config(): array;
-
-    public function set_default_config(array $config): static;
-
+    /**
+     * Get a configuration value.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
     public function get_config_value(
         string $key,
         mixed $default = null
     ): mixed;
 
-    public function set_config_value(
-        string $key,
-        mixed $value
+    /**
+     * Attach pagination.
+     *
+     * @param PaginationContract|null $pagination
+     * @return static
+     */
+    public function paginate(
+        ?PaginationContract $pagination = null
     ): static;
+
+    /**
+     * Execute query.
+     *
+     * @return static
+     */
+    public function execute(): static;
+
+    /**
+     * Get query results.
+     *
+     * @return array
+     */
+    public function get_results(): array;
+
+    /**
+     * Get underlying query.
+     *
+     * @return mixed
+     */
+    public function get_query(): mixed;
+
+    /**
+     * Get total number of matching records.
+     *
+     * @return int
+     */
+    public function get_found_rows(): int;
+
+    /**
+     * Get attached pagination.
+     *
+     * @return PaginationContract|null
+     */
+    public function get_pagination(): ?PaginationContract;
 }

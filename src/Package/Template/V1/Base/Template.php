@@ -326,6 +326,26 @@ abstract class Template implements TemplateContract
 
     public function prepare_item_for_display(mixed $item): array
     {
-        return is_array($item) ? $item : [];
+        if (!$item instanceof \WP_Post) {
+            return [];
+        }
+
+        $post_id = (int) $item->ID;
+
+        return [
+            'post' => $this->prepare_post_fields($item),
+
+            'meta' => $this->prepare_post_meta(
+                $post_id
+            ),
+
+            'taxonomies' => $this->prepare_taxonomies(
+                $post_id
+            ),
+
+            'custom' => $this->prepare_custom_fields(
+                $post_id
+            ),
+        ];
     }
 }

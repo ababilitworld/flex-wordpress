@@ -4,61 +4,105 @@ namespace Ababilithub\FlexWordpress\Package\Pagination\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
-use Ababilithub\FlexWordpress\Package\Pagination\V1\Contract\Pagination as PaginationContract;
+use Ababilithub\{
+    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract,
+    FlexWordpress\Package\Pagination\V1\Contract\Pagination as PaginationContract
+};
 
 abstract class Pagination implements PaginationContract
 {
-    protected string $type = '';
+    /**
+     * Pagination type.
+     *
+     * @var string
+     */
+    protected string $type = 'pagination';
 
+    /**
+     * Current configuration.
+     *
+     * @var array
+     */
     protected array $config = [];
 
-    protected array $default_config = [];
+    /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected array $default_config = [
+        'enabled' => true,
 
-    protected ?\WP_Query $query = null;
+        'per_page' => 10,
 
-    public function init(array $data = []): static
-    {
-        if (isset($data['config']) && is_array($data['config'])) {
-            $this->set_config($data['config']);
-        }
+        'page' => 1,
 
-        return $this;
-    }
+        'page_var' => 'paged',
 
+        'mid_size' => 2,
+
+        'end_size' => 1,
+
+        'prev_text' => 'Previous',
+
+        'next_text' => 'Next',
+
+        'class' => '',
+
+        'attribute' => '',
+    ];
+
+    /**
+     * Query.
+     *
+     * @var QueryContract|null
+     */
+    protected ?QueryContract $query = null;
+
+    /**
+     * Total records.
+     *
+     * @var int
+     */
+    protected int $total_items = 0;
+
+    /**
+     * Get type.
+     *
+     * @return string
+     */
     public function get_type(): string
     {
         return $this->type;
     }
 
-    public function prepare(): static
+    /**
+     * Initialize.
+     *
+     * @param array $data
+     * @return static
+     */
+    public function init(array $data = []): static
     {
+        $this->config = array_replace_recursive(
+            $this->default_config,
+            is_array($data['config'] ?? null)
+                ? $data['config']
+                : []
+        );
+
         return $this;
     }
 
-    public function set_query(\WP_Query $query): static
-    {
-        $this->query = $query;
-
-        return $this;
-    }
-
-    public function get_query(): ?\WP_Query
-    {
-        return $this->query;
-    }
-
-    public function paginate(): static
-    {
-        return $this;
-    }
-
-    public function get_config(): array
-    {
-        return $this->config;
-    }
-
-    public function set_config(array $config): static
-    {
+    /**
+     * Set configuration.
+     *
+     * @param array $config
+     * @return static
+     */
+    public function set_config(
+        array $config = []
+    ): static {
         $this->config = array_replace_recursive(
             $this->default_config,
             $config
@@ -67,25 +111,23 @@ abstract class Pagination implements PaginationContract
         return $this;
     }
 
-    public function get_default_config(): array
+    /**
+     * Get configuration.
+     *
+     * @return array
+     */
+    public function get_config(): array
     {
-        return $this->default_config;
+        return $this->config;
     }
 
-    public function set_default_config(array $config): static
-    {
-        $this->default_config = $config;
-
-        return $this;
-    }
-
-    public function get_config_value(
-        string $key,
-        mixed $default = null
-    ): mixed {
-        return $this->config[$key] ?? $default;
-    }
-
+    /**
+     * Set configuration value.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return static
+     */
     public function set_config_value(
         string $key,
         mixed $value
@@ -95,20 +137,193 @@ abstract class Pagination implements PaginationContract
         return $this;
     }
 
-    public function pagination_links(): string
-    {
-        return '';
+    /**
+     * Get configuration value.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function get_config_value(
+        string $key,
+        mixed $default = null
+    ): mixed {
+        return array_key_exists($key, $this->config)
+            ? $this->config[$key]
+            : $default;
     }
 
-    public function render(array $data = []): void
+    /**
+     * Set query.
+     *
+     * @param QueryContract $query
+     * @return static
+     */
+    public function set_query(
+        QueryContract $query
+    ): static {
+        $this->query = $query;
+
+        return $this;
+    }
+
+    /**
+     * Get query.
+     *
+     * @return QueryContract|null
+     */
+    public function get_query(): ?QueryContract
     {
+        return $this->query;
+    }
+
+    /**
+     * Set total items.
+     *
+     * @param int $total
+     * @return static
+     */
+    public function set_total_items(
+        int $total
+    ): static {
+        $this->total_items = max(0, $total);
+
+        return $this;
+    }
+
+    /**
+     * Get total items.
+     *
+     * @return int
+     */
+    public function get_total_items(): int
+    {
+        return $this->total_items;
+    }
+
+    /**
+     * Get records per page.
+     *
+     * @return int
+     */
+    public function get_per_page(): int
+    {
+        return max(
+            1,
+            (int) $this->get_config_value(
+                'per_page',
+                10
+            )
+        );
+    }
+
+    /**
+     * Get current page.
+     *
+     * @return int
+     */
+    public function get_current_page(): int
+    {
+        $page_var = sanitize_key(
+            (string) $this->get_config_value(
+                'page_var',
+                'paged'
+            )
+        );
+
+        $configured_page = absint(
+            $this->get_config_value(
+                'page',
+                1
+            )
+        );
+
+        $request_page = isset($_GET[$page_var])
+            ? absint(
+                wp_unslash($_GET[$page_var])
+            )
+            : 0;
+
+        return max(
+            1,
+            $request_page ?: $configured_page
+        );
+    }
+
+    /**
+     * Get total pages.
+     *
+     * @return int
+     */
+    public function get_total_pages(): int
+    {
+        if ($this->total_items <= 0) {
+            return 0;
+        }
+
+        return (int) ceil(
+            $this->total_items / $this->get_per_page()
+        );
+    }
+
+    /**
+     * Apply pagination.
+     *
+     * The concrete query reads pagination information
+     * from this object.
+     *
+     * @return static
+     */
+    public function paginate(): static
+    {
+        return $this;
+    }
+
+    /**
+     * Render pagination.
+     *
+     * @param array $data
+     * @return void
+     */
+    public function render(
+        array $data = []
+    ): void {
         echo $this->pagination_links();
     }
 
-    public function html(): string
+    /**
+     * Get current URL.
+     *
+     * @return string
+     */
+    protected function get_base_url(): string
     {
-        ob_start();
-        $this->render();
-        return (string) ob_get_clean();
+        return remove_query_arg(
+            $this->get_config_value(
+                'page_var',
+                'paged'
+            )
+        );
+    }
+
+    /**
+     * Build page URL.
+     *
+     * @param int $page
+     * @return string
+     */
+    protected function get_page_url(
+        int $page
+    ): string {
+        return esc_url(
+            add_query_arg(
+                $this->get_config_value(
+                    'page_var',
+                    'paged'
+                ),
+                $page,
+                $this->get_base_url()
+            )
+        );
     }
 }
