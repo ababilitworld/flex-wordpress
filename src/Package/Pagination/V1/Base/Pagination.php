@@ -225,6 +225,6 @@ abstract class Pagination implements PaginationContract
         $this->config[$key] = $value;
 
         return $this;
-    }
+    } 
 
 }
