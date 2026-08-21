@@ -2,70 +2,35 @@
 
 namespace Ababilithub\FlexWordpress\Package\Pagination\V1\Contract;
 
-use Ababilithub\{
-    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract,
-};
+(defined('ABSPATH') && defined('WPINC')) || exit();
 
 interface Pagination
 {
-    /**
-     * Get pagination type.
-     */
     public function get_type(): string;
 
-    /**
-     * Initialize pagination.
-     *
-     * @param array $data
-     *
-     * @return static
-     */
     public function init(array $data = []): static;
 
     /**
-     * Set query instance.
-     *
-     * @param QueryContract $query
-     *
-     * @return static
+     * Prepare pagination before WP_Query executes.
      */
-    public function set_query(QueryContract $query): static;
+    public function prepare(): static;
 
     /**
-     * Get query instance.
-     *
-     * @return QueryContract|null
+     * Attach the executed WordPress query.
      */
-    public function get_query(): ?QueryContract;
+    public function set_query(\WP_Query $query): static;
+
+    public function get_query(): ?\WP_Query;
 
     /**
-     * Generate pagination data.
-     *
-     * @return mixed
+     * Calculate/prepare pagination state after WP_Query executes.
      */
-    public function paginate();
+    public function paginate(): static;
 
-    /**
-     * Generate pagination links.
-     *
-     * @return string
-     */
-    public function pagination_links();
+    public function pagination_links(): string;
 
-    /**
-     * Render pagination.
-     *
-     * @param array $data
-     *
-     * @return void
-     */
     public function render(array $data = []): void;
 
-    /**
-     * Generate HTML.
-     *
-     * @return string
-     */
     public function html(): string;
 
     public function get_config(): array;
@@ -86,4 +51,3 @@ interface Pagination
         mixed $value
     ): static;
 }
-
