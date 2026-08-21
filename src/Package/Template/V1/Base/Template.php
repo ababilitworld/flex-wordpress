@@ -312,4 +312,20 @@ abstract class Template implements TemplateContract
             implode(' ', $classes)
         );
     }
+    public function prepare_items_for_display(array $items = []): array
+    {
+        $prepared = [];
+        foreach ($items as $item) {
+            $display_item = $this->prepare_item_for_display($item);
+            if (!empty($display_item)) {
+                $prepared[] = $display_item;
+            }
+        }
+        return $prepared;
+    }
+
+    public function prepare_item_for_display(mixed $item): array
+    {
+        return is_array($item) ? $item : [];
+    }
 }

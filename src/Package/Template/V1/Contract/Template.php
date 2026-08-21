@@ -122,6 +122,9 @@ interface Template
      */
     public function html(array $data = []): string;
 
+    public function prepare_items_for_display(array $items = []): array;
+    public function prepare_item_for_display(mixed $item): array;
+
     /**
      * Reset template.
      */
