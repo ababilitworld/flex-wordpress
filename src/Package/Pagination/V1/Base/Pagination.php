@@ -80,6 +80,7 @@ abstract class Pagination implements PaginationContract
      * Initialize.
      *
      * @param array $data
+     *
      * @return static
      */
     public function init(array $data = []): static
@@ -98,6 +99,7 @@ abstract class Pagination implements PaginationContract
      * Set configuration.
      *
      * @param array $config
+     *
      * @return static
      */
     public function set_config(
@@ -126,6 +128,7 @@ abstract class Pagination implements PaginationContract
      *
      * @param string $key
      * @param mixed $value
+     *
      * @return static
      */
     public function set_config_value(
@@ -142,13 +145,17 @@ abstract class Pagination implements PaginationContract
      *
      * @param string $key
      * @param mixed $default
+     *
      * @return mixed
      */
     public function get_config_value(
         string $key,
         mixed $default = null
     ): mixed {
-        return array_key_exists($key, $this->config)
+        return array_key_exists(
+            $key,
+            $this->config
+        )
             ? $this->config[$key]
             : $default;
     }
@@ -157,6 +164,7 @@ abstract class Pagination implements PaginationContract
      * Set query.
      *
      * @param QueryContract $query
+     *
      * @return static
      */
     public function set_query(
@@ -181,12 +189,16 @@ abstract class Pagination implements PaginationContract
      * Set total items.
      *
      * @param int $total
+     *
      * @return static
      */
     public function set_total_items(
         int $total
     ): static {
-        $this->total_items = max(0, $total);
+        $this->total_items = max(
+            0,
+            $total
+        );
 
         return $this;
     }
@@ -210,15 +222,20 @@ abstract class Pagination implements PaginationContract
     {
         return max(
             1,
-            (int) $this->get_config_value(
-                'per_page',
-                10
+            absint(
+                $this->get_config_value(
+                    'per_page',
+                    10
+                )
             )
         );
     }
 
     /**
      * Get current page.
+     *
+     * The request value has priority over the
+     * configured default page.
      *
      * @return int
      */
@@ -231,23 +248,36 @@ abstract class Pagination implements PaginationContract
             )
         );
 
-        $configured_page = absint(
-            $this->get_config_value(
-                'page',
-                1
-            )
-        );
+        if ($page_var === '') {
+            $page_var = 'paged';
+        }
 
-        $request_page = isset($_GET[$page_var])
-            ? absint(
-                wp_unslash($_GET[$page_var])
-            )
-            : 0;
-
-        return max(
+        $configured_page = max(
             1,
-            $request_page ?: $configured_page
+            absint(
+                $this->get_config_value(
+                    'page',
+                    1
+                )
+            )
         );
+
+        if (
+            isset($_GET[$page_var])
+            && !is_array($_GET[$page_var])
+        ) {
+            $request_page = absint(
+                wp_unslash(
+                    $_GET[$page_var]
+                )
+            );
+
+            if ($request_page > 0) {
+                return $request_page;
+            }
+        }
+
+        return $configured_page;
     }
 
     /**
@@ -269,8 +299,8 @@ abstract class Pagination implements PaginationContract
     /**
      * Apply pagination.
      *
-     * The concrete query reads pagination information
-     * from this object.
+     * Concrete query implementations can override
+     * this when they need specialized behavior.
      *
      * @return static
      */
@@ -283,6 +313,7 @@ abstract class Pagination implements PaginationContract
      * Render pagination.
      *
      * @param array $data
+     *
      * @return void
      */
     public function render(
@@ -292,7 +323,7 @@ abstract class Pagination implements PaginationContract
     }
 
     /**
-     * Get current URL.
+     * Get current URL without pagination parameter.
      *
      * @return string
      */
@@ -310,6 +341,7 @@ abstract class Pagination implements PaginationContract
      * Build page URL.
      *
      * @param int $page
+     *
      * @return string
      */
     protected function get_page_url(
@@ -321,9 +353,19 @@ abstract class Pagination implements PaginationContract
                     'page_var',
                     'paged'
                 ),
-                $page,
+                max(1, $page),
                 $this->get_base_url()
             )
         );
     }
+
+    /**
+     * Render pagination links.
+     *
+     * Concrete pagination implementations must provide
+     * the actual HTML.
+     *
+     * @return string
+     */
+    abstract public function pagination_links(): string;
 }

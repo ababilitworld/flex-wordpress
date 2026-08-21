@@ -57,6 +57,7 @@ abstract class Query implements QueryContract
      * Initialize query.
      *
      * @param array $data
+     *
      * @return static
      */
     public function init(array $data = []): static
@@ -79,6 +80,7 @@ abstract class Query implements QueryContract
      * Set configuration.
      *
      * @param array $config
+     *
      * @return static
      */
     public function set_config(array $config = []): static
@@ -106,6 +108,7 @@ abstract class Query implements QueryContract
      *
      * @param string $key
      * @param mixed $value
+     *
      * @return static
      */
     public function set_config_value(
@@ -122,6 +125,7 @@ abstract class Query implements QueryContract
      *
      * @param string $key
      * @param mixed $default
+     *
      * @return mixed
      */
     public function get_config_value(
@@ -134,15 +138,53 @@ abstract class Query implements QueryContract
     }
 
     /**
-     * Attach pagination.
+     * Attach pagination to the query.
+     *
+     * The pagination object determines the current page
+     * from the request. That page is then synchronized
+     * with the query configuration before execution.
+     *
+     * This keeps pagination concerns inside the reusable
+     * query infrastructure rather than inside individual
+     * plugin templates.
      *
      * @param PaginationContract|null $pagination
+     *
      * @return static
      */
     public function paginate(
         ?PaginationContract $pagination = null
     ): static {
         $this->pagination = $pagination;
+
+        if (!$pagination) {
+            return $this;
+        }
+
+        /*
+         * Synchronize records per page.
+         */
+        $this->set_config_value(
+            'posts_per_page',
+            $pagination->get_per_page()
+        );
+
+        /*
+         * Synchronize current page.
+         *
+         * Example:
+         *
+         * ?paged=1 → paged = 1
+         * ?paged=2 → paged = 2
+         * ?paged=3 → paged = 3
+         */
+        $this->set_config_value(
+            'paged',
+            max(
+                1,
+                $pagination->get_current_page()
+            )
+        );
 
         return $this;
     }
@@ -162,7 +204,9 @@ abstract class Query implements QueryContract
         /*
          * Create the concrete query.
          */
-        $this->query = $this->create_query($args);
+        $this->query = $this->create_query(
+            $args
+        );
 
         /*
          * Extract raw results.
@@ -175,7 +219,6 @@ abstract class Query implements QueryContract
          * Connect the application-level query
          * to pagination.
          *
-         * IMPORTANT:
          * Pagination receives this Query object,
          * not WP_Query.
          */
@@ -238,6 +281,7 @@ abstract class Query implements QueryContract
      * Extract results from underlying query.
      *
      * @param mixed $query
+     *
      * @return array
      */
     protected function extract_results(
@@ -263,6 +307,7 @@ abstract class Query implements QueryContract
      * Create concrete query.
      *
      * @param array $args
+     *
      * @return mixed
      */
     abstract protected function create_query(
