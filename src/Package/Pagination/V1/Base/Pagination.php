@@ -203,7 +203,7 @@ abstract class Pagination implements PaginationContract
      *
      * @return mixed
      */
-    protected function get_config_value(
+    public function get_config_value(
         string $key,
         mixed $default = null
     ): mixed {
@@ -218,7 +218,7 @@ abstract class Pagination implements PaginationContract
      *
      * @return static
      */
-    protected function set_config_value(
+    public function set_config_value(
         string $key,
         mixed $value
     ): static {
