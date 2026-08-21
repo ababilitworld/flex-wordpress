@@ -1,35 +1,172 @@
 <?php
+
 namespace Ababilithub\FlexWordpress\Package\Template\V1\Base;
 
+(defined('ABSPATH') && defined('WPINC')) || exit();
+
 use Ababilithub\{
-    FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract
+    FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract,
 };
 
 abstract class Template implements TemplateContract
 {
-    protected array $config = [];
+    /**
+     * Template type.
+     */
+    protected string $type = 'template';
 
+    /**
+     * Default data.
+     *
+     * @var array<string, mixed>
+     */
+    protected array $default_data = [];
+
+    /**
+     * Current data.
+     *
+     * @var array<string, mixed>
+     */
+    protected array $data = [];
+
+    /**
+     * Default configuration.
+     *
+     * @var array<string, mixed>
+     */
     protected array $default_config = [];
 
-    protected string $asset_base_url = '';
+    /**
+     * Current configuration.
+     *
+     * @var array<string, mixed>
+     */
+    protected array $config = [];
 
-    protected string $asset_base_prefix = '';
-
-    public function __construct(array $data = [])
+    /**
+     * Constructor.
+     */
+    public function __construct()
     {
-        $this->init($data);
+        $this->data = $this->default_data;
+        $this->config = $this->default_config;
     }
 
-    abstract public function init(array $data = []): static;
-
-    abstract public function render(array $data = []): string;
-
-    public function set_config(array $config = []): static
+    /**
+     * Get type.
+     */
+    public function get_type(): string
     {
-        $this->config = array_replace_recursive(
-            $this->default_config,
-            $config
+        return $this->type;
+    }
+
+    /**
+     * Initialize template.
+     *
+     * Supported:
+     *
+     * [
+     *     'data' => [],
+     *     'config' => [],
+     * ]
+     */
+    public function init(array $data = []): static
+    {
+        if (
+            isset($data['data']) &&
+            is_array($data['data'])
+        ) {
+            $this->set_data($data['data']);
+        }
+
+        if (
+            isset($data['config']) &&
+            is_array($data['config'])
+        ) {
+            $this->set_config($data['config']);
+        }
+
+        return $this;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Data
+     * ---------------------------------------------------------
+     */
+
+    public function get_default_data(): array
+    {
+        return $this->default_data;
+    }
+
+    public function set_default_data(
+        array $data = []
+    ): static {
+        $this->default_data = $data;
+
+        /*
+         * If no runtime data exists, also update
+         * the active data.
+         */
+        if ($this->data === []) {
+            $this->data = $data;
+        }
+
+        return $this;
+    }
+
+    public function get_data(): array
+    {
+        return $this->data;
+    }
+
+    public function set_data(
+        array $data = []
+    ): static {
+        $this->data = array_replace(
+            $this->data,
+            $data
         );
+
+        return $this;
+    }
+
+    public function get_data_value(
+        string $key,
+        mixed $default = null
+    ): mixed {
+        return $this->data[$key] ?? $default;
+    }
+
+    public function set_data_value(
+        string $key,
+        mixed $value
+    ): static {
+        $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Configuration
+     * ---------------------------------------------------------
+     */
+
+    public function get_default_config(): array
+    {
+        return $this->default_config;
+    }
+
+    public function set_default_config(
+        array $config = []
+    ): static {
+        $this->default_config = $config;
+
+        if ($this->config === []) {
+            $this->config = $config;
+        }
 
         return $this;
     }
@@ -39,65 +176,140 @@ abstract class Template implements TemplateContract
         return $this->config;
     }
 
-    public function set_default_config(array $default_config = []): static
-    {
-        $this->default_config = $default_config;
+    public function set_config(
+        array $config = []
+    ): static {
+        $this->config = array_replace(
+            $this->config,
+            $config
+        );
 
         return $this;
     }
 
-    public function get_default_config(): array
-    {
-        return $this->default_config;
-    }
-
-    protected function get_config_value( string $key, mixed $default = null ): mixed 
-    {
+    public function get_config_value(
+        string $key,
+        mixed $default = null
+    ): mixed {
         return $this->config[$key] ?? $default;
     }
 
-    /**
-     * @param array<string, mixed> $data
-     *
-     * @return array<string, mixed>
-     */
-    protected function resolve_config(array $data): array
-    {
-        $config = isset($data['config']) && is_array($data['config'])
-            ? $data['config']
-            : $data;
+    public function set_config_value(
+        string $key,
+        mixed $value
+    ): static {
+        $this->config[$key] = $value;
 
-        return array_replace_recursive($this->config, $config);
+        return $this;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Rendering
+     * ---------------------------------------------------------
+     */
+
+    /**
+     * Render HTML.
+     *
+     * If data is supplied at render time it is merged with
+     * the initialized data.
+     */
+    public function html(array $data = []): string
+    {
+        $render_data = array_replace(
+            $this->data,
+            $data
+        );
+
+        return $this->render_html(
+            $render_data
+        );
     }
 
     /**
-     * @param mixed $attributes
+     * Echo rendered HTML.
      */
-    protected function build_classes(
-        string $type,
-        string $size,
-        string $color,
-        mixed $attributes
+    public function render(array $data = []): void
+    {
+        echo $this->html($data);
+    }
+
+    /**
+     * Concrete template generates HTML.
+     */
+    abstract protected function render_html(
+        array $data
+    ): string;
+
+    /*
+     * ---------------------------------------------------------
+     * Reset
+     * ---------------------------------------------------------
+     */
+
+    public function reset(): static
+    {
+        $this->data = $this->default_data;
+        $this->config = $this->default_config;
+
+        return $this;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Helpers
+     * ---------------------------------------------------------
+     */
+
+    /**
+     * Escape HTML attribute.
+     */
+    protected function attribute(
+        string $value
     ): string {
-        $classes = sprintf(
-            'faih-pagination type-%s size-%s color-%s',
-            sanitize_html_class($type),
-            sanitize_html_class($size),
-            sanitize_html_class($color)
+        return esc_attr($value);
+    }
+
+    /**
+     * Escape HTML text.
+     */
+    protected function text(
+        mixed $value
+    ): string {
+        return esc_html(
+            (string) $value
         );
+    }
 
-        foreach ((array) $attributes as $attribute) {
-            if (!is_scalar($attribute)) {
-                continue;
-            }
+    /**
+     * Escape URL.
+     */
+    protected function url(
+        string $value
+    ): string {
+        return esc_url($value);
+    }
 
-            $attribute = sanitize_html_class((string) $attribute);
-
-            if ($attribute !== '') {
-                $classes .= ' attribute-' . $attribute;
-            }
+    /**
+     * Convert class array/string to HTML class string.
+     */
+    protected function classes(
+        array|string $classes
+    ): string {
+        if (is_string($classes)) {
+            return esc_attr($classes);
         }
 
-        return $classes;
+        $classes = array_filter(
+            array_map(
+                'sanitize_html_class',
+                $classes
+            )
+        );
+
+        return esc_attr(
+            implode(' ', $classes)
+        );
     }
 }
