@@ -44,18 +44,18 @@ abstract class Template implements TemplateContract
     protected array $config = [];
 
     /**
-     * Asset Base Prefix.
+     * Template Asset Base Prefix.
      *
      * @var string
      */
-    protected string $asset_base_prefix = '';
+    protected string $asset_base_prefix = " ";
 
     /**
-     * Asset Base Url.
+     * Template Asset Base Url.
      *
      * @var string
      */
-    protected string $asset_base_url = ''; 
+    protected string $asset_base_url = " "; 
 
     /**
      * Constructor.
