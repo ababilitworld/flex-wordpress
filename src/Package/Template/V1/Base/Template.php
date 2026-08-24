@@ -46,10 +46,12 @@ abstract class Template implements TemplateContract
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(array $data = [])
     {
         $this->data = $this->default_data;
         $this->config = $this->default_config;
+
+        $this->init($data);
     }
 
     /**

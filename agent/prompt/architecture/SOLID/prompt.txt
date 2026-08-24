@@ -1,0 +1,603 @@
+Design the system using the following architecture.
+
+ARCHITECTURE PRINCIPLES
+=======================
+
+The architecture must be:
+
+- PSR-4
+- Composer compatible
+- GitHub friendly
+- OOP
+- DRY
+- SOLID
+- WordPress compatible
+- Extensible
+- Replaceable
+- Package oriented
+
+Every feature must be built using:
+
+→ Contract
+→ Base
+→ Factory
+→ Concrete
+→ Manager
+
+architecture.
+
+No business logic should be hardcoded in templates.
+
+Templates compose objects.
+
+Queries retrieve data.
+
+Pagination controls data navigation.
+
+Templates only render.
+
+Each layer must have a single responsibility.
+
+--------------------------------------------------
+PACKAGE STRUCTURE
+--------------------------------------------------
+
+FlexWordpress
+    Package
+        Asset
+        Query
+        Pagination
+        Template
+        Shortcode
+        Posttype
+        PostMetaBox
+        Taxonomy
+
+            Contract
+            Base
+            Factory
+
+FlexAahub
+    Package
+        Plugin
+            Asset
+            Query
+            Pagination
+            Template
+
+                Concrete
+                Manager
+
+FlexEFinance
+    Package
+        Plugin
+            Asset
+            Posttype
+            Taxonomy
+            Shortcode
+            Template
+            
+
+--------------------------------------------------
+LAYER RESPONSIBILITIES
+--------------------------------------------------
+
+Contract
+---------
+Contains interfaces only.
+
+Defines behavior.
+
+No implementation.
+
+Example:
+
+QueryContract
+PaginationContract
+TemplateContract
+
+Base
+----
+Contains reusable logic.
+
+Provides default implementations.
+
+Stores:
+
+- config
+- data
+- results
+- helper methods
+
+Base classes must never know
+plugin-specific business logic.
+
+Concrete
+--------
+Contains actual implementation.
+
+Examples:
+
+PostTypeQuery
+PagedPagination
+LoadMorePagination
+GridTemplate
+TableTemplate
+
+Concrete classes may extend Base classes for reusable shared functionalities.
+
+Factory
+-------
+Responsible for resolving implementations.
+
+Example:
+
+QueryFactory
+PaginationFactory
+TemplateFactory
+
+Factory returns a Contract.
+
+Never return concrete types directly.
+
+Example:
+
+<?php
+
+namespace Ababilithub\FlexWordpress\Package\Template\V1\Factory;
+
+(defined('ABSPATH') && defined('WPINC')) || exit();
+
+use Ababilithub\FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract;
+
+class Template
+{
+    public static function get(string $implementation): ?TemplateContract
+    {
+        if ( !class_exists($implementation) || !is_a($implementation, TemplateContract::class, true) )
+        {
+            return null;
+        }
+
+        $template = new $implementation();
+
+        return $template instanceof TemplateContract ? $template : null;
+    }
+}
+
+
+Manager
+-------
+Manager is responsible for registering, enabling/disabling, 
+resolving, validating, and bootstrapping the available 
+Concrete implementations of a Contract. 
+
+It acts as the central lifecycle and implementation-coordination
+layer, while delegating object resolution to the Factory and
+actual behavior to the Concrete implementation.
+
+Manager uses Factories, Contracts and other
+services/components to execute business workflows.
+
+Examples:
+
+QueryManager
+PaginationManager
+TemplateManager
+
+Manager MUST NOT do this:
+
+    new ListTemplate();
+
+    new GridTemplate();
+
+    new TableTemplate();
+
+
+Manager SHOULD do this:
+
+    TemplateFactory::get($item_class);
+
+
+Then validate:
+
+    $template instanceof TemplateContract
+
+
+Then manage the resolved component.
+
+Manager responsibilities:
+
+- Register available implementations.
+- Enable/disable implementations.
+- Store implementation identifiers.
+- Resolve implementations through Factory.
+- Validate Contract compatibility.
+- Bootstrap implementations.
+- Coordinate implementation lifecycle.
+- Provide a central extension point.
+
+Managers must NOT:
+
+- directly instantiate Concrete classes
+- duplicate Factory responsibilities
+- contain Concrete implementation logic
+- contain presentation logic
+- contain plugin-specific business logic
+- execute the internal behavior of implementations
+
+
+--------------------------------------------------
+MANAGER EXAMPLE
+--------------------------------------------------
+
+<?php
+
+namespace Ababilithub\FlexAahub\Package\Plugin\Template\V1\Manager;
+
+(defined('ABSPATH') && defined('WPINC')) || exit();
+
+use Ababilithub\{
+    FlexPhp\Package\Manager\V1\Base\Manager as BaseManager,
+
+    FlexWordpress\Package\Template\V1\Contract\Template
+        as TemplateContract,
+
+    FlexWordpress\Package\Template\V1\Factory\Template
+        as TemplateFactory,
+
+    FlexAahub\Package\Plugin\Template\V1\Concrete\List\Template
+        as ListTemplate,
+
+    FlexAahub\Package\Plugin\Template\V1\Concrete\Grid\Template
+        as GridTemplate,
+
+    FlexAahub\Package\Plugin\Template\V1\Concrete\PremiumCard\Template
+        as PremiumCardTemplate,
+
+    FlexAahub\Package\Plugin\Template\V1\Concrete\Masonry\Template
+        as MasonryTemplate,
+
+    FlexAahub\Package\Plugin\Template\V1\Concrete\Table\Template
+        as TableTemplate,
+};
+
+class Template extends BaseManager
+{
+    public function __construct()
+    {
+        $this->init();
+    }
+
+    protected function init(): void
+    {
+        $this->set_items([
+            ListTemplate::class,
+            GridTemplate::class,
+            PremiumCardTemplate::class,
+            MasonryTemplate::class,
+            TableTemplate::class,
+
+            // Enable/disable implementations here.
+        ]);
+    }
+
+    public function boot(): void
+    {
+        foreach ($this->get_items() as $item_class) 
+        {
+
+            $template = TemplateFactory::get($item_class);
+
+            if (!$template instanceof TemplateContract) 
+            {
+                continue;
+            }
+
+            // Bootstrap implementation here.
+        }
+    }
+}
+
+
+--------------------------------------------------
+QUERY SYSTEM
+--------------------------------------------------
+
+Purpose:
+
+Retrieve data only.
+
+A Query object must:
+
+- build arguments
+- execute
+- return results
+
+Query objects must never:
+
+- render HTML
+- build UI
+- know templates
+
+Example:
+
+$query = ( new PostTypeQuery() )
+    ->init([
+        'config' => [
+            'post_type' => 'transaction',
+        ],
+    ]);
+
+$query->execute();
+
+$results = $query->get_results();
+
+--------------------------------------------------
+PAGINATION SYSTEM
+--------------------------------------------------
+
+Purpose:
+
+Control navigation through data.
+
+Pagination objects must:
+
+- determine current page
+- determine total pages
+- determine offsets
+- render pagination links
+
+Pagination must never:
+
+- query WordPress directly
+- build templates
+- know business logic
+
+Pagination receives:
+
+Query
+→ Found Rows
+→ Current Page
+
+Example:
+
+$query->paginate( $pagination );
+
+$query->execute();
+
+$pagination->pagination_links();
+
+Concrete examples:
+
+PagedPagination
+PreviousNextPagination
+LoadMorePagination
+
+--------------------------------------------------
+TEMPLATE SYSTEM
+--------------------------------------------------
+
+Purpose:
+
+Presentation only.
+
+Templates must never:
+
+- perform database queries
+- execute WP_Query
+- contain business logic
+
+Templates receive:
+
+prepared display data
+
+Example:
+
+[
+    'post' => [],
+    'meta' => [],
+    'taxonomies' => [],
+    'custom' => [],
+]
+
+Templates render:
+
+List
+Grid
+Table
+Masonry
+PremiumCard
+
+--------------------------------------------------
+COMPOSITION TEMPLATE PATTERN
+--------------------------------------------------
+
+Plugin templates act as orchestrators.
+
+Example:
+
+FinanceTransactionListTemplate
+
+Responsibilities:
+
+1. Build Query
+2. Build Pagination
+3. Execute Query
+4. Prepare Display Data
+5. Build Presentation Template
+6. Render Output
+
+Flow:
+
+Template
+    -> Query
+    -> Pagination
+    -> Execute
+    -> Prepare Data
+    -> Presentation Template
+    -> HTML
+
+Example:
+
+protected function render_html( array $data ): string
+{
+    $query = $this->build_query();
+
+    $pagination = $this->build_pagination();
+
+    $query->paginate( $pagination );
+
+    $query->execute();
+
+    $items = $this->prepare_items_for_display( $query->get_results() );
+
+    $template = $this->build_template( $items );
+
+    return $template->html();
+}
+
+--------------------------------------------------
+DISPLAY DATA PATTERN
+--------------------------------------------------
+
+Never pass WP_Post directly to templates.
+
+Convert first.
+
+Example:
+
+[
+    'id' => 123,
+
+    'post' => [
+        'title' => '',
+        'date' => '',
+    ],
+
+    'meta' => [
+        'amount' => '',
+    ],
+
+    'taxonomies' => [
+        'transaction_type' => [],
+    ],
+
+    'custom' => [],
+]
+
+Templates only consume display data.
+
+--------------------------------------------------
+EXTENSION POINTS
+--------------------------------------------------
+
+Every layer must be replaceable.
+
+Examples:
+
+Custom Query
+
+class TransactionQuery
+    extends PostTypeQuery
+
+Custom Pagination
+
+class InfinitePagination
+    extends BasePagination
+
+Custom Template
+
+class TransactionCardTemplate
+    extends BaseTemplate
+
+No existing code should require modification.
+
+New functionality should be added through extension.
+
+--------------------------------------------------
+DEPENDENCY DIRECTION
+--------------------------------------------------
+
+Allowed:
+
+Shortcode
+    -> Template
+
+Template
+    -> Query
+
+Template
+    -> Pagination
+
+Query
+    -> Pagination
+
+Not Allowed:
+
+Pagination
+    -> Template
+
+Query
+    -> Template
+
+Template
+    -> WP_Query directly
+
+Presentation Template
+    -> Business Logic
+
+--------------------------------------------------
+SHORTCODE PATTERN
+--------------------------------------------------
+
+Shortcode classes are entry points.
+
+Responsibilities:
+
+- register shortcode
+- merge attributes
+- create composition template
+- return html
+
+Shortcodes must never:
+
+- query data
+- paginate data
+- render layouts
+
+Example:
+
+Shortcode
+    -> Template
+
+Template
+    -> Query
+    -> Pagination
+    -> Presentation Template
+
+--------------------------------------------------
+GOAL
+--------------------------------------------------
+
+The final architecture should resemble a small framework where:
+
+Contracts define behavior.
+
+Base classes provide reusable functionality.
+
+Concrete classes provide implementation.
+
+Templates orchestrate objects.
+
+Queries retrieve data.
+
+Pagination controls navigation.
+
+Presentation templates render output.
+
+Shortcodes act only as entry points.
+
+All components remain independently replaceable,
+testable,
+and extensible.

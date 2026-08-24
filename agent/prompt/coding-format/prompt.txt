@@ -1,0 +1,348 @@
+Generate and format all PHP code using the following exact coding style.
+
+GENERAL STYLE
+--------------
+- Use modern PHP 8.x syntax.
+- Use OOP architecture.
+- Follow SOLID principles where appropriate.
+- Follow WordPress coding best practices.
+- Follow PSR-4 namespace and autoloading conventions.
+- Code must be suitable for a Composer-managed GitHub project.
+- Do not unnecessarily change the existing architecture, naming, namespaces, method visibility, or logic.
+- Preserve the existing project's terminology and design patterns.
+- Prioritize readability and consistency over strict PSR-12 formatting.
+
+FUNCTION DEFINITIONS
+--------------------
+- ALWAYS keep the complete function/method declaration on ONE LINE whenever possible.
+- Never vertically split a function signature merely because it is long.
+- Put the opening brace on the NEXT LINE.
+- Use a space before the opening parenthesis in function definitions.
+
+Correct:
+
+public function render( $attributes = [], ?string $content = null, ?string $tag = null ): string
+{
+    // ...
+}
+
+Correct:
+
+protected function prepare_custom_fields( int $post_id ): array
+{
+    // ...
+}
+
+Do NOT use:
+
+public function render(
+    $attributes = [],
+    ?string $content = null,
+    ?string $tag = null
+): string
+{
+    // ...
+}
+
+BRACES
+-------
+- Use Allman-style braces.
+- Opening braces must be placed on a new line for:
+  - classes
+  - methods/functions
+  - if statements
+  - foreach statements
+  - for statements
+  - while statements
+  - switch statements
+  - match expressions where applicable
+
+Example:
+
+if ( ! empty( $items ) )
+{
+    return $items;
+}
+
+Example:
+
+foreach ( $items as $item )
+{
+    // ...
+}
+
+SPACING
+-------
+- Use spaces inside parentheses for control structures and function calls when this matches the project's existing style.
+
+Preferred:
+
+if ( ! empty( $items ) )
+
+foreach ( $items as $item )
+
+$this->get_config_value( 'fields', [] )
+
+Not preferred:
+
+if (!empty($items))
+
+foreach ($items as $item)
+
+$this->get_config_value('fields', [])
+
+- Use spaces around operators.
+- Use readable spacing in arrays and expressions.
+- Do not add unnecessary whitespace.
+
+FUNCTION CALLS
+--------------
+- Keep simple function calls on a single line.
+
+Example:
+
+$this->register();
+
+Example:
+
+$post_id = (int) $item->ID;
+
+Example:
+
+$title = get_the_title( $post->ID );
+
+- Only split a function call across multiple lines when it materially improves readability or the arguments are complex.
+
+Example:
+
+$template = ( new TransactionListTemplate() )->init(
+    [
+        'data' => [
+            'content' => $content,
+        ],
+
+        'config' => $this->get_attributes(),
+    ]
+);
+
+ARRAYS
+------
+- Use multiline arrays for configuration, structured data, and arrays containing multiple logical sections.
+- Group related configuration values using comments.
+- Use trailing commas where appropriate.
+
+Example:
+
+$this->set_default_attributes([
+    /*
+     * Presentation.
+     */
+    'template' => 'list',
+
+    /*
+     * Pagination.
+     */
+    'pagination' => 'yes',
+    'pagination_type' => 'paged',
+    'per_page' => 15,
+]);
+
+COMMENTS
+--------
+- Use PHPDoc for classes, properties, and methods.
+- Use short section comments inside methods when they improve readability.
+- Use the following comment style:
+
+/*
+ * Build query.
+ */
+
+- Do not add excessive comments explaining obvious PHP syntax.
+- Comments should explain architecture, intent, or logical sections.
+
+PHPDOC
+------
+Use:
+
+/**
+ * Prepare custom fields.
+ *
+ * @param int $post_id
+ * @return array
+ */
+protected function prepare_custom_fields( int $post_id ): array
+{
+    // ...
+}
+
+Do not unnecessarily split simple PHPDoc annotations.
+
+CONDITIONALS
+------------
+Prefer readable conditions.
+
+Example:
+
+if ( ! is_array( $fields ) || empty( $fields ) )
+{
+    return [];
+}
+
+For complex conditions, multiline formatting is acceptable:
+
+if (
+    is_wp_error( $terms )
+    || 
+    empty( $terms )
+)
+{
+    return [];
+}
+
+Use early returns where they improve readability.
+
+METHOD CHAINING
+---------------
+- Keep simple chains compact.
+- For complex initialization/configuration, use multiline formatting.
+
+Example:
+
+$query = ( new PostTypeQuery() )->init(
+    [
+        'config' => [
+            'post_type' => FinanceTransactionPosttype::POSTTYPE,
+            'posts_per_page' => $per_page,
+        ],
+    ]
+);
+
+TYPE DECLARATIONS
+-----------------
+- Use scalar and object type declarations whenever appropriate.
+- Use nullable types where appropriate.
+- Use return types on methods.
+- Use `mixed` only when the value genuinely accepts multiple types.
+
+Examples:
+
+protected function build_query(): QueryContract
+
+protected function prepare_post_fields( \WP_Post $post ): array
+
+public function prepare_item_for_display( mixed $item ): array
+
+NAMING
+-------
+- Use descriptive names.
+- Use snake_case for methods and configuration keys when that is the existing project's convention.
+- Preserve existing project naming conventions.
+- Do not rename existing methods merely for stylistic reasons.
+
+WORDPRESS
+---------
+- Follow WordPress best practices.
+- Escape output appropriately.
+- Sanitize input appropriately.
+- Use WordPress APIs instead of reinventing WordPress functionality.
+- Use translation functions where user-facing text is involved.
+- Respect WordPress hooks, filters, shortcodes, post types, taxonomies, and query APIs.
+- Include the standard plugin protection:
+
+(defined('ABSPATH') && defined('WPINC')) || exit();
+
+NAMESPACES AND IMPORTS
+----------------------
+- Use namespaces consistently.
+- Prefer grouped imports when the existing project uses them.
+
+Example:
+
+use Ababilithub\{
+    FlexWordpress\Package\Query\V1\Contract\Query as QueryContract,
+    FlexWordpress\Package\Pagination\V1\Contract\Pagination as PaginationContract,
+};
+
+- Preserve existing namespace structure.
+
+CLASS STRUCTURE
+---------------
+Prefer this general structure:
+
+<?php
+
+namespace Vendor\Package;
+
+(defined('ABSPATH') && defined('WPINC')) || exit();
+
+use ...;
+
+class Example extends BaseClass
+{
+    /**
+     * Property description.
+     *
+     * @var string
+     */
+    protected string $type = 'example';
+
+    /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected array $default_config = [
+        // ...
+    ];
+
+    /**
+     * Initialize.
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+        // ...
+    }
+
+    /**
+     * Execute operation.
+     *
+     * @return array
+     */
+    protected function execute(): array
+    {
+        // ...
+    }
+}
+
+READABILITY RULE
+----------------
+The primary formatting principle is:
+
+"Compact declarations, readable implementation."
+
+Therefore:
+
+- Function signatures stay on one line.
+- Simple expressions stay on one line.
+- Complex expressions may use multiple lines.
+- Logical sections are separated by blank lines.
+- Configuration arrays remain visually organized.
+- Avoid excessive vertical formatting.
+- Avoid unnecessarily compressed code.
+
+IMPORTANT
+---------
+When refactoring existing code:
+
+1. Preserve functionality.
+2. Preserve public APIs.
+3. Preserve namespaces.
+4. Preserve method names.
+5. Preserve configuration keys.
+6. Preserve hooks and WordPress integration.
+7. Preserve existing architectural patterns.
+8. Only change formatting unless a functional correction is explicitly requested.
+9. Do not introduce a different formatting style.
+10. Match the surrounding project code exactly.
