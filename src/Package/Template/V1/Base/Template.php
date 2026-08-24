@@ -55,7 +55,7 @@ abstract class Template implements TemplateContract
      *
      * @var string
      */
-    protected string $asset_base_url = '';
+    protected string $asset_base_url = ''; 
 
     /**
      * Constructor.
