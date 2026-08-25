@@ -11,14 +11,33 @@ interface Template
      */
     public function get_type(): string;
 
+    /*
+     * ---------------------------------------------------------
+     * Initialization
+     * ---------------------------------------------------------
+     */
+
     /**
      * Initialize template.
      *
-     * Data and configuration may be supplied here.
+     * Supported:
+     *
+     * [
+     *     'data'   => [],
+     *     'config' => [],
+     * ]
      *
      * @param array<string, mixed> $data
      */
-    public function init(array $data = []): static;
+    public function init(
+        array $data = []
+    ): static;
+
+    /*
+     * ---------------------------------------------------------
+     * Data
+     * ---------------------------------------------------------
+     */
 
     /**
      * Get default data.
@@ -32,7 +51,9 @@ interface Template
      *
      * @param array<string, mixed> $data
      */
-    public function set_default_data(array $data = []): static;
+    public function set_default_data(
+        array $data = []
+    ): static;
 
     /**
      * Get current data.
@@ -46,7 +67,9 @@ interface Template
      *
      * @param array<string, mixed> $data
      */
-    public function set_data(array $data = []): static;
+    public function set_data(
+        array $data = []
+    ): static;
 
     /**
      * Get data value.
@@ -65,6 +88,19 @@ interface Template
     ): static;
 
     /**
+     * Determine whether data key exists.
+     */
+    public function has_data_value(
+        string $key
+    ): bool;
+
+    /*
+     * ---------------------------------------------------------
+     * Configuration
+     * ---------------------------------------------------------
+     */
+
+    /**
      * Get default configuration.
      *
      * @return array<string, mixed>
@@ -76,7 +112,9 @@ interface Template
      *
      * @param array<string, mixed> $config
      */
-    public function set_default_config(array $config = []): static;
+    public function set_default_config(
+        array $config = []
+    ): static;
 
     /**
      * Get current configuration.
@@ -86,11 +124,13 @@ interface Template
     public function get_config(): array;
 
     /**
-     * Set configuration.
+     * Set current configuration.
      *
      * @param array<string, mixed> $config
      */
-    public function set_config(array $config = []): static;
+    public function set_config(
+        array $config = []
+    ): static;
 
     /**
      * Get configuration value.
@@ -109,24 +149,74 @@ interface Template
     ): static;
 
     /**
-     * Render template.
+     * Determine whether configuration key exists.
+     */
+    public function has_config_value(
+        string $key
+    ): bool;
+
+    /*
+     * ---------------------------------------------------------
+     * Rendering
+     * ---------------------------------------------------------
+     */
+
+    /**
+     * Render HTML.
      *
      * @param array<string, mixed> $data
      */
-    public function render(array $data = []): void;
+    public function html(
+        array $data = []
+    ): string;
 
     /**
-     * Get rendered HTML.
+     * Echo rendered HTML.
      *
      * @param array<string, mixed> $data
      */
-    public function html(array $data = []): string;
+    public function render(
+        array $data = []
+    ): void;
 
-    public function prepare_items_for_display(array $items = []): array;
-    public function prepare_item_for_display(mixed $item): array;
+    /*
+     * ---------------------------------------------------------
+     * Reset
+     * ---------------------------------------------------------
+     */
 
     /**
-     * Reset template.
+     * Reset template state.
      */
     public function reset(): static;
+
+    /*
+     * ---------------------------------------------------------
+     * Assets
+     * ---------------------------------------------------------
+     */
+
+    /**
+     * Get asset base prefix.
+     */
+    public function get_asset_base_prefix(): string;
+
+    /**
+     * Set asset base prefix.
+     */
+    public function set_asset_base_prefix(
+        string $prefix
+    ): static;
+
+    /**
+     * Get asset base URL.
+     */
+    public function get_asset_base_url(): string;
+
+    /**
+     * Set asset base URL.
+     */
+    public function set_asset_base_url(
+        string $url
+    ): static;
 }
