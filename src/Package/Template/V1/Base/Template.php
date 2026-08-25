@@ -5,7 +5,7 @@ namespace Ababilithub\FlexWordpress\Package\Template\V1\Base;
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
 use Ababilithub\{
-    FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract,
+    FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract
 };
 
 abstract class Template implements TemplateContract
@@ -44,18 +44,14 @@ abstract class Template implements TemplateContract
     protected array $config = [];
 
     /**
-     * Template Asset Base Prefix.
-     *
-     * @var string
+     * Template asset base prefix.
      */
-    protected string $asset_base_prefix = " ";
+    protected string $asset_base_prefix = '';
 
     /**
-     * Template Asset Base Url.
-     *
-     * @var string
+     * Template asset base URL.
      */
-    protected string $asset_base_url = " "; 
+    protected string $asset_base_url = '';
 
     /**
      * Constructor.
@@ -69,7 +65,7 @@ abstract class Template implements TemplateContract
     }
 
     /**
-     * Get type.
+     * Get template type.
      */
     public function get_type(): string
     {
@@ -79,7 +75,7 @@ abstract class Template implements TemplateContract
     /**
      * Initialize template.
      *
-     * Supported:
+     * Supported structure:
      *
      * [
      *     'data' => [],
@@ -89,15 +85,15 @@ abstract class Template implements TemplateContract
     public function init(array $data = []): static
     {
         if (
-            isset($data['data']) &&
-            is_array($data['data'])
+            isset($data['data'])
+            && is_array($data['data'])
         ) {
             $this->set_data($data['data']);
         }
 
         if (
-            isset($data['config']) &&
-            is_array($data['config'])
+            isset($data['config'])
+            && is_array($data['config'])
         ) {
             $this->set_config($data['config']);
         }
@@ -121,10 +117,6 @@ abstract class Template implements TemplateContract
     ): static {
         $this->default_data = $data;
 
-        /*
-         * If no runtime data exists, also update
-         * the active data.
-         */
         if ($this->data === []) {
             $this->data = $data;
         }
@@ -152,7 +144,12 @@ abstract class Template implements TemplateContract
         string $key,
         mixed $default = null
     ): mixed {
-        return $this->data[$key] ?? $default;
+        return array_key_exists(
+            $key,
+            $this->data
+        )
+            ? $this->data[$key]
+            : $default;
     }
 
     public function set_data_value(
@@ -162,6 +159,15 @@ abstract class Template implements TemplateContract
         $this->data[$key] = $value;
 
         return $this;
+    }
+
+    public function has_data_value(
+        string $key
+    ): bool {
+        return array_key_exists(
+            $key,
+            $this->data
+        );
     }
 
     /*
@@ -207,7 +213,12 @@ abstract class Template implements TemplateContract
         string $key,
         mixed $default = null
     ): mixed {
-        return $this->config[$key] ?? $default;
+        return array_key_exists(
+            $key,
+            $this->config
+        )
+            ? $this->config[$key]
+            : $default;
     }
 
     public function set_config_value(
@@ -219,6 +230,15 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    public function has_config_value(
+        string $key
+    ): bool {
+        return array_key_exists(
+            $key,
+            $this->config
+        );
+    }
+
     /*
      * ---------------------------------------------------------
      * Rendering
@@ -228,8 +248,7 @@ abstract class Template implements TemplateContract
     /**
      * Render HTML.
      *
-     * If data is supplied at render time it is merged with
-     * the initialized data.
+     * Runtime data is merged with initialized data.
      */
     public function html(array $data = []): string
     {
@@ -252,7 +271,7 @@ abstract class Template implements TemplateContract
     }
 
     /**
-     * Concrete template generates HTML.
+     * Generate HTML.
      */
     abstract protected function render_html(
         array $data
@@ -274,22 +293,48 @@ abstract class Template implements TemplateContract
 
     /*
      * ---------------------------------------------------------
-     * Helpers
+     * Asset
      * ---------------------------------------------------------
      */
 
-    /**
-     * Escape HTML attribute.
+    public function get_asset_base_prefix(): string
+    {
+        return $this->asset_base_prefix;
+    }
+
+    public function set_asset_base_prefix(
+        string $prefix
+    ): static {
+        $this->asset_base_prefix = $prefix;
+
+        return $this;
+    }
+
+    public function get_asset_base_url(): string
+    {
+        return $this->asset_base_url;
+    }
+
+    public function set_asset_base_url(
+        string $url
+    ): static {
+        $this->asset_base_url = $url;
+
+        return $this;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * Escaping Helpers
+     * ---------------------------------------------------------
      */
+
     protected function attribute(
         string $value
     ): string {
         return esc_attr($value);
     }
 
-    /**
-     * Escape HTML text.
-     */
     protected function text(
         mixed $value
     ): string {
@@ -298,18 +343,12 @@ abstract class Template implements TemplateContract
         );
     }
 
-    /**
-     * Escape URL.
-     */
     protected function url(
         string $value
     ): string {
         return esc_url($value);
     }
 
-    /**
-     * Convert class array/string to HTML class string.
-     */
     protected function classes(
         array|string $classes
     ): string {
@@ -327,41 +366,5 @@ abstract class Template implements TemplateContract
         return esc_attr(
             implode(' ', $classes)
         );
-    }
-    public function prepare_items_for_display(array $items = []): array
-    {
-        $prepared = [];
-        foreach ($items as $item) {
-            $display_item = $this->prepare_item_for_display($item);
-            if (!empty($display_item)) {
-                $prepared[] = $display_item;
-            }
-        }
-        return $prepared;
-    }
-
-    public function prepare_item_for_display(mixed $item): array
-    {
-        if (!$item instanceof \WP_Post) {
-            return [];
-        }
-
-        $post_id = (int) $item->ID;
-
-        return [
-            'post' => $this->prepare_post_fields($item),
-
-            'meta' => $this->prepare_post_meta(
-                $post_id
-            ),
-
-            'taxonomies' => $this->prepare_taxonomies(
-                $post_id
-            ),
-
-            'custom' => $this->prepare_custom_fields(
-                $post_id
-            ),
-        ];
     }
 }
