@@ -4,9 +4,7 @@ namespace Ababilithub\FlexWordpress\Package\Template\V1\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || exit();
 
-use Ababilithub\{
-    FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract
-};
+use Ababilithub\FlexWordpress\Package\Template\V1\Contract\Template as TemplateContract;
 
 abstract class Template implements TemplateContract
 {
@@ -55,6 +53,8 @@ abstract class Template implements TemplateContract
 
     /**
      * Constructor.
+     *
+     * @param array<string, mixed> $data
      */
     public function __construct(array $data = [])
     {
@@ -72,15 +72,23 @@ abstract class Template implements TemplateContract
         return $this->type;
     }
 
+    /*
+     * ---------------------------------------------------------
+     * Initialization
+     * ---------------------------------------------------------
+     */
+
     /**
      * Initialize template.
      *
-     * Supported structure:
+     * Supported:
      *
      * [
-     *     'data' => [],
+     *     'data'   => [],
      *     'config' => [],
      * ]
+     *
+     * @param array<string, mixed> $data
      */
     public function init(array $data = []): static
     {
@@ -88,14 +96,18 @@ abstract class Template implements TemplateContract
             isset($data['data'])
             && is_array($data['data'])
         ) {
-            $this->set_data($data['data']);
+            $this->set_data(
+                $data['data']
+            );
         }
 
         if (
             isset($data['config'])
             && is_array($data['config'])
         ) {
-            $this->set_config($data['config']);
+            $this->set_config(
+                $data['config']
+            );
         }
 
         return $this;
@@ -107,11 +119,21 @@ abstract class Template implements TemplateContract
      * ---------------------------------------------------------
      */
 
+    /**
+     * Get default data.
+     *
+     * @return array<string, mixed>
+     */
     public function get_default_data(): array
     {
         return $this->default_data;
     }
 
+    /**
+     * Set default data.
+     *
+     * @param array<string, mixed> $data
+     */
     public function set_default_data(
         array $data = []
     ): static {
@@ -124,11 +146,21 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Get current data.
+     *
+     * @return array<string, mixed>
+     */
     public function get_data(): array
     {
         return $this->data;
     }
 
+    /**
+     * Set current data.
+     *
+     * @param array<string, mixed> $data
+     */
     public function set_data(
         array $data = []
     ): static {
@@ -140,6 +172,9 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Get data value.
+     */
     public function get_data_value(
         string $key,
         mixed $default = null
@@ -152,6 +187,9 @@ abstract class Template implements TemplateContract
             : $default;
     }
 
+    /**
+     * Set data value.
+     */
     public function set_data_value(
         string $key,
         mixed $value
@@ -161,6 +199,9 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Determine whether data key exists.
+     */
     public function has_data_value(
         string $key
     ): bool {
@@ -176,11 +217,21 @@ abstract class Template implements TemplateContract
      * ---------------------------------------------------------
      */
 
+    /**
+     * Get default configuration.
+     *
+     * @return array<string, mixed>
+     */
     public function get_default_config(): array
     {
         return $this->default_config;
     }
 
+    /**
+     * Set default configuration.
+     *
+     * @param array<string, mixed> $config
+     */
     public function set_default_config(
         array $config = []
     ): static {
@@ -193,11 +244,21 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Get current configuration.
+     *
+     * @return array<string, mixed>
+     */
     public function get_config(): array
     {
         return $this->config;
     }
 
+    /**
+     * Set current configuration.
+     *
+     * @param array<string, mixed> $config
+     */
     public function set_config(
         array $config = []
     ): static {
@@ -209,6 +270,9 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Get configuration value.
+     */
     public function get_config_value(
         string $key,
         mixed $default = null
@@ -221,6 +285,9 @@ abstract class Template implements TemplateContract
             : $default;
     }
 
+    /**
+     * Set configuration value.
+     */
     public function set_config_value(
         string $key,
         mixed $value
@@ -230,6 +297,9 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Determine whether configuration key exists.
+     */
     public function has_config_value(
         string $key
     ): bool {
@@ -249,6 +319,8 @@ abstract class Template implements TemplateContract
      * Render HTML.
      *
      * Runtime data is merged with initialized data.
+     *
+     * @param array<string, mixed> $data
      */
     public function html(array $data = []): string
     {
@@ -264,6 +336,8 @@ abstract class Template implements TemplateContract
 
     /**
      * Echo rendered HTML.
+     *
+     * @param array<string, mixed> $data
      */
     public function render(array $data = []): void
     {
@@ -272,6 +346,8 @@ abstract class Template implements TemplateContract
 
     /**
      * Generate HTML.
+     *
+     * @param array<string, mixed> $data
      */
     abstract protected function render_html(
         array $data
@@ -283,6 +359,9 @@ abstract class Template implements TemplateContract
      * ---------------------------------------------------------
      */
 
+    /**
+     * Reset template state.
+     */
     public function reset(): static
     {
         $this->data = $this->default_data;
@@ -297,11 +376,17 @@ abstract class Template implements TemplateContract
      * ---------------------------------------------------------
      */
 
+    /**
+     * Get asset base prefix.
+     */
     public function get_asset_base_prefix(): string
     {
         return $this->asset_base_prefix;
     }
 
+    /**
+     * Set asset base prefix.
+     */
     public function set_asset_base_prefix(
         string $prefix
     ): static {
@@ -310,11 +395,17 @@ abstract class Template implements TemplateContract
         return $this;
     }
 
+    /**
+     * Get asset base URL.
+     */
     public function get_asset_base_url(): string
     {
         return $this->asset_base_url;
     }
 
+    /**
+     * Set asset base URL.
+     */
     public function set_asset_base_url(
         string $url
     ): static {
@@ -329,12 +420,18 @@ abstract class Template implements TemplateContract
      * ---------------------------------------------------------
      */
 
+    /**
+     * Escape HTML attribute.
+     */
     protected function attribute(
         string $value
     ): string {
         return esc_attr($value);
     }
 
+    /**
+     * Escape HTML text.
+     */
     protected function text(
         mixed $value
     ): string {
@@ -343,12 +440,18 @@ abstract class Template implements TemplateContract
         );
     }
 
+    /**
+     * Escape URL.
+     */
     protected function url(
         string $value
     ): string {
         return esc_url($value);
     }
 
+    /**
+     * Convert class array/string to HTML class string.
+     */
     protected function classes(
         array|string $classes
     ): string {
