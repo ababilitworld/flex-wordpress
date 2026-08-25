@@ -219,4 +219,4 @@ interface Template
     public function set_asset_base_url(
         string $url
     ): static;
-}
+} 
